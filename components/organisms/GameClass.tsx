@@ -267,7 +267,7 @@ export const GameClass: React.FC = () => {
   };
 
   const unselectGameClass = (item: ParamGameClassInfo) => {
-    setSelectedGameClass(selectedGameClass.filter((el) => !(el.name === item.name && el.talent === item.talent)));
+    setSelectedGameClass(selectedGameClass.filter((el) => !(el.name === item.name && el.talentName === item.talentName)));
   };
 
   const goTest = () => {
