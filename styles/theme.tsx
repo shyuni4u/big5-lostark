@@ -1,8 +1,4 @@
-import baseStyled, {
-  css,
-  CSSProp,
-  ThemedStyledInterface
-} from 'styled-components';
+import baseStyled, { css, CSSProp, ThemedStyledInterface } from 'styled-components';
 
 const sizes: { [key: string]: number } = {
   mobile: 320,
@@ -64,12 +60,12 @@ const colors = {
   grayD: '#dadce0',
   grayE: '#e8eaed',
   grayF: '#f5f5f5',
-  background: '#211510',
-  border: '#504137',
+  background: '#050505',
+  border: '#4d4f55',
   button: 'rgba(159,22,0,.6)',
   hover: '#f8b700',
   primary: '#170e09',
-  secondary: '#c77e19',
+  secondary: '#ebebeb',
   success: '#137333',
   danger: '#ea3012',
   warning: '#fdcc5e',

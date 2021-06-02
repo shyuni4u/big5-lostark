@@ -1,7 +1,8 @@
 export const GameClassList = [
   {
     name: 'warrior',
-    image: 'img_index_warrior',
+    image: 'img_index_warrior.png',
+    background: 'bg_index_warrior.jpg',
     color: '#c79c6e',
     talents: [
       {
@@ -32,7 +33,8 @@ export const GameClassList = [
   },
   {
     name: 'fighter',
-    image: 'img_index_fighter',
+    image: 'img_index_fighter.png',
+    background: 'bg_index_fighter.jpg',
     color: '#00ff96',
     talents: [
       {
@@ -69,7 +71,8 @@ export const GameClassList = [
   },
   {
     name: 'hunter',
-    image: 'img_index_hunter',
+    image: 'img_index_hunter.png',
+    background: 'bg_index_hunter.jpg',
     color: '#abd473',
     talents: [
       {
@@ -106,7 +109,8 @@ export const GameClassList = [
   },
   {
     name: 'magician',
-    image: 'img_index_magician',
+    image: 'img_index_magician.png',
+    background: 'bg_index_magician.jpg',
     color: '#69ccf0',
     talents: [
       {
@@ -131,7 +135,8 @@ export const GameClassList = [
   },
   {
     name: 'assassin',
-    image: 'img_index_assassin',
+    image: 'img_index_assassin.png',
+    background: 'bg_index_assassin.jpg',
     color: '#fff569',
     talents: [
       {
@@ -161,10 +166,12 @@ export type GameClassItemInfo = typeof GameClassList[0];
 export type ParamGameClassInfo = {
   name: string;
   image?: string;
+  background?: string;
   color: string;
-  talent: string;
-  position: string;
-  isMain?: boolean;
+  talentName?: string;
+  talentPosition?: string;
+  talentImage?: string;
+  talentDesc?: string;
 };
 
 export default GameClassList;

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import ReactEcharts from 'echarts-for-react';
 import Theme from '../../styles/theme';
-import WowClassInfo from '../../lib/GameClassInfo';
+import GameClassInfo from '../../lib/GameClassInfo';
 import API from '../../lib/info.json';
 
 // {
@@ -102,9 +102,9 @@ export const Result: React.FC = () => {
   const [more, setMore] = useState<boolean>(false);
 
   const parseRange = (val: number) => {
-    if (val >= 1 && val < 2.5) return 1;
-    if (val >= 2.5 && val <= 3.5) return 3;
-    if (val > 3.5 && val <= 5) return 5;
+    if (val >= 1 && val < 3) return 1;
+    if (val == 3) return 3;
+    if (val > 3 && val <= 5) return 5;
     return 0;
   };
 
@@ -122,8 +122,6 @@ export const Result: React.FC = () => {
         await axios
           .post(API.path, null, {
             params: {
-              bNew: testInfo.get.newbie,
-              bClassic: testInfo.get.classic,
               sFirstClass: testInfo.get.firstClass,
               sFirstTalent: testInfo.get.firstTalent,
               sSecondClass: testInfo.get.secondClass,
@@ -159,7 +157,13 @@ export const Result: React.FC = () => {
       }
     };
 
-    onLoadApi();
+    // onLoadApi();
+    const dummy = [
+      { sClass: 'magician', sTalent: 'arcana', nCount: 2 },
+      { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
+      { sClass: 'magician', sTalent: 'bard', nCount: 2 }
+    ];
+    setResult(dummy);
 
     return () => {
       unmount = true;
@@ -176,7 +180,7 @@ export const Result: React.FC = () => {
   const getOption = () => {
     return {
       title: {
-        text: t('txt-select-big5-test-title'),
+        text: t('result.title'),
         show: false
       },
       grid: {
@@ -191,11 +195,11 @@ export const Result: React.FC = () => {
       radar: {
         // shape: 'circle',
         indicator: [
-          { name: t('agreeableness'), max: 5 },
-          { name: t('conscientiousness'), max: 5 },
-          { name: t('extraversion'), max: 5 },
-          { name: t('opennessToExperience'), max: 5 },
-          { name: t('neuroticism'), max: 5 }
+          { name: t('result.agreeableness'), max: 5 },
+          { name: t('result.conscientiousness'), max: 5 },
+          { name: t('result.extraversion'), max: 5 },
+          { name: t('result.opennessToExperience'), max: 5 },
+          { name: t('result.neuroticism'), max: 5 }
         ],
         splitNumber: 5,
         splitArea: {
@@ -240,7 +244,7 @@ export const Result: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      {testInfo.get.firstClass === '' && (
+      {/* {testInfo.get.firstClass === '' && (
         <>
           <Button onClick={() => Router.push('/')}>다시하기</Button>
           성향 정보가 없습니다. 다시 테스트해주세요.
@@ -251,11 +255,12 @@ export const Result: React.FC = () => {
           <Loader style={{ marginBottom: '20px' }} />
           성향과 비슷한 직업을 찾고 있습니다.
         </>
-      )}
-      {testInfo.get.firstClass !== '' && result.length > 0 && (
+      )} */}
+      {/* {testInfo.get.firstClass !== '' && result.length > 0 && ( */}
+      {result.length > 0 && (
         <>
           <StyledResult>
-            <StyledResultTitle>당신의 성향</StyledResultTitle>
+            <StyledResultTitle>{t('result.you')}</StyledResultTitle>
             <ReactEcharts
               option={getOption()}
               notMerge={true}
@@ -270,40 +275,45 @@ export const Result: React.FC = () => {
           <StyledResult>
             <ul>
               <StyledYouLi>
-                <span style={{ color: '#ffd50e' }}>{t('agreeableness')}: </span>대인 관계에서 보이는 질적인 측면을 확인하는 요인.
+                <span style={{ color: '#ffd50e' }}>{t('result.agreeableness')}: </span>
+                {t('result.agreeablenessDesc')}
               </StyledYouLi>
               <StyledYouLi>
-                <span style={{ color: '#ffa53a' }}>{t('conscientiousness')}: </span>개인의 조직화된 정도를 확인하는 요인.
+                <span style={{ color: '#ffa53a' }}>{t('result.conscientiousness')}: </span>
+                {t('result.conscientiousnessDesc')}
               </StyledYouLi>
               <StyledYouLi>
-                <span style={{ color: '#89dd26' }}>{t('extraversion')}: </span>개인이 열정적으로 타인을 찾고 환경과 상호작용하는 것을 확인하는 요인.
+                <span style={{ color: '#89dd26' }}>{t('result.extraversion')}: </span>
+                {t('result.extraversionDesc')}
               </StyledYouLi>
               <StyledYouLi>
-                <span style={{ color: '#e980ff' }}>{t('opennessToExperience')}: </span>광범위한 주제에서 "새로운 것"에 대해 개인이 판단하는 경향을 확인하는 요인.
+                <span style={{ color: '#e980ff' }}>{t('result.opennessToExperience')}: </span>
+                {t('result.opennessToExperienceDesc')}
               </StyledYouLi>
               <StyledYouLi>
-                <span style={{ color: '#36b1ff' }}>{t('neuroticism')}: </span>개인이 일상 속에서 발생하는 힘든 경험들에 부정적 정서를 얼마나 자주 경험하는지를 확인하는 요인.
+                <span style={{ color: '#36b1ff' }}>{t('result.neuroticism')}: </span>
+                {t('result.neuroticismDesc')}
               </StyledYouLi>
             </ul>
           </StyledResult>
           <StyledResult>
-            <StyledResultTitle>성향별 직업 선호도</StyledResultTitle>
+            <StyledResultTitle>{t('result.likeyou')}</StyledResultTitle>
             <StyledResultList>
               {result.map((el: testResult, elIdx: number) => {
                 if (!more && elIdx > 4) return undefined;
 
-                const _class = WowClassInfo.find((v) => v.name == el.sClass);
+                const _class = GameClassInfo.find((v) => v.name == el.sClass);
                 const _talent = _class.talents.find((v) => v.name == el.sTalent);
 
                 return (
                   <li key={elIdx}>
                     <div className={'icon'}>
-                      <StyledWowClassIcon className="img" src={`/class/${_talent.image}`} alt={`${t(_class.name)} - ${_talent.name}`} />
+                      <StyledWowClassIcon className="img" src={`/class/${_talent.image}`} alt={`${t(`gameclass.${_class.name}`)} - ${t(`gameclass.${_talent.name}`)}`} />
                     </div>
                     <div className={'name'}>
-                      {t(el.sClass)}
+                      {t(`gameclass.${el.sClass}`)}
                       <br />
-                      {t(el.sTalent)}
+                      {t(`gameclass.${el.sTalent}`)}
                     </div>
                     <div className={'progress'}>
                       <div className={'progressBar'} style={{ width: Math.round((el.nCount / sum) * 10000) / 100 + '%', backgroundColor: _class.color }}></div>
@@ -314,13 +324,13 @@ export const Result: React.FC = () => {
               })}
               {result.length > 5 && !more && (
                 <li>
-                  <Button onClick={() => setMore(true)}>더 보기</Button>
+                  <Button onClick={() => setMore(true)}>{t('result.more')}</Button>
                 </li>
               )}
             </StyledResultList>
           </StyledResult>
           <Button primary onClick={() => Router.push('/')}>
-            다시하기
+            {t('result.retry')}
           </Button>
         </>
       )}

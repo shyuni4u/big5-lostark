@@ -35,23 +35,25 @@ const StyledPanel = styled.div`
     font-family: Semplicita Pro, Open Sans, Arial, Helvetica, sans-serif;
     text-shadow: 0 0 1px transparent, 0 1px 2px rgba(0, 0, 0, 0.8);
     font-weight: 700;
+    margin-bottom: 20px;
   }
 
   & h3.panel-sub-title {
     font-size: 15px;
     line-height: 1.5;
     font-family: Open Sans, Arial, Helvetica, sans-serif;
-    color: #ebdec2;
+    /* color: #ebdec2; */
+    color: #ffffff;
     text-shadow: 0 0 1px transparent, 0 1px 2px rgba(0, 0, 0, 0.8);
-    font-weight: 400;
+    font-weight: 600;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 20px;
     text-transform: uppercase;
   }
 
   & div.panel-content {
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 2;
     font-family: Open Sans, Arial, Helvetica, sans-serif;
     color: #ebdec2;
     text-shadow: 0 0 1px transparent, 0 1px 2px rgba(0, 0, 0, 0.8);

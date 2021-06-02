@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Router from 'next/router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
 import { toast } from 'react-toastify';
@@ -14,60 +14,205 @@ import reducerTest from '../../reducers/reducerTest';
 
 import GameClassList, { GameClassItemInfo, ParamGameClassInfo } from '../../lib/GameClassInfo';
 
-const StyledGameClassItem = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex: 0 1 200px;
-  margin: 5px 2px;
-  user-select: none;
-  cursor: pointer;
-  & > span {
-    font-size: ${({ theme }) => theme.fontSizes.h3};
-    font-weight: 600;
+type hasUrlProps = {
+  url?: string;
+  color?: string;
+  pos?: string;
+};
+const StyledGameClassItemWrapper = styled.div`
+  flex: 0 1 100%;
+  border-bottom: 1px solid white;
+  &:last-child {
+    border-bottom: 0;
   }
+`;
+const StyledGameClassItem = styled.div<hasUrlProps>`
+  ${({ theme, url, color }) => {
+    return css`
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 150px;
+      margin: 15px 0;
+      background: url(${url}) no-repeat 50% 50%;
+      background-position: 0px -70px;
+      background-size: cover;
+      color: ${color};
+
+      user-select: none;
+      cursor: pointer;
+      & > span {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        font-size: ${({ theme }) => theme.fontSizes.h3};
+        font-weight: 600;
+      }
+    `;
+  }}
+`;
+const StyledGameClassItemBackground = styled.div<hasUrlProps>`
+  ${({ theme, url, color }) => {
+    return css`
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url(${url}) no-repeat 50% 50%;
+      background-position: 0px -70px;
+      background-size: cover;
+      z-index: -1;
+    `;
+  }}
 `;
 const StyledGameClassTalents = styled.ul`
-  background-color: rgba(53, 32, 17, 0.8);
-  border: 1px solid #f8b700;
-  box-shadow: inset 0 -8px 0 #f8b700;
-  padding: 20px;
-  margin-top: 20px;
-  user-select: none;
-  cursor: pointer;
-  & > .talentInfo {
-    display: flex;
-    align-items: center;
-    margin-bottom: 4px;
-    & > .img {
-      width: 30px;
-      height: 30px;
-      /* border-radius: 40%;
-      border: 2px solid ${({ theme }) => theme.colors.warning}; */
-      border: 1px solid #888;
-      margin-right: 10px;
-      background-color: #000;
-    }
-    & > .name {
-      font-size: ${({ theme }) => theme.fontSizes.h3};
-    }
-    & > .pos {
-      width: 14px;
-      height: 14px;
-      margin-left: 6px;
-    }
-  }
-  & > .desc {
-  }
+  ${({ theme }) => {
+    return css`
+      background-color: rgba(53, 32, 17, 0.8);
+      border: 1px solid ${theme.colors.grayA};
+      box-shadow: inset 0 -4px 0 ${theme.colors.grayE};
+      padding: 20px;
+      margin-top: 20px;
+      display: flex;
+      user-select: none;
+      cursor: pointer;
+    `;
+  }}
+`;
+const StyledGameClassTalentImage = styled.li<hasUrlProps>`
+  ${({ theme, url, color, pos }) => {
+    const _pos = pos.split(' ');
+    return css`
+      flex: 0 0 67px;
+      display: block;
+      position: relative;
+      margin: 0 -2px;
+      padding-top: 80px;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 15px;
+      color: #a3b0c1;
+      background-color: transparent;
+      text-decoration: none;
+
+      &::before {
+        width: 67px;
+        height: 75px;
+        display: inline-block;
+        background: url(${url}) no-repeat 0 0;
+        background-position: ${_pos[0]} ${_pos[1]};
+        background-size: 1584px 1497px;
+        font-size: 0;
+        transition: 0.5s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 1;
+      }
+      &::after {
+        width: 67px;
+        height: 75px;
+        display: inline-block;
+        background: url(${url}) no-repeat 0 0;
+        background-position: ${_pos[2]} ${_pos[3]};
+        background-size: 1584px 1497px;
+        font-size: 0;
+        transition: 0.5s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 1;
+      }
+    `;
+  }}
+`;
+const StyledGameClassTalentContent = styled.li`
+  ${({ theme }) => {
+    const { colors } = theme;
+    return css`
+      padding-left: 10px;
+      & > .name {
+        color: ${colors.hover};
+      }
+      & > .desc {
+      }
+    `;
+  }}
 `;
 
-const GameClassIconWidth = 40;
-const StyledGameClassIcon = styled.img`
-  width: ${GameClassIconWidth}px;
-  height: ${GameClassIconWidth}px;
-  border-radius: 40%;
-  border: 2px solid ${({ theme }) => theme.colors.warning};
-  margin-right: 10px;
+const StyledGameClassTalentsSelected = styled.ul`
+  ${({ theme }) => {
+    return css`
+      display: flex;
+      flex-direction: column;
+      width: 64px;
+      height: 100px;
+      user-select: none;
+      cursor: pointer;
+    `;
+  }}
+`;
+const StyledGameClassTalentImageSelected = styled.li<hasUrlProps>`
+  ${({ theme, url, color, pos }) => {
+    const _pos = pos.split(' ');
+    return css`
+      flex: 0 0 67px;
+      display: block;
+      position: relative;
+      margin: 0 -2px;
+      padding-top: 80px;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 15px;
+      color: #a3b0c1;
+      background-color: transparent;
+      text-decoration: none;
+
+      &::before {
+        width: 67px;
+        height: 75px;
+        display: inline-block;
+        background: url(${url}) no-repeat 0 0;
+        background-position: ${_pos[0]} ${_pos[1]};
+        background-size: 1584px 1497px;
+        font-size: 0;
+        transition: 0.5s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 1;
+      }
+      &::after {
+        width: 67px;
+        height: 75px;
+        display: inline-block;
+        background: url(${url}) no-repeat 0 0;
+        background-position: ${_pos[2]} ${_pos[3]};
+        background-size: 1584px 1497px;
+        font-size: 0;
+        transition: 0.5s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 1;
+      }
+    `;
+  }}
+`;
+const StyledGameClassTalentContentSelected = styled.li`
+  ${({ theme }) => {
+    const { colors } = theme;
+    return css`
+      & > .name {
+        color: ${colors.hover};
+      }
+    `;
+  }}
 `;
 
 const StyledSelectedGameClassList = styled.div`
@@ -83,47 +228,6 @@ const StyledSelectedGameClassListEmpty = styled.span`
   overflow: hidden;
 `;
 
-const StyledSelectedGameClassItem = styled.div`
-  position: relative;
-  display: inline-block;
-  flex: 0 0 33%;
-  min-height: ${GameClassIconWidth}px;
-  cursor: pointer;
-  ${({ theme }) => theme.media.tablet`
-    margin-bottom: 10px;
-  `}
-  ${({ theme }) => theme.media.mobile`
-    margin-bottom: 10px;
-  `}
-`;
-const StyledGameSelectedClassName = styled.div`
-  position: absolute;
-  top: 20px;
-  left: ${GameClassIconWidth + 5}px;
-  line-height: ${GameClassIconWidth / 2}px;
-  height: ${GameClassIconWidth / 2}px;
-  width: calc(100% - ${GameClassIconWidth + 5}px);
-  font-size: ${({ theme }) => theme.fontSizes.body14};
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-const StyledSelectedGameClassTalent = styled.div`
-  position: absolute;
-  top: 0px;
-  left: ${GameClassIconWidth + 5}px;
-  text-transform: capitalize;
-  line-height: ${GameClassIconWidth / 2}px;
-  height: ${GameClassIconWidth / 2}px;
-  width: calc(100% - ${GameClassIconWidth + 5}px);
-  font-size: ${({ theme }) => theme.fontSizes.body14};
-  text-align: left;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
 const MAX_SELECT = 3;
 
 export const GameClass: React.FC = () => {
@@ -131,17 +235,15 @@ export const GameClass: React.FC = () => {
 
   const { testInfo } = reducerTest();
 
-  const [talentList, setTalentList] = useState<GameClassItemInfo>(undefined);
+  const [itemInfo, setItemInfo] = useState<GameClassItemInfo>(undefined);
   const [selectedGameClass, setSelectedGameClass] = useState<ParamGameClassInfo[]>([]);
   const [showTalent, setShowTalent] = useState<boolean>(false);
 
-  const showModal = (wowClass: GameClassItemInfo) => {};
-
-  const selectGameClass = (wowClass: any, talent: any) => {
-    if (selectedGameClass.some((el) => el.name === wowClass.name && el.talent === talent.name)) {
+  const selectGameClass = (gameClass: any, talent: any) => {
+    if (selectedGameClass.some((el) => el.name === gameClass.name && el.talentName === talent.name)) {
       //  Do nothing.
     } else if (selectedGameClass.length === MAX_SELECT) {
-      toast.error(t('tw-max-select', { max: MAX_SELECT }), {
+      toast.error(t('gameclass.maxSelectText', { max: MAX_SELECT }), {
         position: 'top-center',
         autoClose: 3000,
         hideProgressBar: false,
@@ -152,10 +254,12 @@ export const GameClass: React.FC = () => {
       });
     } else {
       const temp: ParamGameClassInfo = {
-        name: wowClass.name,
-        color: wowClass.color,
-        talent: talent.name,
-        position: talent.position
+        name: gameClass.name,
+        color: gameClass.color,
+        talentName: talent.name,
+        talentPosition: talent.position,
+        talentImage: talent.image,
+        talentDesc: talent.desc
       };
       setSelectedGameClass((old) => [...old, temp]);
     }
@@ -170,15 +274,15 @@ export const GameClass: React.FC = () => {
     const temp = testInfo.get;
     if (selectedGameClass.length > 2) {
       temp.thirdClass = selectedGameClass[2].name;
-      temp.thirdTalent = selectedGameClass[2].talent;
+      temp.thirdTalent = selectedGameClass[2].talentName;
     }
     if (selectedGameClass.length > 1) {
       temp.secondClass = selectedGameClass[1].name;
-      temp.secondTalent = selectedGameClass[1].talent;
+      temp.secondTalent = selectedGameClass[1].talentName;
     }
     if (selectedGameClass.length > 0) {
       temp.firstClass = selectedGameClass[0].name;
-      temp.firstTalent = selectedGameClass[0].talent;
+      temp.firstTalent = selectedGameClass[0].talentName;
     }
     testInfo.set(temp);
     Router.push('./test');
@@ -188,35 +292,38 @@ export const GameClass: React.FC = () => {
     <>
       <div style={{ marginBottom: '10px' }} />
       <Panel>
-        <h3 className="panel-sub-title">당신의 직업을 선택하세요. (최대 3개)</h3>
-        <h2 className="panel-title">와우 직업 선택</h2>
+        <h3 className="panel-sub-title">{t('gameclass.selectClassComment')}</h3>
+        <h2 className="panel-title">{t('gameclass.selectClassTitle')}</h2>
         <div className="panel-text" style={{ display: 'flex', flexWrap: 'wrap' }}>
           {GameClassList.map((item, index) => (
-            <StyledGameClassItem
-              key={index}
-              style={{ color: item.color }}
-              onClick={() => {
-                setTalentList(item);
-                setShowTalent(true);
-              }}
-            >
-              {item.image && <StyledGameClassIcon src={`/class/${item.image}.jpg`} alt={t(item.name)} />}
-              <span>{t(item.name)}</span>
-            </StyledGameClassItem>
+            <StyledGameClassItemWrapper key={index}>
+              <StyledGameClassItem
+                color={item.color}
+                url={`/class/${item.image}`}
+                onClick={() => {
+                  setItemInfo(item);
+                  setShowTalent(true);
+                }}
+              >
+                <StyledGameClassItemBackground url={`/class/${item.background}`}></StyledGameClassItemBackground>
+                <span>{t(`gameclass.${item.name}`)}</span>
+              </StyledGameClassItem>
+            </StyledGameClassItemWrapper>
           ))}
         </div>
       </Panel>
       <Panel>
         <StyledSelectedGameClassList>
           {selectedGameClass.length === 0 ? (
-            <StyledSelectedGameClassListEmpty>{t('tw-select-wow-class')}</StyledSelectedGameClassListEmpty>
+            <StyledSelectedGameClassListEmpty>{t('gameclass.selectClassEmpty')}</StyledSelectedGameClassListEmpty>
           ) : (
             selectedGameClass.map((item, index) => (
-              <StyledSelectedGameClassItem key={index} style={{ color: item.color }} onClick={() => unselectGameClass(item)}>
-                <StyledGameSelectedClassName>{t(item.name)}</StyledGameSelectedClassName>
-                {item.name && <StyledGameClassIcon src={`/class/${item.name}.jpg`} alt={t(item.name)} />}
-                <StyledSelectedGameClassTalent>{t(item.talent)}</StyledSelectedGameClassTalent>
-              </StyledSelectedGameClassItem>
+              <StyledGameClassTalentsSelected key={index} style={{ color: item.color }} onClick={() => unselectGameClass(item)}>
+                <StyledGameClassTalentImageSelected url={'/sprite_information.png'} pos={item.talentImage}></StyledGameClassTalentImageSelected>
+                <StyledGameClassTalentContentSelected>
+                  <div className={'name'}>{t(`gameclass.${item.talentName}`)}</div>
+                </StyledGameClassTalentContentSelected>
+              </StyledGameClassTalentsSelected>
             ))
           )}
         </StyledSelectedGameClassList>
@@ -234,15 +341,14 @@ export const GameClass: React.FC = () => {
       </div>
       <Adfit />
       <Modal show={showTalent} onClose={() => setShowTalent(false)}>
-        {talentList &&
-          talentList.talents.map((item, index) => (
-            <StyledGameClassTalents key={index} onClick={() => selectGameClass({ name: talentList.name, color: talentList.color }, item)}>
-              <li className="talentInfo">
-                <img className="img" src={`/class/${item.image}`} alt={t(item.name)} />
-                <span className="name">{t(item.name)}</span>
-                <img className="pos" src={`/class/${item.position}.svg`} alt={t(item.position)} />
-              </li>
-              <li className="desc">{item.desc}</li>
+        {itemInfo &&
+          itemInfo.talents.map((item, index) => (
+            <StyledGameClassTalents key={index} onClick={() => selectGameClass({ name: itemInfo.name, color: itemInfo.color }, item)}>
+              <StyledGameClassTalentImage url={'/sprite_information.png'} pos={item.image}></StyledGameClassTalentImage>
+              <StyledGameClassTalentContent>
+                <div className={'name'}>{t(`gameclass.${item.name}`)}</div>
+                <div className={'desc'}>{item.desc}</div>
+              </StyledGameClassTalentContent>
             </StyledGameClassTalents>
           ))}
         <div style={{ width: '100%', textAlign: 'center' }}>

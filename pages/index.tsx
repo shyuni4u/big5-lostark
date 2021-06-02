@@ -8,8 +8,6 @@ import Button from '../components/atoms/Button';
 import Wrapper from '../components/organisms/Wrapper';
 import Adfit from '../components/molecules/Adfit';
 
-import reducerTest from '../reducers/reducerTest';
-
 const StyledGoDetail = styled.a`
   font-size: 0.6em;
   border: 1px solid ${({ theme }) => theme.colors.primary};
@@ -21,12 +19,8 @@ const StyledGoDetail = styled.a`
 
 export const Index: React.FC = () => {
   const { t } = useTranslation();
-  const { testInfo } = reducerTest();
 
-  const goGameClass = (newbie: boolean) => {
-    const temp = testInfo.get;
-    temp.newbie = newbie;
-    testInfo.set(temp);
+  const goGameClass = () => {
     Router.push('./gameclass');
   };
   return (
@@ -40,9 +34,11 @@ export const Index: React.FC = () => {
         }}
       />
       <Panel>
-        <h3 className={'panel-sub-title'}>WoW 직업 선택</h3>
-        <h2 className={'panel-title'}>Big 5 테스트란?</h2>
-        <div className={'panel-text'}>
+        <h2 className={'panel-title'}>
+          {t('home.big5Test')} + {t('home.statClass')}
+        </h2>
+        <h3 className={'panel-sub-title'}>Big 5 테스트란?</h3>
+        <div className={'panel-content'}>
           인간의 성격을 5가지 요인들로 설명하는 성격심리 모형.
           <br /> 학계에서 논의된 5요인 모형을 기반으로 한다.
           <br /> 성격심리학자들에게 신뢰를 받고 있는 검증된 이론이다.
@@ -52,16 +48,12 @@ export const Index: React.FC = () => {
           </StyledGoDetail>
         </div>
       </Panel>
-      <Panel>
-        <div className={'panel-text'}>
-          <h3 className={'panel-sub-title'}>월드오브워크래프트를 플레이해보신 적이 있습니까?</h3>
-          <br />
-          <Button primary={true} onClick={() => goGameClass(true)}>
-            예
-          </Button>
-          <Button onClick={() => goGameClass(false)}>아니요</Button>
-        </div>
-      </Panel>
+      <div style={{ width: '100%', textAlign: 'center' }}>
+        <div style={{ margin: '30px 0' }}>개인이 재미로 만든 것입니다. 질문은 12개 있습니다.</div>
+        <Button primary onClick={() => goGameClass()}>
+          {t('home.btnStart')}
+        </Button>
+      </div>
       <Adfit />
     </Wrapper>
   );
