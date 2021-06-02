@@ -12,9 +12,9 @@ import Adfit from '../molecules/Adfit';
 
 import reducerTest from '../../reducers/reducerTest';
 
-import wowClassList, { WowClassItemInfo, ParamWowClassInfo } from '../../lib/WowClassInfo';
+import GameClassList, { GameClassItemInfo, ParamGameClassInfo } from '../../lib/GameClassInfo';
 
-const StyledWowClassItem = styled.div`
+const StyledGameClassItem = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@ const StyledWowClassItem = styled.div`
     font-weight: 600;
   }
 `;
-const StyledWowClassTalents = styled.ul`
+const StyledGameClassTalents = styled.ul`
   background-color: rgba(53, 32, 17, 0.8);
   border: 1px solid #f8b700;
   box-shadow: inset 0 -8px 0 #f8b700;
@@ -61,33 +61,33 @@ const StyledWowClassTalents = styled.ul`
   }
 `;
 
-const wowClassIconWidth = 40;
-const StyledWowClassIcon = styled.img`
-  width: ${wowClassIconWidth}px;
-  height: ${wowClassIconWidth}px;
+const GameClassIconWidth = 40;
+const StyledGameClassIcon = styled.img`
+  width: ${GameClassIconWidth}px;
+  height: ${GameClassIconWidth}px;
   border-radius: 40%;
   border: 2px solid ${({ theme }) => theme.colors.warning};
   margin-right: 10px;
 `;
 
-const StyledSelectedWowClassList = styled.div`
+const StyledSelectedGameClassList = styled.div`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
   justify-content: space-around;
 `;
-const StyledSelectedWowClassListEmpty = styled.span`
+const StyledSelectedGameClassListEmpty = styled.span`
   color: ${({ theme }) => theme.colors.danger};
   height: 40px;
   line-height: 40px;
   overflow: hidden;
 `;
 
-const StyledSelectedWowClassItem = styled.div`
+const StyledSelectedGameClassItem = styled.div`
   position: relative;
   display: inline-block;
   flex: 0 0 33%;
-  min-height: ${wowClassIconWidth}px;
+  min-height: ${GameClassIconWidth}px;
   cursor: pointer;
   ${({ theme }) => theme.media.tablet`
     margin-bottom: 10px;
@@ -96,27 +96,27 @@ const StyledSelectedWowClassItem = styled.div`
     margin-bottom: 10px;
   `}
 `;
-const StyledWowSelectedClassName = styled.div`
+const StyledGameSelectedClassName = styled.div`
   position: absolute;
   top: 20px;
-  left: ${wowClassIconWidth + 5}px;
-  line-height: ${wowClassIconWidth / 2}px;
-  height: ${wowClassIconWidth / 2}px;
-  width: calc(100% - ${wowClassIconWidth + 5}px);
+  left: ${GameClassIconWidth + 5}px;
+  line-height: ${GameClassIconWidth / 2}px;
+  height: ${GameClassIconWidth / 2}px;
+  width: calc(100% - ${GameClassIconWidth + 5}px);
   font-size: ${({ theme }) => theme.fontSizes.body14};
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
-const StyledSelectedWowClassTalent = styled.div`
+const StyledSelectedGameClassTalent = styled.div`
   position: absolute;
   top: 0px;
-  left: ${wowClassIconWidth + 5}px;
+  left: ${GameClassIconWidth + 5}px;
   text-transform: capitalize;
-  line-height: ${wowClassIconWidth / 2}px;
-  height: ${wowClassIconWidth / 2}px;
-  width: calc(100% - ${wowClassIconWidth + 5}px);
+  line-height: ${GameClassIconWidth / 2}px;
+  height: ${GameClassIconWidth / 2}px;
+  width: calc(100% - ${GameClassIconWidth + 5}px);
   font-size: ${({ theme }) => theme.fontSizes.body14};
   text-align: left;
   overflow: hidden;
@@ -126,21 +126,21 @@ const StyledSelectedWowClassTalent = styled.div`
 
 const MAX_SELECT = 3;
 
-export const Class: React.FC = () => {
+export const GameClass: React.FC = () => {
   const { t } = useTranslation();
 
   const { testInfo } = reducerTest();
 
-  const [talentList, setTalentList] = useState<WowClassItemInfo>(undefined);
-  const [selectedWowClass, setSelectedWowClass] = useState<ParamWowClassInfo[]>([]);
+  const [talentList, setTalentList] = useState<GameClassItemInfo>(undefined);
+  const [selectedGameClass, setSelectedGameClass] = useState<ParamGameClassInfo[]>([]);
   const [showTalent, setShowTalent] = useState<boolean>(false);
 
-  const showModal = (wowClass: WowClassItemInfo) => {};
+  const showModal = (wowClass: GameClassItemInfo) => {};
 
-  const selectWowClass = (wowClass: any, talent: any) => {
-    if (selectedWowClass.some((el) => el.name === wowClass.name && el.talent === talent.name)) {
+  const selectGameClass = (wowClass: any, talent: any) => {
+    if (selectedGameClass.some((el) => el.name === wowClass.name && el.talent === talent.name)) {
       //  Do nothing.
-    } else if (selectedWowClass.length === MAX_SELECT) {
+    } else if (selectedGameClass.length === MAX_SELECT) {
       toast.error(t('tw-max-select', { max: MAX_SELECT }), {
         position: 'top-center',
         autoClose: 3000,
@@ -151,34 +151,34 @@ export const Class: React.FC = () => {
         progress: undefined
       });
     } else {
-      const temp: ParamWowClassInfo = {
+      const temp: ParamGameClassInfo = {
         name: wowClass.name,
         color: wowClass.color,
         talent: talent.name,
         position: talent.position
       };
-      setSelectedWowClass((old) => [...old, temp]);
+      setSelectedGameClass((old) => [...old, temp]);
     }
     setShowTalent(false);
   };
 
-  const unselectWowClass = (item: ParamWowClassInfo) => {
-    setSelectedWowClass(selectedWowClass.filter((el) => !(el.name === item.name && el.talent === item.talent)));
+  const unselectGameClass = (item: ParamGameClassInfo) => {
+    setSelectedGameClass(selectedGameClass.filter((el) => !(el.name === item.name && el.talent === item.talent)));
   };
 
   const goTest = () => {
     const temp = testInfo.get;
-    if (selectedWowClass.length > 2) {
-      temp.thirdClass = selectedWowClass[2].name;
-      temp.thirdTalent = selectedWowClass[2].talent;
+    if (selectedGameClass.length > 2) {
+      temp.thirdClass = selectedGameClass[2].name;
+      temp.thirdTalent = selectedGameClass[2].talent;
     }
-    if (selectedWowClass.length > 1) {
-      temp.secondClass = selectedWowClass[1].name;
-      temp.secondTalent = selectedWowClass[1].talent;
+    if (selectedGameClass.length > 1) {
+      temp.secondClass = selectedGameClass[1].name;
+      temp.secondTalent = selectedGameClass[1].talent;
     }
-    if (selectedWowClass.length > 0) {
-      temp.firstClass = selectedWowClass[0].name;
-      temp.firstTalent = selectedWowClass[0].talent;
+    if (selectedGameClass.length > 0) {
+      temp.firstClass = selectedGameClass[0].name;
+      temp.firstTalent = selectedGameClass[0].talent;
     }
     testInfo.set(temp);
     Router.push('./test');
@@ -191,8 +191,8 @@ export const Class: React.FC = () => {
         <h3 className="panel-sub-title">당신의 직업을 선택하세요. (최대 3개)</h3>
         <h2 className="panel-title">와우 직업 선택</h2>
         <div className="panel-text" style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {wowClassList.map((item, index) => (
-            <StyledWowClassItem
+          {GameClassList.map((item, index) => (
+            <StyledGameClassItem
               key={index}
               style={{ color: item.color }}
               onClick={() => {
@@ -200,46 +200,31 @@ export const Class: React.FC = () => {
                 setShowTalent(true);
               }}
             >
-              {item.image && <StyledWowClassIcon src={`/class/${item.image}.jpg`} alt={t(item.name)} />}
+              {item.image && <StyledGameClassIcon src={`/class/${item.image}.jpg`} alt={t(item.name)} />}
               <span>{t(item.name)}</span>
-              {/* <StyledWowClassTalents>
-                {item.talents &&
-                  item.talents.map((subItem, subIndex) => (
-                    <StyledWowClassTalentItem
-                      key={subIndex}
-                      onClick={() => selectWowClass(item, subItem)}
-                    >
-                      <StyledPositionIcon
-                        src={`/class/${subItem.position}.svg`}
-                        alt={t(subItem.position)}
-                      />
-                      {t(subItem.name)}
-                    </StyledWowClassTalentItem>
-                  ))}
-              </StyledWowClassTalents> */}
-            </StyledWowClassItem>
+            </StyledGameClassItem>
           ))}
         </div>
       </Panel>
       <Panel>
-        <StyledSelectedWowClassList>
-          {selectedWowClass.length === 0 ? (
-            <StyledSelectedWowClassListEmpty>{t('tw-select-wow-class')}</StyledSelectedWowClassListEmpty>
+        <StyledSelectedGameClassList>
+          {selectedGameClass.length === 0 ? (
+            <StyledSelectedGameClassListEmpty>{t('tw-select-wow-class')}</StyledSelectedGameClassListEmpty>
           ) : (
-            selectedWowClass.map((item, index) => (
-              <StyledSelectedWowClassItem key={index} style={{ color: item.color }} onClick={() => unselectWowClass(item)}>
-                <StyledWowSelectedClassName>{t(item.name)}</StyledWowSelectedClassName>
-                {item.name && <StyledWowClassIcon src={`/class/${item.name}.jpg`} alt={t(item.name)} />}
-                <StyledSelectedWowClassTalent>{t(item.talent)}</StyledSelectedWowClassTalent>
-              </StyledSelectedWowClassItem>
+            selectedGameClass.map((item, index) => (
+              <StyledSelectedGameClassItem key={index} style={{ color: item.color }} onClick={() => unselectGameClass(item)}>
+                <StyledGameSelectedClassName>{t(item.name)}</StyledGameSelectedClassName>
+                {item.name && <StyledGameClassIcon src={`/class/${item.name}.jpg`} alt={t(item.name)} />}
+                <StyledSelectedGameClassTalent>{t(item.talent)}</StyledSelectedGameClassTalent>
+              </StyledSelectedGameClassItem>
             ))
           )}
-        </StyledSelectedWowClassList>
+        </StyledSelectedGameClassList>
       </Panel>
       <div style={{ width: '100%', textAlign: 'center' }}>
         <Button
           onClick={() => {
-            if (selectedWowClass.length > 0) {
+            if (selectedGameClass.length > 0) {
               goTest();
             }
           }}
@@ -251,14 +236,14 @@ export const Class: React.FC = () => {
       <Modal show={showTalent} onClose={() => setShowTalent(false)}>
         {talentList &&
           talentList.talents.map((item, index) => (
-            <StyledWowClassTalents key={index} onClick={() => selectWowClass({ name: talentList.name, color: talentList.color }, item)}>
+            <StyledGameClassTalents key={index} onClick={() => selectGameClass({ name: talentList.name, color: talentList.color }, item)}>
               <li className="talentInfo">
                 <img className="img" src={`/class/${item.image}`} alt={t(item.name)} />
                 <span className="name">{t(item.name)}</span>
                 <img className="pos" src={`/class/${item.position}.svg`} alt={t(item.position)} />
               </li>
               <li className="desc">{item.desc}</li>
-            </StyledWowClassTalents>
+            </StyledGameClassTalents>
           ))}
         <div style={{ width: '100%', textAlign: 'center' }}>
           <Button onClick={() => setShowTalent(false)}>닫기</Button>
@@ -268,4 +253,4 @@ export const Class: React.FC = () => {
   );
 };
 
-export default Class;
+export default GameClass;

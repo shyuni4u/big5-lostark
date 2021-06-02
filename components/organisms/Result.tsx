@@ -74,10 +74,10 @@ const StyledYouLi = styled.li`
   }
 `;
 
-const wowClassIconWidth = 40;
+const ClassIconWidth = 40;
 const StyledWowClassIcon = styled.img`
-  width: ${wowClassIconWidth}px;
-  height: ${wowClassIconWidth}px;
+  width: ${ClassIconWidth}px;
+  height: ${ClassIconWidth}px;
   border-radius: 40%;
   border: 2px solid ${({ theme }) => theme.colors.warning};
 `;
