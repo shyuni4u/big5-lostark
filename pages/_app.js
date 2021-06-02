@@ -55,7 +55,7 @@ export class RootApp extends App {
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Big 5 test." />
           <meta property="og:description" content="월드 오브 워크래프트 직업 선택을 위한 심리 테스트. Big 5 test for selecting world of warcraft class." />
-          <meta property="og:url" content="http://wow.enzo.kr/" />
+          <meta property="og:url" content="http://lostark.enzo.kr/" />
         </Head>
         <div style={styles.layout}>
           <main style={styles.main}>

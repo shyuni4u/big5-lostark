@@ -32,12 +32,11 @@ export const Index: React.FC = () => {
   return (
     <Wrapper>
       <img
-        src={'/logo-wow-small.png'}
-        alt={'WOW LOGO'}
+        src={'/logo.png'}
+        alt={'LOSTARK LOGO'}
         style={{
-          width: '40px',
-          height: '40px',
-          margin: '10px auto'
+          maxWidth: '380px',
+          margin: '0 auto'
         }}
       />
       <Panel>
@@ -54,14 +53,6 @@ export const Index: React.FC = () => {
         </div>
       </Panel>
       <Panel>
-        <img
-          src={'/logo-wow.png'}
-          alt={'WOW LOGO'}
-          style={{
-            maxWidth: '380px',
-            margin: '0 auto'
-          }}
-        />
         <div className={'panel-text'}>
           <h3 className={'panel-sub-title'}>월드오브워크래프트를 플레이해보신 적이 있습니까?</h3>
           <br />
