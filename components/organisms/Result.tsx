@@ -73,7 +73,6 @@ const StyledResultListItems = styled.ul`
         padding-left: 20px;
         display: flex;
         & > div.progressBar {
-          margin-top: 18px;
           height: calc(100% - 36px);
           border-radius: 4px;
         }
