@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Router from 'next/router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import ReactEcharts from 'echarts-for-react';
 import Theme from '../../styles/theme';
@@ -40,31 +40,109 @@ const StyledResultList = styled.ul`
     display: flex;
     padding: 4px 0;
     justify-content: center;
-
-    & > div.icon {
-      flex: 0 0 40px;
-    }
-    & > div.name {
-      flex: 0 0 100px;
-      padding-left: 10px;
-      max-width: 100px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    & > div.progress {
-      flex: 1 1 auto;
-      padding: 4px;
-      & > div.progressBar {
-        height: calc(100% - 8px);
-        border-radius: 4px;
-      }
-    }
-    & > div.value {
-      flex: 0 0 40px;
-      text-align: right;
-    }
   }
+`;
+
+type hasUrlProps = {
+  url?: string;
+  color?: string;
+  pos?: string;
+};
+const StyledResultListItems = styled.ul`
+  ${({ theme }) => {
+    return css`
+      flex: 1 1 100%;
+      display: flex;
+      text-align: center;
+      user-select: none;
+      cursor: pointer;
+
+      & > .image {
+        flex: 0 0 64px;
+      }
+      & > .name {
+        flex: 0 0 100px;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      & > .progress {
+        flex: 1 1 auto;
+        padding: 4px;
+        padding-left: 20px;
+        display: flex;
+        & > div.progressBar {
+          margin-top: 18px;
+          height: calc(100% - 36px);
+          border-radius: 4px;
+        }
+      }
+      & > .value {
+        flex: 0 0 40px;
+        text-align: right;
+      }
+    `;
+  }}
+`;
+const StyledResultListItemImage = styled.div<hasUrlProps>`
+  ${({ theme, url, color, pos }) => {
+    const _pos = pos.split(' ');
+    return css`
+      flex: 0 0 67px;
+      display: block;
+      position: relative;
+      margin: 0 -2px;
+      padding-top: 80px;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 15px;
+      color: #a3b0c1;
+      background-color: transparent;
+      text-decoration: none;
+
+      &::before {
+        width: 67px;
+        height: 75px;
+        display: inline-block;
+        background: url(${url}) no-repeat 0 0;
+        background-position: ${_pos[0]} ${_pos[1]};
+        background-size: 1584px 1497px;
+        font-size: 0;
+        transition: 0.5s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 1;
+      }
+      &::after {
+        width: 67px;
+        height: 75px;
+        display: inline-block;
+        background: url(${url}) no-repeat 0 0;
+        background-position: ${_pos[2]} ${_pos[3]};
+        background-size: 1584px 1497px;
+        font-size: 0;
+        transition: 0.5s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 1;
+      }
+    `;
+  }}
+`;
+const StyledResultListItemContent = styled.div`
+  ${({ theme }) => {
+    const { colors } = theme;
+    return css`
+      & > .name {
+        color: ${colors.hover};
+      }
+    `;
+  }}
 `;
 
 const StyledYouLi = styled.li`
@@ -72,14 +150,6 @@ const StyledYouLi = styled.li`
   & > span {
     font-weight: 600;
   }
-`;
-
-const ClassIconWidth = 40;
-const StyledWowClassIcon = styled.img`
-  width: ${ClassIconWidth}px;
-  height: ${ClassIconWidth}px;
-  border-radius: 40%;
-  border: 2px solid ${({ theme }) => theme.colors.warning};
 `;
 
 type testResult = {
@@ -243,7 +313,7 @@ export const Result: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '6px' }}>
       {/* {testInfo.get.firstClass === '' && (
         <>
           <Button onClick={() => Router.push('/')}>다시하기</Button>
@@ -307,18 +377,16 @@ export const Result: React.FC = () => {
 
                 return (
                   <li key={elIdx}>
-                    <div className={'icon'}>
-                      <StyledWowClassIcon className="img" src={`/class/${_talent.image}`} alt={`${t(`gameclass.${_class.name}`)} - ${t(`gameclass.${_talent.name}`)}`} />
-                    </div>
-                    <div className={'name'}>
-                      {t(`gameclass.${el.sClass}`)}
-                      <br />
-                      {t(`gameclass.${el.sTalent}`)}
-                    </div>
-                    <div className={'progress'}>
-                      <div className={'progressBar'} style={{ width: Math.round((el.nCount / sum) * 10000) / 100 + '%', backgroundColor: _class.color }}></div>
-                    </div>
-                    <div className={'value'}>{Math.round((el.nCount / sum) * 10000) / 100}%</div>
+                    <StyledResultListItems>
+                      <li className={'image'}>
+                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                      </li>
+                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                      <li className={'progress'}>
+                        <li className={'progressBar'} style={{ width: Math.round((el.nCount / sum) * 10000) / 100 + '%', backgroundColor: _class.color }}></li>
+                      </li>
+                      <li className={'value'}>{Math.round((el.nCount / sum) * 10000) / 100}%</li>
+                    </StyledResultListItems>
                   </li>
                 );
               })}
