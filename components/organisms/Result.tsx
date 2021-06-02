@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import ReactEcharts from 'echarts-for-react';
 import Theme from '../../styles/theme';
-import WowClassInfo from '../../lib/WowClassInfo';
+import WowClassInfo from '../../lib/GameClassInfo';
 import API from '../../lib/info.json';
 
 // {

@@ -1,4 +1,4 @@
-export const wowClassList = [
+export const GameClassList = [
   {
     name: 'Death-Knight',
     image: 'Death-Knight',
@@ -301,9 +301,9 @@ export const wowClassList = [
   }
 ];
 
-export type WowClassInfo = typeof wowClassList;
-export type WowClassItemInfo = typeof wowClassList[0];
-export type ParamWowClassInfo = {
+export type GameClassInfo = typeof GameClassList;
+export type GameClassItemInfo = typeof GameClassList[0];
+export type ParamGameClassInfo = {
   name: string;
   image?: string;
   color: string;
@@ -312,4 +312,4 @@ export type ParamWowClassInfo = {
   isMain?: boolean;
 };
 
-export default wowClassList;
+export default GameClassList;
