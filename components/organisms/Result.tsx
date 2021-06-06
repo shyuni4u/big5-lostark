@@ -4,6 +4,8 @@ import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import ReactEcharts from 'echarts-for-react';
+import { BsCheck, BsTextLeft } from 'react-icons/bs';
+
 import Theme from '../../styles/theme';
 import GameClassInfo from '../../lib/GameClassInfo';
 import API from '../../lib/info.json';
@@ -18,19 +20,40 @@ import Adfit from '../molecules/Adfit';
 
 import reducerTest from '../../reducers/reducerTest';
 
+const StyledLoadingWrapper = styled.div`
+  width: 100vw;
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+`;
+
 const StyledResult = styled.div`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 `;
 const StyledResultTitle = styled.div`
-  width: 100%;
-  flex: 0 0 100%;
-  font-weight: 600;
-  margin-bottom: 10px;
+  ${({ theme }) => {
+    return css`
+      width: 100%;
+      flex: 0 0 100%;
+      color: ${theme.colors.info};
+      font-weight: 600;
+      margin-bottom: 10px;
+      font-size: 16px;
+
+      & > svg {
+        margin-right: 4px;
+        margin-bottom: -2px;
+      }
+    `;
+  }}
 `;
 const StyledResultList = styled.ul`
   width: 100%;
@@ -57,12 +80,18 @@ const StyledResultListItems = styled.ul`
       user-select: none;
       cursor: pointer;
 
+      & > li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
       & > .image {
         flex: 0 0 64px;
       }
       & > .name {
-        flex: 0 0 100px;
-        max-width: 100px;
+        flex: 0 0 70px;
+        max-width: 70px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -70,7 +99,7 @@ const StyledResultListItems = styled.ul`
       & > .progress {
         flex: 1 1 auto;
         padding: 4px;
-        padding-left: 20px;
+        padding-right: 14px;
         display: flex;
         & > div.progressBar {
           height: calc(100% - 36px);
@@ -160,6 +189,7 @@ export const Result: React.FC = () => {
   const { t } = useTranslation();
   const { testInfo } = reducerTest();
   const [result, setResult] = useState<testResult[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [agree, setAgree] = useState<number>(1);
   const [consc, setConsc] = useState<number>(1);
@@ -168,7 +198,12 @@ export const Result: React.FC = () => {
   const [neuro, setNeuro] = useState<number>(1);
 
   const [sum, setSum] = useState<number>(0);
+  const [max, setMax] = useState<number>(1);
   const [more, setMore] = useState<boolean>(false);
+
+  const numberWithCommas = (x: number) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
 
   const parseRange = (val: number) => {
     if (val >= 1 && val < 3) return 1;
@@ -181,58 +216,58 @@ export const Result: React.FC = () => {
     let unmount = false;
 
     const onLoadApi = async () => {
-      if (testInfo.get.firstClass !== '') {
-        const _agree = parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount);
-        const _consc = parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount);
-        const _extra = parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount);
-        const _openn = parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount);
-        const _neuro = parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount);
+      const _agree = parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount);
+      const _consc = parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount);
+      const _extra = parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount);
+      const _openn = parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount);
+      const _neuro = parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount);
 
-        await axios
-          .post(API.path, null, {
-            params: {
-              sFirstClass: testInfo.get.firstClass,
-              sFirstTalent: testInfo.get.firstTalent,
-              sSecondClass: testInfo.get.secondClass,
-              sSecondTalent: testInfo.get.secondTalent,
-              sThirdClass: testInfo.get.thirdClass,
-              sThirdTalent: testInfo.get.thirdTalent,
-              nAgreeableness: _agree,
-              nConscientiousness: _consc,
-              nExtraversion: _extra,
-              nOpennessToExperience: _openn,
-              nNeuroticism: _neuro
-            }
-          })
-          .then((response) => {
-            if (unmount) return;
-            if (response.status === 200) {
-              setResult(response.data);
-            } else {
-              setResult(undefined);
-            }
-          })
-          .catch((error) => {
-            if (unmount) return;
-            console.error(error);
-          })
-          .finally(() => {
-            setAgree(_agree);
-            setConsc(_consc);
-            setExtra(_extra);
-            setOpenn(_openn);
-            setNeuro(_neuro);
-          });
-      }
+      await axios
+        .post(API.path, null, {
+          params: {
+            sFirstClass: testInfo.get.firstClass,
+            sFirstTalent: testInfo.get.firstTalent,
+            sSecondClass: testInfo.get.secondClass,
+            sSecondTalent: testInfo.get.secondTalent,
+            sThirdClass: testInfo.get.thirdClass,
+            sThirdTalent: testInfo.get.thirdTalent,
+            nAgreeableness: _agree,
+            nConscientiousness: _consc,
+            nExtraversion: _extra,
+            nOpennessToExperience: _openn,
+            nNeuroticism: _neuro
+          }
+        })
+        .then((response) => {
+          if (unmount) return;
+          if (response.status === 200) {
+            setResult(response.data);
+          } else {
+            setResult(undefined);
+          }
+        })
+        .catch((error) => {
+          if (unmount) return;
+          console.error(error);
+        })
+        .finally(() => {
+          setLoading(false);
+          setAgree(_agree);
+          setConsc(_consc);
+          setExtra(_extra);
+          setOpenn(_openn);
+          setNeuro(_neuro);
+
+          const dummy = [
+            { sClass: 'magician', sTalent: 'arcana', nCount: 2 },
+            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
+            { sClass: 'magician', sTalent: 'bard', nCount: 2 }
+          ];
+          setResult(dummy);
+        });
     };
 
-    // onLoadApi();
-    const dummy = [
-      { sClass: 'magician', sTalent: 'arcana', nCount: 2 },
-      { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-      { sClass: 'magician', sTalent: 'bard', nCount: 2 }
-    ];
-    setResult(dummy);
+    onLoadApi();
 
     return () => {
       unmount = true;
@@ -242,6 +277,11 @@ export const Result: React.FC = () => {
   useEffect(() => {
     let _sum = 0;
     result.forEach((el) => (_sum += el.nCount));
+    if (result.length > 0) {
+      setMax(result[0].nCount);
+    } else {
+      setMax(1);
+    }
     if (_sum === 0) _sum = 1;
     setSum(_sum);
   }, [result]);
@@ -313,23 +353,18 @@ export const Result: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '6px' }}>
-      {/* {testInfo.get.firstClass === '' && (
-        <>
-          <Button onClick={() => Router.push('/')}>다시하기</Button>
-          성향 정보가 없습니다. 다시 테스트해주세요.
-        </>
-      )}
-      {testInfo.get.firstClass !== '' && result.length === 0 && (
-        <>
+      {loading ? (
+        <StyledLoadingWrapper>
           <Loader style={{ marginBottom: '20px' }} />
           성향과 비슷한 직업을 찾고 있습니다.
-        </>
-      )} */}
-      {/* {testInfo.get.firstClass !== '' && result.length > 0 && ( */}
-      {result.length > 0 && (
+        </StyledLoadingWrapper>
+      ) : (
         <>
           <StyledResult>
-            <StyledResultTitle>{t('result.you')}</StyledResultTitle>
+            <StyledResultTitle>
+              <BsTextLeft />
+              {t('result.you')}
+            </StyledResultTitle>
             <ReactEcharts
               option={getOption()}
               notMerge={true}
@@ -340,8 +375,6 @@ export const Result: React.FC = () => {
                 position: 'relative'
               }}
             />
-          </StyledResult>
-          <StyledResult>
             <ul>
               <StyledYouLi>
                 <span style={{ color: '#ffd50e' }}>{t('result.agreeableness')}: </span>
@@ -366,7 +399,10 @@ export const Result: React.FC = () => {
             </ul>
           </StyledResult>
           <StyledResult>
-            <StyledResultTitle>{t('result.likeyou')}</StyledResultTitle>
+            <StyledResultTitle>
+              <BsTextLeft />
+              {t('result.likeyou')}
+            </StyledResultTitle>
             <StyledResultList>
               {result.map((el: testResult, elIdx: number) => {
                 if (!more && elIdx > 4) return undefined;
@@ -382,9 +418,9 @@ export const Result: React.FC = () => {
                       </li>
                       <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                       <li className={'progress'}>
-                        <li className={'progressBar'} style={{ width: Math.round((el.nCount / sum) * 10000) / 100 + '%', backgroundColor: _class.color }}></li>
+                        <div className={'progressBar'} style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: _class.color }}></div>
+                        <div className={'progressValue'}>{Math.round((el.nCount / sum) * 10000) / 100}%</div>
                       </li>
-                      <li className={'value'}>{Math.round((el.nCount / sum) * 10000) / 100}%</li>
                     </StyledResultListItems>
                   </li>
                 );

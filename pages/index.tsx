@@ -8,6 +8,8 @@ import Button from '../components/atoms/Button';
 import Wrapper from '../components/organisms/Wrapper';
 import Adfit from '../components/molecules/Adfit';
 
+import reducerTest from '../reducers/reducerTest';
+
 const StyledGoDetail = styled.a`
   font-size: 0.6em;
   border: 1px solid ${({ theme }) => theme.colors.primary};
@@ -19,10 +21,15 @@ const StyledGoDetail = styled.a`
 
 export const Index: React.FC = () => {
   const { t } = useTranslation();
+  const { testInfo } = reducerTest();
 
-  const goGameClass = () => {
-    Router.push('./gameclass');
+  const goGameClass = (newbie: boolean) => {
+    const temp = testInfo.get;
+    temp.newbie = newbie;
+    testInfo.set(temp);
+    Router.push('./test');
   };
+
   return (
     <Wrapper>
       <img
@@ -48,12 +55,16 @@ export const Index: React.FC = () => {
           </StyledGoDetail>
         </div>
       </Panel>
-      <div style={{ width: '100%', textAlign: 'center' }}>
-        <div style={{ margin: '30px 0' }}>개인이 재미로 만든 것입니다. 질문은 12개 있습니다.</div>
-        <Button primary onClick={() => goGameClass()}>
-          {t('home.btnStart')}
-        </Button>
-      </div>
+      <Panel>
+        <div className={'panel-text'}>
+          <h3 className={'panel-sub-title'}>{t('home.checkNewbie')}</h3>
+          <br />
+          <Button primary={true} onClick={() => goGameClass(true)}>
+            {t('home.yes')}
+          </Button>
+          <Button onClick={() => goGameClass(false)}>{t('home.no')}</Button>
+        </div>
+      </Panel>
       <Adfit />
     </Wrapper>
   );

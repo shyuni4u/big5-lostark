@@ -10,7 +10,10 @@ const resources = {
         statClass: '직업 통계',
         big5Test: '성향 테스트',
         btnStart: '시작하기',
-        btnResult: '결과보기'
+        btnResult: '결과보기',
+        checkNewbie: '초보자입니까?',
+        yes: '예',
+        no: '아니오'
       },
       gameclass: {
         selectClassTitle: '직업 선택',

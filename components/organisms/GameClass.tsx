@@ -171,6 +171,19 @@ const StyledGameClassTalentImageSelected = styled.li<hasUrlProps>`
       background-color: transparent;
       text-decoration: none;
 
+      & > div.close {
+        position: absolute;
+        top: 2px;
+        right: -4px;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        border: 1px solid #fff;
+        background-color: red;
+        font-weight: 600;
+        border-radius: 4px;
+      }
+
       &::before {
         width: 67px;
         height: 75px;
@@ -285,7 +298,7 @@ export const GameClass: React.FC = () => {
       temp.firstTalent = selectedGameClass[0].talentName;
     }
     testInfo.set(temp);
-    Router.push('./test');
+    Router.push('./result');
   };
 
   return (
@@ -319,7 +332,9 @@ export const GameClass: React.FC = () => {
           ) : (
             selectedGameClass.map((item, index) => (
               <StyledGameClassTalentsSelected key={index} style={{ color: item.color }} onClick={() => unselectGameClass(item)}>
-                <StyledGameClassTalentImageSelected url={'/sprite_information.png'} pos={item.talentImage}></StyledGameClassTalentImageSelected>
+                <StyledGameClassTalentImageSelected url={'/sprite_information.png'} pos={item.talentImage}>
+                  <div className={'close'}>X</div>
+                </StyledGameClassTalentImageSelected>
                 <StyledGameClassTalentContentSelected>
                   <div className={'name'}>{t(`gameclass.${item.talentName}`)}</div>
                 </StyledGameClassTalentContentSelected>

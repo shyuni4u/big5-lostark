@@ -202,7 +202,11 @@ export const Test: React.FC = () => {
     });
 
     testInfo.set(temp);
-    Router.push('./result');
+    if (testInfo.get.newbie) {
+      Router.push('./result');
+    } else {
+      Router.push('./gameclass');
+    }
   };
 
   return (
