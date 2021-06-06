@@ -351,7 +351,7 @@ export const GameClass: React.FC = () => {
             }
           }}
         >
-          성향 검사 시작
+          {t('gameclass.goResult')}
         </Button>
       </div>
       <Adfit />

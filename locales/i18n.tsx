@@ -20,6 +20,7 @@ const resources = {
         selectClassComment: '당신의 직업을 선택하세요. (최대 3개)',
         selectClassEmpty: '직업을 1 ~ 3개 선택해주십시오.',
         maxSelectText: '최대 선택: {{max}}',
+        goResult: '결과보기',
 
         warrior: '전사',
         destroyer: '디스트로이어',
