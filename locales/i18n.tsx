@@ -11,7 +11,7 @@ const resources = {
         big5Test: '성향 테스트',
         btnStart: '시작하기',
         btnResult: '결과보기',
-        checkNewbie: '초보자입니까?',
+        checkNewbie: '로스트아크 초보자입니까?',
         yes: '예',
         no: '아니오'
       },
@@ -61,6 +61,7 @@ const resources = {
         you: '당신의 성향',
         likeyou: '성향별 직업 선호도',
         testcount: '결과가 같은 사람의 수',
+        thankyou: '성향 테스트에 응해주셔서 감사합니다.',
 
         agreeableness: '우호성',
         agreeablenessDesc: '대인 관계에서 보이는 질적인 측면을 확인하는 요인.',

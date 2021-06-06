@@ -82,10 +82,11 @@ const StyledResultCount = styled.div`
     return css`
       & > span.total {
         color: ${theme.colors.white};
+        font-size: 1.2em;
       }
       & > span.sum {
-        color: ${theme.colors.warning};
         font-weight: 600;
+        font-size: 1.4em;
       }
     `;
   }}
@@ -125,8 +126,7 @@ const StyledResultListItems = styled.ul`
         flex: 0 0 64px;
       }
       & > .name {
-        flex: 0 0 70px;
-        max-width: 70px;
+        flex: 0 0 100px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -233,6 +233,7 @@ export const Result: React.FC = () => {
   const [openn, setOpenn] = useState<number>(1);
   const [neuro, setNeuro] = useState<number>(1);
 
+  const [total, setTotal] = useState<number>(0);
   const [sum, setSum] = useState<number>(0);
   const [max, setMax] = useState<number>(1);
   const [more, setMore] = useState<boolean>(false);
@@ -277,6 +278,7 @@ export const Result: React.FC = () => {
         .then((response) => {
           if (unmount) return;
           if (response.status === 200) {
+            setTotal(0);
             setResult(response.data);
           } else {
             setResult(undefined);
@@ -293,25 +295,6 @@ export const Result: React.FC = () => {
           setExtra(_extra);
           setOpenn(_openn);
           setNeuro(_neuro);
-
-          const dummy = [
-            { sClass: 'magician', sTalent: 'arcana', nCount: 1122 },
-            { sClass: 'magician', sTalent: 'summoner', nCount: 212 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
-            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
-            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
-            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
-            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
-            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
-            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 1 }
-          ];
-          setResult(dummy);
         });
     };
 
@@ -452,7 +435,11 @@ export const Result: React.FC = () => {
               {t('result.testcount')}
             </StyledResultTitle>
             <StyledResultCount>
-              <span className={'total'}>{numberWithCommas(100000)}</span>명 중 <span className={'sum'}>{numberWithCommas(sum)}</span>명
+              <span className={'total'}>{numberWithCommas(total)}</span>명 중{' '}
+              <span className={'sum'} style={{ color: sum < 10 ? '#F99ED4' : sum < 100 ? '#ffe96b' : '#ABE3A2' }}>
+                {numberWithCommas(sum)}
+              </span>
+              명
             </StyledResultCount>
           </StyledResult>
           <StyledResult>
@@ -493,6 +480,7 @@ export const Result: React.FC = () => {
               )}
             </StyledResultList>
           </StyledResult>
+          <div style={{ margin: '10px 0' }}>{t('result.thankyou')}</div>
           <Button primary onClick={() => Router.push('/')}>
             {t('result.retry')}
           </Button>
