@@ -54,8 +54,8 @@ const StyledResult = styled.div`
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      margin-bottom: 25px;
-      padding-bottom: 10px;
+      margin-bottom: 10px;
+      padding-bottom: 25px;
       border-bottom: 1px solid ${theme.colors.info};
     `;
   }}
