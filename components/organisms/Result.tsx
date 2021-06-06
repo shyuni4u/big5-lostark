@@ -20,6 +20,22 @@ import Adfit from '../molecules/Adfit';
 
 import reducerTest from '../../reducers/reducerTest';
 
+const progressColors = [
+  // '#F79394',
+  // '#96E0F5',
+  // '#ABE3A2',
+  '#ffe96b',
+  '#FFCDA1',
+  '#F79394',
+  '#F99ED4',
+  '#E19BF3',
+  '#AFB5F4',
+  '#96E0F5',
+  '#ABE3A2',
+  '#92E3DD',
+  '#9CB6C2'
+];
+
 const StyledLoadingWrapper = styled.div`
   width: 100vw;
   height: 70vh;
@@ -31,12 +47,18 @@ const StyledLoadingWrapper = styled.div`
 `;
 
 const StyledResult = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 25px;
+  ${({ theme }) => {
+    return css`
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid ${theme.colors.info};
+    `;
+  }}
 `;
 const StyledResultTitle = styled.div`
   ${({ theme }) => {
@@ -51,6 +73,19 @@ const StyledResultTitle = styled.div`
       & > svg {
         margin-right: 4px;
         margin-bottom: -2px;
+      }
+    `;
+  }}
+`;
+const StyledResultCount = styled.div`
+  ${({ theme }) => {
+    return css`
+      & > span.total {
+        color: ${theme.colors.white};
+      }
+      & > span.sum {
+        color: ${theme.colors.warning};
+        font-weight: 600;
       }
     `;
   }}
@@ -101,9 +136,20 @@ const StyledResultListItems = styled.ul`
         padding: 4px;
         padding-right: 14px;
         display: flex;
+        justify-content: flex-start;
+        position: relative;
         & > div.progressBar {
           height: calc(100% - 36px);
           border-radius: 4px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          & > div.progressValue {
+            position: absolute;
+            left: 10px;
+            color: ${theme.colors.white};
+            mix-blend-mode: difference;
+          }
         }
       }
       & > .value {
@@ -158,16 +204,6 @@ const StyledResultListItemImage = styled.div<hasUrlProps>`
         left: 0;
         top: 0;
         opacity: 1;
-      }
-    `;
-  }}
-`;
-const StyledResultListItemContent = styled.div`
-  ${({ theme }) => {
-    const { colors } = theme;
-    return css`
-      & > .name {
-        color: ${colors.hover};
       }
     `;
   }}
@@ -259,9 +295,21 @@ export const Result: React.FC = () => {
           setNeuro(_neuro);
 
           const dummy = [
-            { sClass: 'magician', sTalent: 'arcana', nCount: 2 },
+            { sClass: 'magician', sTalent: 'arcana', nCount: 1122 },
+            { sClass: 'magician', sTalent: 'summoner', nCount: 212 },
+            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
             { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
-            { sClass: 'magician', sTalent: 'bard', nCount: 2 }
+            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
+            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
+            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
+            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
+            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
+            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
+            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
+            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
+            { sClass: 'magician', sTalent: 'bard', nCount: 2 },
+            { sClass: 'magician', sTalent: 'summoner', nCount: 2 },
+            { sClass: 'magician', sTalent: 'bard', nCount: 1 }
           ];
           setResult(dummy);
         });
@@ -401,6 +449,15 @@ export const Result: React.FC = () => {
           <StyledResult>
             <StyledResultTitle>
               <BsTextLeft />
+              {t('result.testcount')}
+            </StyledResultTitle>
+            <StyledResultCount>
+              <span className={'total'}>{numberWithCommas(100000)}</span>명 중 <span className={'sum'}>{numberWithCommas(sum)}</span>명
+            </StyledResultCount>
+          </StyledResult>
+          <StyledResult>
+            <StyledResultTitle>
+              <BsTextLeft />
               {t('result.likeyou')}
             </StyledResultTitle>
             <StyledResultList>
@@ -418,8 +475,12 @@ export const Result: React.FC = () => {
                       </li>
                       <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                       <li className={'progress'}>
-                        <div className={'progressBar'} style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: _class.color }}></div>
-                        <div className={'progressValue'}>{Math.round((el.nCount / sum) * 10000) / 100}%</div>
+                        <div
+                          className={'progressBar'}
+                          style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
+                        >
+                          <div className={'progressValue'}>{Math.round((el.nCount / sum) * 10000) / 100}%</div>
+                        </div>
                       </li>
                     </StyledResultListItems>
                   </li>

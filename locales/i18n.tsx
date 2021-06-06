@@ -60,6 +60,7 @@ const resources = {
         retry: '다시하기',
         you: '당신의 성향',
         likeyou: '성향별 직업 선호도',
+        testcount: '결과가 같은 사람의 수',
 
         agreeableness: '우호성',
         agreeablenessDesc: '대인 관계에서 보이는 질적인 측면을 확인하는 요인.',
