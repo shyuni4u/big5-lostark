@@ -43,10 +43,10 @@
     "styled-reset": "^4.2.3"
   },
   "scripts": {
-    "dev": "next dev -p 14000",
+    "dev": "next dev -p 13000",
     "build": "next build && next export",
-    "start": "next start -p 14001",
-    "sb": "start-storybook -s ./public -p 14009"
+    "start": "next start -p 13001",
+    "sb": "start-storybook -s ./public -p 13009"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
