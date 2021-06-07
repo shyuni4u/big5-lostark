@@ -8,7 +8,7 @@ const StyledResult = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding-top: 150px;
+  padding-top: 50px;
   ${({ theme }) => theme.media.tablet`
     flex-direction: column;
     padding-top: 0px;
