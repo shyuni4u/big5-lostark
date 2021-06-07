@@ -278,7 +278,6 @@ export const Result: React.FC = () => {
         .then((response) => {
           if (unmount) return;
           if (response.status === 200) {
-            console.log(response.data);
             setTotal(response.data.count[0].nCnt);
             setResult(response.data.list);
           } else {

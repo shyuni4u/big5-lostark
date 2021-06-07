@@ -15,6 +15,9 @@ const resources = {
         yes: '예',
         no: '아니오'
       },
+      test: {
+        title: '성향 테스트'
+      },
       gameclass: {
         selectClassTitle: '직업 선택',
         selectClassComment: '당신의 직업을 선택하세요. (최대 3개)',
@@ -51,9 +54,6 @@ const resources = {
         blade: '블레이드',
         demonic: '데모닉',
         reaper: '리퍼'
-      },
-      test: {
-        title: '성향 테스트'
       },
       result: {
         title: '성향 테스트',
