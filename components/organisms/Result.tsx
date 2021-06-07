@@ -482,6 +482,7 @@ export const Result: React.FC = () => {
           <div style={{ margin: '10px 0' }}>
             {t('result.warning')}
             <br />
+            <br />
             {t('result.thankyou')}
           </div>
           <Button primary onClick={() => Router.push('/')}>
