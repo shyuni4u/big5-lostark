@@ -86,7 +86,7 @@ const StyledResultCount = styled.div`
       }
       & > span.sum {
         font-weight: 600;
-        font-size: 1.4em;
+        font-size: 2.4em;
       }
     `;
   }}
@@ -278,8 +278,9 @@ export const Result: React.FC = () => {
         .then((response) => {
           if (unmount) return;
           if (response.status === 200) {
-            setTotal(0);
-            setResult(response.data);
+            console.log(response.data);
+            setTotal(response.data.count[0].nCnt);
+            setResult(response.data.list);
           } else {
             setResult(undefined);
           }
@@ -308,12 +309,10 @@ export const Result: React.FC = () => {
   useEffect(() => {
     let _sum = 0;
     result.forEach((el) => (_sum += el.nCount));
-    if (result.length > 0) {
-      setMax(result[0].nCount);
-    } else {
-      setMax(1);
-    }
-    if (_sum === 0) _sum = 1;
+
+    if (result.length > 0) setMax(result[0].nCount);
+    else setMax(1);
+
     setSum(_sum);
   }, [result]);
 
@@ -435,11 +434,10 @@ export const Result: React.FC = () => {
               {t('result.testcount')}
             </StyledResultTitle>
             <StyledResultCount>
-              <span className={'total'}>{numberWithCommas(total)}</span>명 중{' '}
               <span className={'sum'} style={{ color: sum < 10 ? '#F99ED4' : sum < 100 ? '#ffe96b' : '#ABE3A2' }}>
                 {numberWithCommas(sum)}
-              </span>
-              명
+              </span>{' '}
+              <span className={'total'}>/ {numberWithCommas(total)}</span>
             </StyledResultCount>
           </StyledResult>
           <StyledResult>
@@ -448,6 +446,7 @@ export const Result: React.FC = () => {
               {t('result.likeyou')}
             </StyledResultTitle>
             <StyledResultList>
+              {result.length === 0 && <span>{t('result.sorry')}</span>}
               {result.map((el: testResult, elIdx: number) => {
                 if (!more && elIdx > 4) return undefined;
 
@@ -466,7 +465,7 @@ export const Result: React.FC = () => {
                           className={'progressBar'}
                           style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
                         >
-                          <div className={'progressValue'}>{Math.round((el.nCount / sum) * 10000) / 100}%</div>
+                          <div className={'progressValue'}>{Math.round((el.nCount / (sum === 0 ? el.nCount : sum)) * 10000) / 100}%</div>
                         </div>
                       </li>
                     </StyledResultListItems>
@@ -480,7 +479,11 @@ export const Result: React.FC = () => {
               )}
             </StyledResultList>
           </StyledResult>
-          <div style={{ margin: '10px 0' }}>{t('result.thankyou')}</div>
+          <div style={{ margin: '10px 0' }}>
+            {t('result.warning')}
+            <br />
+            {t('result.thankyou')}
+          </div>
           <Button primary onClick={() => Router.push('/')}>
             {t('result.retry')}
           </Button>

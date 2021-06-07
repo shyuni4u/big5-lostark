@@ -61,8 +61,10 @@ const resources = {
         retry: '다시하기',
         you: '당신의 성향',
         likeyou: '성향별 직업 선호도',
-        testcount: '결과가 같은 사람의 수',
+        testcount: '같은 결과 수',
         thankyou: '성향 테스트에 응해주셔서 감사합니다.',
+        warning: '개인이 유저들의 재미와 초보자의 직업선택을 돕기위해 만든 앱입니다. 로스트아크 공식 설문조사가 아닙니다.',
+        sorry: '죄송합니다. 같은 성향의 결과가 없습니다.',
 
         agreeableness: '우호성',
         agreeablenessDesc: '대인 관계에서 보이는 질적인 측면을 확인하는 요인.',
