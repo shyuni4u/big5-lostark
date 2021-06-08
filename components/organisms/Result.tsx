@@ -219,12 +219,15 @@ const StyledYouLi = styled.li`
 type testResult = {
   sClass: string;
   sTalent: string;
-  nCount: number;
+  nCount?: number;
+  nSum?: number;
 };
 export const Result: React.FC = () => {
   const { t } = useTranslation();
   const { testInfo } = reducerTest();
   const [result, setResult] = useState<testResult[]>([]);
+  const [resultRatio, setResultRatio] = useState<testResult[]>([]);
+  const [resultTotal, setResultTotal] = useState<testResult[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [agree, setAgree] = useState<number>(1);
@@ -236,7 +239,11 @@ export const Result: React.FC = () => {
   const [total, setTotal] = useState<number>(0);
   const [sum, setSum] = useState<number>(0);
   const [max, setMax] = useState<number>(1);
+  const [maxRatio, setMaxRatio] = useState<number>(100);
+  const [maxTotal, setMaxTotal] = useState<number>(1);
   const [more, setMore] = useState<boolean>(false);
+  const [moreRatio, setMoreRatio] = useState<boolean>(false);
+  const [moreTotal, setMoreTotal] = useState<boolean>(false);
 
   const numberWithCommas = (x: number) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -280,6 +287,8 @@ export const Result: React.FC = () => {
           if (response.status === 200) {
             setTotal(response.data.count[0].nCnt);
             setResult(response.data.list);
+            setResultRatio(response.data.ratio);
+            setResultTotal(response.data.total);
           } else {
             setResult(undefined);
           }
@@ -314,6 +323,16 @@ export const Result: React.FC = () => {
 
     setSum(_sum);
   }, [result]);
+
+  useEffect(() => {
+    if (resultRatio.length > 0) setMaxRatio(resultRatio[0].nSum);
+    else setMaxRatio(100);
+  }, [resultRatio]);
+
+  useEffect(() => {
+    if (resultTotal.length > 0) setMaxTotal(resultTotal[0].nSum);
+    else setMaxTotal(1);
+  }, [resultTotal]);
 
   const getOption = () => {
     return {
@@ -404,6 +423,8 @@ export const Result: React.FC = () => {
                 position: 'relative'
               }}
             />
+          </StyledResult>
+          <StyledResult>
             <ul>
               <StyledYouLi>
                 <span style={{ color: '#ffd50e' }}>{t('result.agreeableness')}: </span>
@@ -442,7 +463,45 @@ export const Result: React.FC = () => {
           <StyledResult>
             <StyledResultTitle>
               <BsTextLeft />
-              {t('result.likeyou')}
+              {t('result.likeyouratio')}
+            </StyledResultTitle>
+            <StyledResultList>
+              {resultRatio.map((el: testResult, elIdx: number) => {
+                if (!moreRatio && elIdx > 4) return undefined;
+
+                const _class = GameClassInfo.find((v) => v.name == el.sClass);
+                const _talent = _class.talents.find((v) => v.name == el.sTalent);
+
+                return (
+                  <li key={elIdx}>
+                    <StyledResultListItems>
+                      <li className={'image'}>
+                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                      </li>
+                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                      <li className={'progress'}>
+                        <div
+                          className={'progressBar'}
+                          style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
+                        >
+                          <div className={'progressValue'}>{Math.round(el.nSum * 100) / 100}%</div>
+                        </div>
+                      </li>
+                    </StyledResultListItems>
+                  </li>
+                );
+              })}
+              {resultRatio.length > 5 && !moreRatio && (
+                <li>
+                  <Button onClick={() => setMoreRatio(true)}>{t('result.more')}</Button>
+                </li>
+              )}
+            </StyledResultList>
+          </StyledResult>
+          <StyledResult>
+            <StyledResultTitle>
+              <BsTextLeft />
+              {t('result.likeyoucount')}
             </StyledResultTitle>
             <StyledResultList>
               {result.length === 0 && <span>{t('result.sorry')}</span>}
@@ -464,7 +523,7 @@ export const Result: React.FC = () => {
                           className={'progressBar'}
                           style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
                         >
-                          <div className={'progressValue'}>{Math.round((el.nCount / (sum === 0 ? el.nCount : sum)) * 10000) / 100}%</div>
+                          <div className={'progressValue'}>{el.nCount}</div>
                         </div>
                       </li>
                     </StyledResultListItems>
@@ -474,6 +533,44 @@ export const Result: React.FC = () => {
               {result.length > 5 && !more && (
                 <li>
                   <Button onClick={() => setMore(true)}>{t('result.more')}</Button>
+                </li>
+              )}
+            </StyledResultList>
+          </StyledResult>
+          <StyledResult>
+            <StyledResultTitle>
+              <BsTextLeft />
+              {t('result.totalcount')}
+            </StyledResultTitle>
+            <StyledResultList>
+              {resultTotal.map((el: testResult, elIdx: number) => {
+                if (!moreTotal && elIdx > 4) return undefined;
+
+                const _class = GameClassInfo.find((v) => v.name == el.sClass);
+                const _talent = _class.talents.find((v) => v.name == el.sTalent);
+
+                return (
+                  <li key={elIdx}>
+                    <StyledResultListItems>
+                      <li className={'image'}>
+                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                      </li>
+                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                      <li className={'progress'}>
+                        <div
+                          className={'progressBar'}
+                          style={{ width: Math.round((el.nSum / maxTotal) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
+                        >
+                          <div className={'progressValue'}>{el.nSum}</div>
+                        </div>
+                      </li>
+                    </StyledResultListItems>
+                  </li>
+                );
+              })}
+              {resultTotal.length > 5 && !moreTotal && (
+                <li>
+                  <Button onClick={() => setMoreTotal(true)}>{t('result.more')}</Button>
                 </li>
               )}
             </StyledResultList>
