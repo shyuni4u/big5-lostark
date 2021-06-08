@@ -7,7 +7,6 @@
 /.next
 .pnp.js
 
-/lib/info.json
 /docs
 
 # testing
