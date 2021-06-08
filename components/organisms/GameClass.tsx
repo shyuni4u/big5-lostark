@@ -77,6 +77,10 @@ const StyledGameClassTalents = styled.ul`
       display: flex;
       user-select: none;
       cursor: pointer;
+
+      &:hover {
+        background-color: #9e661c;
+      }
     `;
   }}
 `;
