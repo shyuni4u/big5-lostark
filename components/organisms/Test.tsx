@@ -235,7 +235,6 @@ export const Test: React.FC = () => {
           </StyledQuestionWrapper>
         ))}
       </StyledWrapper>
-      <Adfit />
     </>
   );
 };
