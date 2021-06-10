@@ -332,8 +332,8 @@ export const Result: React.FC = () => {
 
       // Step 6: train your neural network
       const trainingOptions = {
-        epochs: 32,
-        batchSize: 12
+        epochs: 30,
+        batchSize: 100
       };
       // Step 7: use the trained model
       const finishedTraining = () => {
@@ -522,7 +522,14 @@ export const Result: React.FC = () => {
             {t('result.machinelearning')}
           </StyledResultTitle>
           <StyledResultList>
-            {resultNN.length === 0 && <li>{t('result.training')}</li>}
+            {resultNN.length === 0 && (
+              <>
+                <li>
+                  <Loader style={{ marginBottom: '20px' }} />
+                </li>
+                <li>{t('result.training')}</li>
+              </>
+            )}
             {resultNN.map((el: resultNNProp, elIdx: number) => {
               if (elIdx > 4) return undefined;
               const _el = el.label.split(TOKEN);
@@ -537,8 +544,8 @@ export const Result: React.FC = () => {
                     </li>
                     <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                     <li className={'progress'}>
-                      <div className={'progressBar'} style={{ width: Math.round((el.confidence / resultNN[0].confidence) * 10000) / 100 + '%', backgroundColor: _class.color }}>
-                        <div className={'progressValue'}>{Math.round(el.confidence * 100) / 100}%</div>
+                      <div className={'progressBar'} style={{ width: Math.round((el.confidence / resultNN[0].confidence) * 100) + '%', backgroundColor: _class.color }}>
+                        <div className={'progressValue'}>{Math.round(el.confidence * 10000) / 100}</div>
                       </div>
                     </li>
                   </StyledResultListItems>
