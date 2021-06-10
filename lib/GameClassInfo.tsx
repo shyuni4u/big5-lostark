@@ -128,7 +128,7 @@ export const GameClassList = [
       {
         name: 'bard',
         position: 'dealer',
-        image: '-1510px -583px -1510px -507px',
+        image: '-1510px -583px -1510px -506px',
         desc: '바드는 성스러운 하프를 이용하여 적을 공격하거나 아군을 서포트하는 원거리 서포트형 클래스입니다.'
       }
     ]
