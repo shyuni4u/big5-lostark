@@ -116,7 +116,7 @@ export const GameClassList = [
       {
         name: 'arcana',
         position: 'dealer',
-        image: '-1510px -583px -1510px -507px',
+        image: '-1510px -431px -1510px -355px',
         desc: '아르카나는 마법사 클래스로 체력과 방어력이 약해 위험에 쉽게 노출 되기도 하는 반면, 현란하고 빠른 몸놀림으로 중거리 전투에서 강력한 모습을 보이며, 다이나믹한 전투로 상대를 유린 할 수도 있는 클래스 입니다.'
       },
       {
@@ -128,7 +128,7 @@ export const GameClassList = [
       {
         name: 'bard',
         position: 'dealer',
-        image: '-1510px -431px -1510px -355px',
+        image: '-1510px -583px -1510px -507px',
         desc: '바드는 성스러운 하프를 이용하여 적을 공격하거나 아군을 서포트하는 원거리 서포트형 클래스입니다.'
       }
     ]
