@@ -599,7 +599,7 @@ export const Result: React.FC = () => {
                       <li className={'progress'}>
                         <div
                           className={'progressBar'}
-                          style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
+                          style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: _class.color }}
                         >
                           <div className={'progressValue'}>{Math.round(el.nSum * 100) / 100}%</div>
                         </div>
@@ -638,7 +638,7 @@ export const Result: React.FC = () => {
                       <li className={'progress'}>
                         <div
                           className={'progressBar'}
-                          style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
+                          style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: _class.color }}
                         >
                           <div className={'progressValue'}>{el.nCount}</div>
                         </div>
@@ -676,7 +676,7 @@ export const Result: React.FC = () => {
                       <li className={'progress'}>
                         <div
                           className={'progressBar'}
-                          style={{ width: Math.round((el.nSum / maxTotal) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
+                          style={{ width: Math.round((el.nSum / maxTotal) * 10000) / 100 + '%', backgroundColor: _class.color }}
                         >
                           <div className={'progressValue'}>{el.nSum}</div>
                         </div>
