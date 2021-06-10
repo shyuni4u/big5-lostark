@@ -64,6 +64,7 @@ const resources = {
         likeyoucount: '성향별 직업 수',
         likeyouratio: '직업별 성향 비율 (성향별 직업 수 / 직업별 총합)',
         machinelearning: '머신러닝 결과',
+        training: '학습 중 ...',
         totalcount: '직업별 총합',
         testcount: '같은 결과를 가진 데이터 수',
         thankyou: '성향 테스트에 응해주셔서 감사합니다.',

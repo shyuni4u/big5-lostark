@@ -522,6 +522,7 @@ export const Result: React.FC = () => {
             {t('result.machinelearning')}
           </StyledResultTitle>
           <StyledResultList>
+            {resultNN.length === 0 && <li>{t('result.training')}</li>}
             {resultNN.map((el: resultNNProp, elIdx: number) => {
               if (elIdx > 4) return undefined;
               const _el = el.label.split(TOKEN);
