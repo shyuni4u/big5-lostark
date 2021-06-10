@@ -8,6 +8,7 @@ export type testInfoState = {
   secondTalent: string;
   thirdClass: string;
   thirdTalent: string;
+  inputValues: number[];
   extraversionScore: number;
   opennessToExperienceScore: number;
   agreeablenessScore: number;
@@ -28,6 +29,7 @@ export const initialState: testInfoState = {
   secondTalent: '',
   thirdClass: '',
   thirdTalent: '',
+  inputValues: [],
   extraversionScore: 0,
   opennessToExperienceScore: 0,
   agreeablenessScore: 0,
@@ -49,6 +51,7 @@ export const setTestIfno = (obj: testInfoState) => ({
   secondTalent: obj.secondTalent,
   thirdClass: obj.thirdClass,
   thirdTalent: obj.thirdTalent,
+  inputValues: obj.inputValues,
   extraversionScore: obj.extraversionScore,
   opennessToExperienceScore: obj.opennessToExperienceScore,
   agreeablenessScore: obj.agreeablenessScore,
@@ -77,6 +80,7 @@ const reducer = (state: testInfoState = initialState, action: actions): testInfo
         secondTalent: action.secondTalent,
         thirdClass: action.thirdClass,
         thirdTalent: action.thirdTalent,
+        inputValues: action.inputValues,
         extraversionScore: action.extraversionScore,
         opennessToExperienceScore: action.opennessToExperienceScore,
         agreeablenessScore: action.agreeablenessScore,

@@ -210,11 +210,7 @@ type testResult = {
 type mlProp = {
   sClass: string;
   sTalent: string;
-  nAgreeableness: string;
-  nConscientiousness: string;
-  nExtraversion: string;
-  nOpennessToExperience: string;
-  nNeuroticism: string;
+  sInput: string;
 };
 type resultNNProp = {
   label: string;
@@ -278,6 +274,7 @@ export const Result: React.FC = () => {
             sSecondTalent: testInfo.get.secondTalent,
             sThirdClass: testInfo.get.thirdClass,
             sThirdTalent: testInfo.get.thirdTalent,
+            sInput: testInfo.get.inputValues.join(''),
             nAgreeableness: _agree,
             nConscientiousness: _consc,
             nExtraversion: _extra,
@@ -319,7 +316,7 @@ export const Result: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (window && ml5 === null && resultML.length > 0) {
+    if (window && ml5 === null && resultML.length > 0 && testInfo.get.inputValues.length > 0) {
       ml5 = require('ml5');
 
       // Step 2: set your neural network options
@@ -343,11 +340,18 @@ export const Result: React.FC = () => {
       // Step 8: make a classification
       const classify = () => {
         const input = {
-          nAgreeableness: parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount),
-          nConscientiousness: parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount),
-          nExtraversion: parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount),
-          nOpennessToExperience: parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount),
-          nNeuroticism: parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount)
+          v00: testInfo.get.inputValues[0],
+          v01: testInfo.get.inputValues[1],
+          v02: testInfo.get.inputValues[2],
+          v03: testInfo.get.inputValues[3],
+          v04: testInfo.get.inputValues[4],
+          v05: testInfo.get.inputValues[5],
+          v06: testInfo.get.inputValues[6],
+          v07: testInfo.get.inputValues[7],
+          v08: testInfo.get.inputValues[8],
+          v09: testInfo.get.inputValues[9],
+          v10: testInfo.get.inputValues[10],
+          v11: testInfo.get.inputValues[11]
         };
         nn.classify(input, handleResults);
       };
@@ -363,12 +367,20 @@ export const Result: React.FC = () => {
 
       // Step 4: add data to the neural network
       resultML.forEach((el: mlProp) => {
+        const _val = el.sInput.split('');
         const inputs = {
-          nAgreeableness: el.nAgreeableness,
-          nConscientiousness: el.nConscientiousness,
-          nExtraversion: el.nExtraversion,
-          nOpennessToExperience: el.nOpennessToExperience,
-          nNeuroticism: el.nNeuroticism
+          v00: parseInt(_val[0], 10),
+          v01: parseInt(_val[1], 10),
+          v02: parseInt(_val[2], 10),
+          v03: parseInt(_val[3], 10),
+          v04: parseInt(_val[4], 10),
+          v05: parseInt(_val[5], 10),
+          v06: parseInt(_val[6], 10),
+          v07: parseInt(_val[7], 10),
+          v08: parseInt(_val[8], 10),
+          v09: parseInt(_val[9], 10),
+          v10: parseInt(_val[10], 10),
+          v11: parseInt(_val[11], 10)
         };
         const output = {
           sClass: `${el.sClass}${TOKEN}${el.sTalent}`

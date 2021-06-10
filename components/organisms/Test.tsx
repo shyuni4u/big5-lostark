@@ -183,6 +183,7 @@ export const Test: React.FC = () => {
       temp[`${testList[index].type}Score`] = 0;
       temp[`${testList[index].type}Count`] = 0;
     });
+    temp.inputValues = [];
 
     testInfo.set(temp);
   }, []);
@@ -200,6 +201,8 @@ export const Test: React.FC = () => {
       temp[`${testList[index].type}Score`] += item;
       temp[`${testList[index].type}Count`] += 1;
     });
+
+    temp.inputValues = valueList;
 
     testInfo.set(temp);
     if (testInfo.get.newbie) {
