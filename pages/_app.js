@@ -56,17 +56,6 @@ export class RootApp extends App {
           <meta property="og:title" content="Big 5 test." />
           <meta property="og:description" content="로스트아크 직업 선택을 위한 심리 테스트. Big 5 test for selecting lostark class." />
           <meta property="og:url" content="http://lostark.enzo.kr/" />
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" />
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                (adsbygoogle = window.adsbygoogle || []).push({
-                  google_ad_client: "ca-pub-7797435335029081",
-                  enable_page_level_ads: true
-                });
-              `
-            }}
-          />
         </Head>
         <div style={styles.layout}>
           <main style={styles.main}>
