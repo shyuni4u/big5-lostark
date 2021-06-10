@@ -16,7 +16,6 @@ import API from '../../lib/info.json';
 
 import Button from '../atoms/Button';
 import Loader from '../atoms/Loader';
-import Adfit from '../molecules/Adfit';
 
 import reducerTest from '../../reducers/reducerTest';
 
@@ -216,11 +215,26 @@ const StyledYouLi = styled.li`
   }
 `;
 
+const TOKEN = '!?!';
+
 type testResult = {
   sClass: string;
   sTalent: string;
   nCount?: number;
   nSum?: number;
+};
+type mlProp = {
+  sClass: string;
+  sTalent: string;
+  nAgreeableness: string;
+  nConscientiousness: string;
+  nExtraversion: string;
+  nOpennessToExperience: string;
+  nNeuroticism: string;
+};
+type resultNNProp = {
+  label: string;
+  confidence: number;
 };
 export const Result: React.FC = () => {
   const { t } = useTranslation();
@@ -228,6 +242,8 @@ export const Result: React.FC = () => {
   const [result, setResult] = useState<testResult[]>([]);
   const [resultRatio, setResultRatio] = useState<testResult[]>([]);
   const [resultTotal, setResultTotal] = useState<testResult[]>([]);
+  const [resultML, setResultML] = useState<mlProp[]>([]);
+  const [resultNN, setResultNN] = useState<resultNNProp[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [agree, setAgree] = useState<number>(1);
@@ -244,6 +260,8 @@ export const Result: React.FC = () => {
   const [more, setMore] = useState<boolean>(false);
   const [moreRatio, setMoreRatio] = useState<boolean>(false);
   const [moreTotal, setMoreTotal] = useState<boolean>(false);
+
+  let ml5: any = null;
 
   const numberWithCommas = (x: number) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -289,6 +307,7 @@ export const Result: React.FC = () => {
             setResult(response.data.list);
             setResultRatio(response.data.ratio);
             setResultTotal(response.data.total);
+            setResultML(response.data.ml);
           } else {
             setResult(undefined);
           }
@@ -313,6 +332,71 @@ export const Result: React.FC = () => {
       unmount = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (window && ml5 === null && resultML.length > 0) {
+      ml5 = require('ml5');
+
+      // Step 2: set your neural network options
+      const options = {
+        task: 'classification',
+        debug: false
+      };
+      // Step 3: initialize your neural network
+      const nn = ml5.neuralNetwork(options);
+
+      // Step 6: train your neural network
+      const trainingOptions = {
+        epochs: 32,
+        batchSize: 12
+      };
+      // Step 7: use the trained model
+      const finishedTraining = () => {
+        classify();
+      };
+
+      // Step 8: make a classification
+      const classify = () => {
+        const input = {
+          nAgreeableness: parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount),
+          nConscientiousness: parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount),
+          nExtraversion: parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount),
+          nOpennessToExperience: parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount),
+          nNeuroticism: parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount)
+        };
+        nn.classify(input, handleResults);
+      };
+
+      // Step 9: define a function to handle the results of your classification
+      const handleResults = (error, result) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+        setResultNN(result);
+      };
+
+      // Step 4: add data to the neural network
+      resultML.forEach((el: mlProp) => {
+        const inputs = {
+          nAgreeableness: el.nAgreeableness,
+          nConscientiousness: el.nConscientiousness,
+          nExtraversion: el.nExtraversion,
+          nOpennessToExperience: el.nOpennessToExperience,
+          nNeuroticism: el.nNeuroticism
+        };
+        const output = {
+          sClass: `${el.sClass}${TOKEN}${el.sTalent}`
+        };
+
+        nn.addData(inputs, output);
+      });
+
+      // Step 5: normalize your data;
+      nn.normalizeData();
+      nn.train(trainingOptions, finishedTraining);
+    }
+  }, [resultML]);
 
   useEffect(() => {
     let _sum = 0;
@@ -459,6 +543,39 @@ export const Result: React.FC = () => {
               </span>{' '}
               <span className={'total'}>/ {numberWithCommas(total)}</span>
             </StyledResultCount>
+          </StyledResult>
+          <StyledResult>
+            <StyledResultTitle>
+              <BsTextLeft />
+              {t('result.machinelearning')}
+            </StyledResultTitle>
+            <StyledResultList>
+              {resultNN.map((el: resultNNProp, elIdx: number) => {
+                if (elIdx > 4) return undefined;
+                const _el = el.label.split(TOKEN);
+                const _class = GameClassInfo.find((v) => v.name == _el[0]);
+                const _talent = _class.talents.find((v) => v.name == _el[1]);
+
+                return (
+                  <li key={elIdx}>
+                    <StyledResultListItems>
+                      <li className={'image'}>
+                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                      </li>
+                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                      <li className={'progress'}>
+                        <div
+                          className={'progressBar'}
+                          style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
+                        >
+                          <div className={'progressValue'}>{Math.round(el.nSum * 100) / 100}%</div>
+                        </div>
+                      </li>
+                    </StyledResultListItems>
+                  </li>
+                );
+              })}
+            </StyledResultList>
           </StyledResult>
           <StyledResult>
             <StyledResultTitle>
