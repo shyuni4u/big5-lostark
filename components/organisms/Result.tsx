@@ -4,7 +4,7 @@ import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import ReactEcharts from 'echarts-for-react';
-import { BsCheck, BsTextLeft } from 'react-icons/bs';
+import { BsBarChart, BsCloud, BsFileText } from 'react-icons/bs';
 
 import Theme from '../../styles/theme';
 import GameClassInfo from '../../lib/GameClassInfo';
@@ -18,22 +18,6 @@ import Button from '../atoms/Button';
 import Loader from '../atoms/Loader';
 
 import reducerTest from '../../reducers/reducerTest';
-
-const progressColors = [
-  // '#F79394',
-  // '#96E0F5',
-  // '#ABE3A2',
-  '#ffe96b',
-  '#FFCDA1',
-  '#F79394',
-  '#F99ED4',
-  '#E19BF3',
-  '#AFB5F4',
-  '#96E0F5',
-  '#ABE3A2',
-  '#92E3DD',
-  '#9CB6C2'
-];
 
 const StyledLoadingWrapper = styled.div`
   width: 100vw;
@@ -257,6 +241,7 @@ export const Result: React.FC = () => {
   const [max, setMax] = useState<number>(1);
   const [maxRatio, setMaxRatio] = useState<number>(100);
   const [maxTotal, setMaxTotal] = useState<number>(1);
+  const [showStat, setShowStat] = useState<boolean>(false);
   const [more, setMore] = useState<boolean>(false);
   const [moreRatio, setMoreRatio] = useState<boolean>(false);
   const [moreTotal, setMoreTotal] = useState<boolean>(false);
@@ -484,226 +469,219 @@ export const Result: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '6px' }}>
-      {loading ? (
-        <StyledLoadingWrapper>
-          <Loader style={{ marginBottom: '20px' }} />
-          성향과 비슷한 직업을 찾고 있습니다.
-        </StyledLoadingWrapper>
-      ) : (
-        <>
-          <StyledResult>
-            <StyledResultTitle>
-              <BsTextLeft />
-              {t('result.you')}
-            </StyledResultTitle>
-            <ReactEcharts
-              option={getOption()}
-              notMerge={true}
-              lazyUpdate={true}
-              style={{
-                height: '360px',
-                width: '360px',
-                position: 'relative'
-              }}
-            />
-          </StyledResult>
-          <StyledResult>
-            <ul>
-              <StyledYouLi>
-                <span style={{ color: '#ffd50e' }}>{t('result.agreeableness')}: </span>
-                {t('result.agreeablenessDesc')}
-              </StyledYouLi>
-              <StyledYouLi>
-                <span style={{ color: '#ffa53a' }}>{t('result.conscientiousness')}: </span>
-                {t('result.conscientiousnessDesc')}
-              </StyledYouLi>
-              <StyledYouLi>
-                <span style={{ color: '#89dd26' }}>{t('result.extraversion')}: </span>
-                {t('result.extraversionDesc')}
-              </StyledYouLi>
-              <StyledYouLi>
-                <span style={{ color: '#e980ff' }}>{t('result.opennessToExperience')}: </span>
-                {t('result.opennessToExperienceDesc')}
-              </StyledYouLi>
-              <StyledYouLi>
-                <span style={{ color: '#36b1ff' }}>{t('result.neuroticism')}: </span>
-                {t('result.neuroticismDesc')}
-              </StyledYouLi>
-            </ul>
-          </StyledResult>
-          <StyledResult>
-            <StyledResultTitle>
-              <BsTextLeft />
-              {t('result.testcount')}
-            </StyledResultTitle>
-            <StyledResultCount>
-              <span className={'sum'} style={{ color: sum < 10 ? '#F99ED4' : sum < 100 ? '#ffe96b' : '#ABE3A2' }}>
-                {numberWithCommas(sum)}
-              </span>{' '}
-              <span className={'total'}>/ {numberWithCommas(total)}</span>
-            </StyledResultCount>
-          </StyledResult>
-          <StyledResult>
-            <StyledResultTitle>
-              <BsTextLeft />
-              {t('result.machinelearning')}
-            </StyledResultTitle>
-            <StyledResultList>
-              {resultNN.map((el: resultNNProp, elIdx: number) => {
-                if (elIdx > 4) return undefined;
-                const _el = el.label.split(TOKEN);
-                const _class = GameClassInfo.find((v) => v.name == _el[0]);
-                const _talent = _class.talents.find((v) => v.name == _el[1]);
+    <>
+      <StyledLoadingWrapper style={{ display: loading ? 'inherit' : 'none' }}>
+        <Loader style={{ marginBottom: '20px' }} />
+        성향과 비슷한 직업을 찾고 있습니다.
+      </StyledLoadingWrapper>
 
-                return (
-                  <li key={elIdx}>
-                    <StyledResultListItems>
-                      <li className={'image'}>
-                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
-                      </li>
-                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
-                      <li className={'progress'}>
-                        <div
-                          className={'progressBar'}
-                          style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: progressColors[elIdx % progressColors.length] }}
-                        >
-                          <div className={'progressValue'}>{Math.round(el.nSum * 100) / 100}%</div>
-                        </div>
-                      </li>
-                    </StyledResultListItems>
-                  </li>
-                );
-              })}
-            </StyledResultList>
-          </StyledResult>
-          <StyledResult>
-            <StyledResultTitle>
-              <BsTextLeft />
-              {t('result.likeyouratio')}
-            </StyledResultTitle>
-            <StyledResultList>
-              {resultRatio.map((el: testResult, elIdx: number) => {
-                if (!moreRatio && elIdx > 4) return undefined;
+      <div style={{ display: loading ? 'none' : 'flex', flexDirection: 'column', alignItems: 'center', padding: '6px' }}>
+        <StyledResult>
+          <StyledResultTitle>
+            <BsBarChart />
+            {t('result.you')}
+          </StyledResultTitle>
+          <ReactEcharts
+            option={getOption()}
+            notMerge={true}
+            lazyUpdate={true}
+            style={{
+              height: '360px',
+              width: '360px',
+              position: 'relative'
+            }}
+          />
+        </StyledResult>
+        <StyledResult>
+          <ul>
+            <StyledYouLi>
+              <span style={{ color: '#ffd50e' }}>{t('result.agreeableness')}: </span>
+              {t('result.agreeablenessDesc')}
+            </StyledYouLi>
+            <StyledYouLi>
+              <span style={{ color: '#ffa53a' }}>{t('result.conscientiousness')}: </span>
+              {t('result.conscientiousnessDesc')}
+            </StyledYouLi>
+            <StyledYouLi>
+              <span style={{ color: '#89dd26' }}>{t('result.extraversion')}: </span>
+              {t('result.extraversionDesc')}
+            </StyledYouLi>
+            <StyledYouLi>
+              <span style={{ color: '#e980ff' }}>{t('result.opennessToExperience')}: </span>
+              {t('result.opennessToExperienceDesc')}
+            </StyledYouLi>
+            <StyledYouLi>
+              <span style={{ color: '#36b1ff' }}>{t('result.neuroticism')}: </span>
+              {t('result.neuroticismDesc')}
+            </StyledYouLi>
+          </ul>
+        </StyledResult>
+        <StyledResult>
+          <StyledResultTitle>
+            <BsCloud />
+            {t('result.machinelearning')}
+          </StyledResultTitle>
+          <StyledResultList>
+            {resultNN.map((el: resultNNProp, elIdx: number) => {
+              if (elIdx > 4) return undefined;
+              const _el = el.label.split(TOKEN);
+              const _class = GameClassInfo.find((v) => v.name == _el[0]);
+              const _talent = _class.talents.find((v) => v.name == _el[1]);
 
-                const _class = GameClassInfo.find((v) => v.name == el.sClass);
-                const _talent = _class.talents.find((v) => v.name == el.sTalent);
-
-                return (
-                  <li key={elIdx}>
-                    <StyledResultListItems>
-                      <li className={'image'}>
-                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
-                      </li>
-                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
-                      <li className={'progress'}>
-                        <div
-                          className={'progressBar'}
-                          style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: _class.color }}
-                        >
-                          <div className={'progressValue'}>{Math.round(el.nSum * 100) / 100}%</div>
-                        </div>
-                      </li>
-                    </StyledResultListItems>
-                  </li>
-                );
-              })}
-              {resultRatio.length > 5 && !moreRatio && (
-                <li>
-                  <Button onClick={() => setMoreRatio(true)}>{t('result.more')}</Button>
+              return (
+                <li key={elIdx}>
+                  <StyledResultListItems>
+                    <li className={'image'}>
+                      <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                    </li>
+                    <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                    <li className={'progress'}>
+                      <div className={'progressBar'} style={{ width: Math.round((el.confidence / resultNN[0].confidence) * 10000) / 100 + '%', backgroundColor: _class.color }}>
+                        <div className={'progressValue'}>{Math.round(el.confidence * 100) / 100}%</div>
+                      </div>
+                    </li>
+                  </StyledResultListItems>
                 </li>
-              )}
-            </StyledResultList>
-          </StyledResult>
-          <StyledResult>
-            <StyledResultTitle>
-              <BsTextLeft />
-              {t('result.likeyoucount')}
-            </StyledResultTitle>
-            <StyledResultList>
-              {result.length === 0 && <span>{t('result.sorry')}</span>}
-              {result.map((el: testResult, elIdx: number) => {
-                if (!more && elIdx > 4) return undefined;
+              );
+            })}
+          </StyledResultList>
+        </StyledResult>
 
-                const _class = GameClassInfo.find((v) => v.name == el.sClass);
-                const _talent = _class.talents.find((v) => v.name == el.sTalent);
+        {!showStat && <Button onClick={() => setShowStat(true)}>{t('result.stat')}</Button>}
 
-                return (
-                  <li key={elIdx}>
-                    <StyledResultListItems>
-                      <li className={'image'}>
-                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
-                      </li>
-                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
-                      <li className={'progress'}>
-                        <div
-                          className={'progressBar'}
-                          style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: _class.color }}
-                        >
-                          <div className={'progressValue'}>{el.nCount}</div>
-                        </div>
-                      </li>
-                    </StyledResultListItems>
+        {showStat && (
+          <>
+            <StyledResult>
+              <StyledResultTitle>
+                <BsFileText />
+                {t('result.testcount')}
+              </StyledResultTitle>
+              <StyledResultCount>
+                <span className={'sum'} style={{ color: sum < 10 ? '#F99ED4' : sum < 100 ? '#ffe96b' : '#ABE3A2' }}>
+                  {numberWithCommas(sum)}
+                </span>{' '}
+                <span className={'total'}>/ {numberWithCommas(total)}</span>
+              </StyledResultCount>
+            </StyledResult>
+            <StyledResult>
+              <StyledResultTitle>
+                <BsFileText />
+                {t('result.likeyouratio')}
+              </StyledResultTitle>
+              <StyledResultList>
+                {resultRatio.map((el: testResult, elIdx: number) => {
+                  if (!moreRatio && elIdx > 4) return undefined;
+
+                  const _class = GameClassInfo.find((v) => v.name == el.sClass);
+                  const _talent = _class.talents.find((v) => v.name == el.sTalent);
+
+                  return (
+                    <li key={elIdx}>
+                      <StyledResultListItems>
+                        <li className={'image'}>
+                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                        </li>
+                        <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                        <li className={'progress'}>
+                          <div className={'progressBar'} style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: _class.color }}>
+                            <div className={'progressValue'}>{Math.round(el.nSum * 100) / 100}%</div>
+                          </div>
+                        </li>
+                      </StyledResultListItems>
+                    </li>
+                  );
+                })}
+                {resultRatio.length > 5 && !moreRatio && (
+                  <li>
+                    <Button onClick={() => setMoreRatio(true)}>{t('result.more')}</Button>
                   </li>
-                );
-              })}
-              {result.length > 5 && !more && (
-                <li>
-                  <Button onClick={() => setMore(true)}>{t('result.more')}</Button>
-                </li>
-              )}
-            </StyledResultList>
-          </StyledResult>
-          <StyledResult>
-            <StyledResultTitle>
-              <BsTextLeft />
-              {t('result.totalcount')}
-            </StyledResultTitle>
-            <StyledResultList>
-              {resultTotal.map((el: testResult, elIdx: number) => {
-                if (!moreTotal && elIdx > 4) return undefined;
+                )}
+              </StyledResultList>
+            </StyledResult>
+            <StyledResult>
+              <StyledResultTitle>
+                <BsFileText />
+                {t('result.likeyoucount')}
+              </StyledResultTitle>
+              <StyledResultList>
+                {result.length === 0 && <span>{t('result.sorry')}</span>}
+                {result.map((el: testResult, elIdx: number) => {
+                  if (!more && elIdx > 4) return undefined;
 
-                const _class = GameClassInfo.find((v) => v.name == el.sClass);
-                const _talent = _class.talents.find((v) => v.name == el.sTalent);
+                  const _class = GameClassInfo.find((v) => v.name == el.sClass);
+                  const _talent = _class.talents.find((v) => v.name == el.sTalent);
 
-                return (
-                  <li key={elIdx}>
-                    <StyledResultListItems>
-                      <li className={'image'}>
-                        <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
-                      </li>
-                      <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
-                      <li className={'progress'}>
-                        <div
-                          className={'progressBar'}
-                          style={{ width: Math.round((el.nSum / maxTotal) * 10000) / 100 + '%', backgroundColor: _class.color }}
-                        >
-                          <div className={'progressValue'}>{el.nSum}</div>
-                        </div>
-                      </li>
-                    </StyledResultListItems>
+                  return (
+                    <li key={elIdx}>
+                      <StyledResultListItems>
+                        <li className={'image'}>
+                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                        </li>
+                        <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                        <li className={'progress'}>
+                          <div className={'progressBar'} style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: _class.color }}>
+                            <div className={'progressValue'}>{el.nCount}</div>
+                          </div>
+                        </li>
+                      </StyledResultListItems>
+                    </li>
+                  );
+                })}
+                {result.length > 5 && !more && (
+                  <li>
+                    <Button onClick={() => setMore(true)}>{t('result.more')}</Button>
                   </li>
-                );
-              })}
-              {resultTotal.length > 5 && !moreTotal && (
-                <li>
-                  <Button onClick={() => setMoreTotal(true)}>{t('result.more')}</Button>
-                </li>
-              )}
-            </StyledResultList>
-          </StyledResult>
-          <div style={{ margin: '10px 0' }}>
-            {t('result.warning')}
-            <br />
-            <br />
-            {t('result.thankyou')}
-          </div>
-          <Button primary onClick={() => Router.push('/')}>
-            {t('result.retry')}
-          </Button>
-        </>
-      )}
-    </div>
+                )}
+              </StyledResultList>
+            </StyledResult>
+            <StyledResult>
+              <StyledResultTitle>
+                <BsFileText />
+                {t('result.totalcount')}
+              </StyledResultTitle>
+              <StyledResultList>
+                {resultTotal.map((el: testResult, elIdx: number) => {
+                  if (!moreTotal && elIdx > 4) return undefined;
+
+                  const _class = GameClassInfo.find((v) => v.name == el.sClass);
+                  const _talent = _class.talents.find((v) => v.name == el.sTalent);
+
+                  return (
+                    <li key={elIdx}>
+                      <StyledResultListItems>
+                        <li className={'image'}>
+                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                        </li>
+                        <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
+                        <li className={'progress'}>
+                          <div className={'progressBar'} style={{ width: Math.round((el.nSum / maxTotal) * 10000) / 100 + '%', backgroundColor: _class.color }}>
+                            <div className={'progressValue'}>{el.nSum}</div>
+                          </div>
+                        </li>
+                      </StyledResultListItems>
+                    </li>
+                  );
+                })}
+                {resultTotal.length > 5 && !moreTotal && (
+                  <li>
+                    <Button onClick={() => setMoreTotal(true)}>{t('result.more')}</Button>
+                  </li>
+                )}
+              </StyledResultList>
+            </StyledResult>
+          </>
+        )}
+        <div style={{ margin: '10px 0' }}>
+          {t('result.warning')}
+          <br />
+          <br />
+          {t('result.thankyou')}
+        </div>
+        <Button primary onClick={() => Router.push('/')}>
+          {t('result.retry')}
+        </Button>
+      </div>
+    </>
   );
 };
 

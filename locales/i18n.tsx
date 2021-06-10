@@ -58,6 +58,7 @@ const resources = {
       result: {
         title: '성향 테스트',
         more: '더 보기',
+        stat: '통계 보기',
         retry: '다시하기',
         you: '당신의 성향',
         likeyoucount: '성향별 직업 수',
