@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import Panel from '../atoms/Panel';
 import Button from '../atoms/Button';
 import Modal from '../atoms/Modal';
-import Adfit from '../molecules/Adfit';
 
 import reducerTest from '../../reducers/reducerTest';
 

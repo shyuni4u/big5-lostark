@@ -10,10 +10,6 @@ import Theme from '../../styles/theme';
 import GameClassInfo from '../../lib/GameClassInfo';
 import API from '../../lib/info.json';
 
-// {
-//   "path": "https://jxq2fc4j8h.execute-api.ap-northeast-2.amazonaws.com/default/lostarkResult"
-// }
-
 import Button from '../atoms/Button';
 import Loader from '../atoms/Loader';
 
@@ -208,9 +204,10 @@ type testResult = {
   nSum?: number;
 };
 type mlProp = {
-  sClass: string;
-  sTalent: string;
-  sInput: string;
+  sC: string; //  class
+  sT: string; //  talent
+  sI?: string; //  input
+  sR?: string; //  result
 };
 type resultNNProp = {
   label: string;
@@ -329,8 +326,8 @@ export const Result: React.FC = () => {
 
       // Step 6: train your neural network
       const trainingOptions = {
-        epochs: 30,
-        batchSize: 10
+        epochs: 100,
+        batchSize: 100
       };
       // Step 7: use the trained model
       const finishedTraining = () => {
@@ -340,18 +337,11 @@ export const Result: React.FC = () => {
       // Step 8: make a classification
       const classify = () => {
         const input = {
-          v00: testInfo.get.inputValues[0],
-          v01: testInfo.get.inputValues[1],
-          v02: testInfo.get.inputValues[2],
-          v03: testInfo.get.inputValues[3],
-          v04: testInfo.get.inputValues[4],
-          v05: testInfo.get.inputValues[5],
-          v06: testInfo.get.inputValues[6],
-          v07: testInfo.get.inputValues[7],
-          v08: testInfo.get.inputValues[8],
-          v09: testInfo.get.inputValues[9],
-          v10: testInfo.get.inputValues[10],
-          v11: testInfo.get.inputValues[11]
+          v00: parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount) * 20,
+          v01: parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount) * 20,
+          v02: parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount) * 20,
+          v03: parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount) * 20,
+          v04: parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount) * 20
         };
         nn.classify(input, handleResults);
       };
@@ -367,23 +357,16 @@ export const Result: React.FC = () => {
 
       // Step 4: add data to the neural network
       resultML.forEach((el: mlProp) => {
-        const _val = el.sInput.split('');
+        const _val = el.sR.split('');
         const inputs = {
-          v00: parseInt(_val[0], 10),
-          v01: parseInt(_val[1], 10),
-          v02: parseInt(_val[2], 10),
-          v03: parseInt(_val[3], 10),
-          v04: parseInt(_val[4], 10),
-          v05: parseInt(_val[5], 10),
-          v06: parseInt(_val[6], 10),
-          v07: parseInt(_val[7], 10),
-          v08: parseInt(_val[8], 10),
-          v09: parseInt(_val[9], 10),
-          v10: parseInt(_val[10], 10),
-          v11: parseInt(_val[11], 10)
+          v00: parseInt(_val[0], 10) * 20,
+          v01: parseInt(_val[1], 10) * 20,
+          v02: parseInt(_val[2], 10) * 20,
+          v03: parseInt(_val[3], 10) * 20,
+          v04: parseInt(_val[4], 10) * 20
         };
         const output = {
-          sClass: `${el.sClass}${TOKEN}${el.sTalent}`
+          sClass: `${el.sC}${TOKEN}${el.sT}`
         };
 
         nn.addData(inputs, output);

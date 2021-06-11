@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 import reducerTest from '../../reducers/reducerTest';
 
-import Adfit from '../molecules/Adfit';
-
 const StyledWrapper = styled.article`
   position: relative;
   background-color: ${({ theme }) => theme.colors.background};

@@ -15,7 +15,8 @@ const spin = keyframes`
 const StyledLoader = styled.div`
   border: 10px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 10px solid ${({ theme }) => theme.colors.black};
+  border: 10px solid transparent;
+  border-top: 10px solid ${({ theme }) => theme.colors.white};
   width: 120px;
   height: 120px;
   -webkit-animation: ${spin} 2s linear infinite; /* Safari */
