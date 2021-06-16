@@ -109,59 +109,59 @@ const StyledExample = styled.div<StyledExampleProp>`
  */
 const testList = [
   {
-    question: '모르는 사람에게 먼저 말을 건다',
+    question: 'q01',
     type: 'extraversion'
   },
   {
-    question: '다른 사람이 편안하고 행복한지 확인한다',
+    question: 'q02',
     type: 'agreeableness'
   },
   {
-    question: '그림, 글, 음악을 창작한다',
+    question: 'q03',
     type: 'opennessToExperience'
   },
   {
-    question: '모든 일을 사전에 준비한다',
+    question: 'q04',
     type: 'conscientiousness'
   },
   {
-    question: '울적하거나 우울함을 느낀다',
+    question: 'q05',
     type: 'neuroticism'
   },
   {
-    question: '회식, 파티, 사교모임을 계획한다',
+    question: 'q06',
     type: 'extraversion'
   },
   {
-    question: '타인의 행동에 답답함을 느낀다',
+    question: 'q07',
     type: 'agreeableness',
     reverse: true
   },
   {
-    question: '철학적이거나 영적인 문제들을 생각한다',
+    question: 'q08',
     type: 'opennessToExperience',
     reverse: true
   },
   {
-    question: '일이나 물건을 정리하지 않고 어지럽게 그냥 둔다',
+    question: 'q09',
     type: 'conscientiousness',
     reverse: true
   },
   {
-    question: '스트레스나 걱정을 느낀다',
+    question: 'q10',
     type: 'neuroticism'
   },
   {
-    question: '어려운 단어를 사용한다',
+    question: 'q11',
     type: 'opennessToExperience'
   },
   {
-    question: '타인의 감정에 공감한다',
+    question: 'q12',
     type: 'agreeableness'
   }
 ];
 
-const strValues = ['전혀 아니다', '별로 아니다', '보통이다', '약간 그렇다', '매우 그렇다'];
+const strValues = ['a01', 'a02', 'a03', 'a04', 'a05'];
 
 // type TestItem = typeof testList
 
@@ -218,7 +218,7 @@ export const Test: React.FC = () => {
         {testList.map((item, index) => (
           <StyledQuestionWrapper key={index} style={{ display: index === processIndex ? 'inherit' : 'none' }}>
             <StyledQuestion>
-              {index + 1}. {item.question}
+              {index + 1}. {t(`test.${item.question}`)}
             </StyledQuestion>
             {strValues.map((subItem, subIndex) => (
               <StyledExample
@@ -230,7 +230,7 @@ export const Test: React.FC = () => {
                   setValueList(tmp);
                 }}
               >
-                {subItem}
+                {t(`test.${subItem}`)}
               </StyledExample>
             ))}
           </StyledQuestionWrapper>

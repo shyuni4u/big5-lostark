@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -19,9 +19,29 @@ const StyledGoDetail = styled.a`
   cursor: pointer;
 `;
 
+const DEFAULT_LANGUAGE = 'kr';
+
 export const Index: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { testInfo } = reducerTest();
+  const [lang, setLang] = useState<string>(DEFAULT_LANGUAGE);
+
+  useEffect(() => {
+    if (window) {
+      setLang(window.localStorage.getItem('lang') || DEFAULT_LANGUAGE);
+    } else {
+      setLang(DEFAULT_LANGUAGE);
+    }
+  }, []);
+
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang]);
+
+  const changeLanguage = (ln: string = DEFAULT_LANGUAGE) => {
+    setLang(ln);
+    if (window) window.localStorage.setItem('lang', ln);
+  };
 
   const goGameClass = (newbie: boolean) => {
     const temp = testInfo.get;
@@ -32,6 +52,7 @@ export const Index: React.FC = () => {
 
   return (
     <Wrapper>
+      <Button onClick={() => changeLanguage(lang === 'en' ? 'kr' : 'en')}>{lang === 'en' ? 'KOREAN' : 'ENGLISH'}</Button>
       <img
         src={'/logo.png'}
         alt={'LOSTARK LOGO'}
@@ -44,14 +65,18 @@ export const Index: React.FC = () => {
         <h2 className={'panel-title'}>
           {t('home.big5Test')} + {t('home.statClass')}
         </h2>
-        <h3 className={'panel-sub-title'}>Big 5 테스트란?</h3>
+        <h3 className={'panel-sub-title'}>{t('home.big5testTitle')}</h3>
         <div className={'panel-content'}>
-          인간의 성격을 5가지 요인들로 설명하는 성격심리 모형.
-          <br /> 학계에서 논의된 5요인 모형을 기반으로 한다.
-          <br /> 성격심리학자들에게 신뢰를 받고 있는 검증된 이론이다.
-          <br />
-          <StyledGoDetail href={'https://namu.wiki/w/Big5'} title={'[나무위키] Big 5 테스트'} target={'_blank'}>
-            자세히
+          {t('home.big5testDesc')
+            .split('\n')
+            .map((el) => (
+              <>
+                {el}
+                <br />
+              </>
+            ))}
+          <StyledGoDetail href={t('home.big5testLink')} title={t('home.big5testLinkTitle')} target={'_blank'}>
+            {t('home.detail')}
           </StyledGoDetail>
         </div>
       </Panel>
