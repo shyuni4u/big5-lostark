@@ -4,10 +4,10 @@ const resources = {
   en: {
     translation: {
       home: {
-        big5testTitle: 'Big 5 테스트란?',
-        big5testDesc: '',
-        big5testLink: 'https://namu.wiki/w/Big5',
-        big5testLinkTitle: '[나무위키] Big 5 테스트',
+        big5testTitle: 'What is Big Five Test?',
+        big5testDesc: 'English version translate not completed.',
+        big5testLink: 'https://www.truity.com/book/big-five-personality-model',
+        big5testLinkTitle: 'Big five personality model',
         statClass: 'Select Class',
         big5Test: 'Personality test',
         btnStart: 'Start',

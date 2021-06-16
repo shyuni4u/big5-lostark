@@ -52,7 +52,6 @@ export const Index: React.FC = () => {
 
   return (
     <Wrapper>
-      <Button onClick={() => changeLanguage(lang === 'en' ? 'kr' : 'en')}>{lang === 'en' ? 'KOREAN' : 'ENGLISH'}</Button>
       <img
         src={'/logo.png'}
         alt={'LOSTARK LOGO'}
@@ -61,6 +60,11 @@ export const Index: React.FC = () => {
           margin: '0 auto'
         }}
       />
+      <div style={{ width: '100%', textAlign: 'center' }}>
+        <button type={'button'} onClick={() => changeLanguage(lang === 'en' ? 'kr' : 'en')} style={{ color: '#fff', fontWeight: 600, padding: '20px' }}>
+          {lang === 'en' ? 'KOREAN' : 'ENGLISH'}
+        </button>
+      </div>
       <Panel>
         <h2 className={'panel-title'}>
           {t('home.big5Test')} + {t('home.statClass')}
