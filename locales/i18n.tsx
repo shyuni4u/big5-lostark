@@ -13,8 +13,8 @@ const resources = {
         btnStart: 'Start',
         btnResult: 'Result',
         checkNewbie: 'Do you have a LostArk character?',
-        yes: 'Yes',
-        no: 'No',
+        yes: 'No',
+        no: 'Yes',
         detail: 'Detail'
       },
       test: {
