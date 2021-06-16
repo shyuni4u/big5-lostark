@@ -166,7 +166,7 @@ const strValues = ['a01', 'a02', 'a03', 'a04', 'a05'];
 // type TestItem = typeof testList
 
 export const Test: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { testInfo } = reducerTest();
 
@@ -184,6 +184,10 @@ export const Test: React.FC = () => {
     temp.inputValues = [];
 
     testInfo.set(temp);
+  }, []);
+
+  useEffect(() => {
+    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en');
   }, []);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import styled, { css } from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -247,13 +247,17 @@ const StyledSelectedGameClassListEmpty = styled.span`
 const MAX_SELECT = 3;
 
 export const GameClass: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { testInfo } = reducerTest();
 
   const [itemInfo, setItemInfo] = useState<GameClassItemInfo>(undefined);
   const [selectedGameClass, setSelectedGameClass] = useState<ParamGameClassInfo[]>([]);
   const [showTalent, setShowTalent] = useState<boolean>(false);
+
+  useEffect(() => {
+    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en');
+  }, []);
 
   const selectGameClass = (gameClass: any, talent: any) => {
     if (selectedGameClass.some((el) => el.name === gameClass.name && el.talentName === talent.name)) {
@@ -364,7 +368,7 @@ export const GameClass: React.FC = () => {
               <StyledGameClassTalentImage url={'/sprite_information.png'} pos={item.image}></StyledGameClassTalentImage>
               <StyledGameClassTalentContent>
                 <div className={'name'}>{t(`gameclass.${item.name}`)}</div>
-                <div className={'desc'}>{item.desc}</div>
+                <div className={'desc'}>{t(`gameclass.${item.desc}`)}</div>
               </StyledGameClassTalentContent>
             </StyledGameClassTalents>
           ))}

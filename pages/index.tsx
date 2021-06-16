@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Router from 'next/router';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import Panel from '../components/atoms/Panel';
 import Button from '../components/atoms/Button';
@@ -17,6 +17,39 @@ const StyledGoDetail = styled.a`
   padding: 2px 5px;
   user-select: none;
   cursor: pointer;
+`;
+
+const ring = keyframes`
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: .4;
+  }
+  100% {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+  }
+`;
+
+const StyledLanguage = styled.button`
+  color: #fff;
+  font-weight: 600;
+  padding: 50px;
+
+  &::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 6px solid #00ffcb;
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ${ring} 1.5s infinite;
+  }
 `;
 
 const DEFAULT_LANGUAGE = 'kr';
@@ -60,10 +93,10 @@ export const Index: React.FC = () => {
           margin: '0 auto'
         }}
       />
-      <div style={{ width: '100%', textAlign: 'center' }}>
-        <button type={'button'} onClick={() => changeLanguage(lang === 'en' ? 'kr' : 'en')} style={{ color: '#fff', fontWeight: 600, padding: '20px' }}>
+      <div style={{ width: '100%', textAlign: 'center', position: 'relative' }}>
+        <StyledLanguage type={'button'} onClick={() => changeLanguage(lang === 'en' ? 'kr' : 'en')}>
           {lang === 'en' ? 'KOREAN' : 'ENGLISH'}
-        </button>
+        </StyledLanguage>
       </div>
       <Panel>
         <h2 className={'panel-title'}>
