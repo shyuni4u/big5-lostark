@@ -46,6 +46,7 @@ const resources = {
         selectClassEmpty: 'Choose your classes (1 ~ 3)',
         maxSelectText: 'Max select: {{max}}',
         goResult: 'Result',
+        close: 'Close',
 
         warrior: 'Warrior',
         destroyer: 'Destroyer',
@@ -172,6 +173,7 @@ const resources = {
         selectClassEmpty: '직업을 1 ~ 3개 선택해주십시오.',
         maxSelectText: '최대 선택: {{max}}',
         goResult: '결과보기',
+        close: '닫기',
 
         warrior: '전사',
         destroyer: '디스트로이어',

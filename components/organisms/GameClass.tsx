@@ -373,7 +373,7 @@ export const GameClass: React.FC = () => {
             </StyledGameClassTalents>
           ))}
         <div style={{ width: '100%', textAlign: 'center' }}>
-          <Button onClick={() => setShowTalent(false)}>닫기</Button>
+          <Button onClick={() => setShowTalent(false)}>{t('gameclass.close')}</Button>
         </div>
       </Modal>
     </>
