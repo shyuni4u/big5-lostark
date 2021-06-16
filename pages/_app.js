@@ -50,7 +50,7 @@ export class RootApp extends App {
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="keywords" content="심리테스트, 직업 추천, 로스트아크, 로아, LOSTARK, MBTI"></meta>
+          <meta name="keywords" content="심리테스트, 직업 추천, 로스트아크, 로아, LOSTARK, MBTI, Big five test"></meta>
           <meta name="description" content="로스트아크 직업 추천을 위한 심리 테스트. Big 5 test for selecting lostark class." />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Big 5 test." />
@@ -61,7 +61,7 @@ export class RootApp extends App {
           <main style={styles.main}>
             <Component {...other} />
           </main>
-          <footer style={styles.footer}>Copyright 2021 <a href='mailto:shyuniz1111@gmail.com'>shyuniz</a> Authors.</footer>
+          <footer style={styles.footer}>Copyright 2021 <a href='mailto:shyuniz1111@gmail.com' style={{ textDecoration: 'underline' }}>shyuniz</a> Authors.</footer>
         </div>
       </>
     );

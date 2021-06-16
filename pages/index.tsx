@@ -36,6 +36,7 @@ const StyledLanguage = styled.button`
   color: #fff;
   font-weight: 600;
   padding: 50px;
+  cursor: pointer;
 
   &::after {
     content: '';
