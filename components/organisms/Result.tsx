@@ -330,7 +330,7 @@ export const Result: React.FC = () => {
 
       // Step 6: train your neural network
       const trainingOptions = {
-        epochs: 20,
+        epochs: 10,
         batchSize: 50
       };
       // Step 7: use the trained model
