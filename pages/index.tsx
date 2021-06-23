@@ -70,6 +70,7 @@ export const Index: React.FC = () => {
 
   useEffect(() => {
     i18n.changeLanguage(lang);
+    if (window) window.localStorage.setItem('lang', lang);
   }, [lang]);
 
   const changeLanguage = (ln: string = DEFAULT_LANGUAGE) => {
