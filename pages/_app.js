@@ -46,7 +46,7 @@ export class RootApp extends App {
     return (
       <>
         <Head>
-          <title>LOSTARK - Big 5 test</title>
+          <title>LOSTARK - Class recommendation by Machine learning</title>
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
