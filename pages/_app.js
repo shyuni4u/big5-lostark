@@ -50,11 +50,11 @@ export class RootApp extends App {
           <link rel="shortcut icon" href="/favicon.ico" />
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta name="keywords" content="심리테스트, 직업 추천, 로스트아크, 로아, LOSTARK, MBTI, Big five test"></meta>
-          <meta name="description" content="로스트아크 직업 추천을 위한 심리 테스트. Big 5 test for selecting lostark class." />
+          <meta name="keywords" content="심리테스트, 머신러닝, 직업 추천, 로스트아크, 로아, LOSTARK, Machine Learning, ML, MBTI, Big five test"></meta>
+          <meta name="description" content="재미로 보는 머신러닝을 통한 로스트 아크 직업 추천 / 뉴비를 위한 유저들의 데이터. Big 5 test for selecting lostark class. Lostarc class recommendation through machine learning for fun / by Korean user datas." />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Big 5 test." />
-          <meta property="og:description" content="로스트아크 직업 추천을 위한 심리 테스트. Big 5 test for selecting lostark class." />
+          <meta property="og:description" content="재미로 보는 머신러닝을 통한 로스트 아크 직업 추천 / 뉴비를 위한 유저들의 데이터. Big 5 test for selecting lostark class. Lostarc class recommendation through machine learning for fun / by Korean user datas." />
           <meta property="og:url" content="http://lostark.enzo.kr/" />
         </Head>
         <div style={styles.layout}>
