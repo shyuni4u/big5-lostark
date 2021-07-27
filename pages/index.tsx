@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Router from 'next/router';
 import { useTranslation } from 'react-i18next';
 import styled, { keyframes } from 'styled-components';
@@ -108,11 +108,11 @@ export const Index: React.FC = () => {
         <div className={'panel-content'}>
           {t('home.big5testDesc')
             .split('\n')
-            .map((el) => (
-              <>
+            .map((el, elIdx) => (
+              <Fragment key={elIdx}>
                 {el}
                 <br />
-              </>
+              </Fragment>
             ))}
           <StyledGoDetail href={t('home.big5testLink')} title={t('home.big5testLinkTitle')} target={'_blank'}>
             {t('home.detail')}
