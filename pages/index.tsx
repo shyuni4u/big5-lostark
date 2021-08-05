@@ -121,6 +121,11 @@ export const Index: React.FC = () => {
       </Panel>
       <Panel>
         <div className={'panel-text'}>
+          <span className={'panel-sub-title'}>{t('home.comment')}</span>
+        </div>
+      </Panel>
+      <Panel>
+        <div className={'panel-text'}>
           <h3 className={'panel-sub-title'}>{t('home.checkNewbie')}</h3>
           <br />
           <Button primary={true} onClick={() => goGameClass(true)}>
