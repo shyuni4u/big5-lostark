@@ -339,7 +339,10 @@ export const GameClass: React.FC = () => {
           ) : (
             selectedGameClass.map((item, index) => (
               <StyledGameClassTalentsSelected key={index} style={{ color: item.color }} onClick={() => unselectGameClass(item)}>
-                <StyledGameClassTalentImageSelected url={'/sprite_information.png'} pos={item.talentImage}>
+                <StyledGameClassTalentImageSelected
+                  url={'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_information.png?ddeae8a302370a3984911b8515c7ffea'}
+                  pos={item.talentImage}
+                >
                   <div className={'close'}>X</div>
                 </StyledGameClassTalentImageSelected>
                 <StyledGameClassTalentContentSelected>
@@ -365,7 +368,10 @@ export const GameClass: React.FC = () => {
         {itemInfo &&
           itemInfo.talents.map((item, index) => (
             <StyledGameClassTalents key={index} onClick={() => selectGameClass({ name: itemInfo.name, color: itemInfo.color }, item)}>
-              <StyledGameClassTalentImage url={'/sprite_information.png'} pos={item.image}></StyledGameClassTalentImage>
+              <StyledGameClassTalentImage
+                url={'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_information.png?ddeae8a302370a3984911b8515c7ffea'}
+                pos={item.image}
+              ></StyledGameClassTalentImage>
               <StyledGameClassTalentContent>
                 <div className={'name'}>{t(`gameclass.${item.name}`)}</div>
                 <div className={'desc'}>{t(`gameclass.${item.desc}`)}</div>
