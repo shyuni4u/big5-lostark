@@ -539,10 +539,7 @@ export const Result: React.FC = () => {
                 <li key={elIdx}>
                   <StyledResultListItems>
                     <li className={'image'}>
-                      <StyledResultListItemImage
-                        url={'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_information.png?ddeae8a302370a3984911b8515c7ffea'}
-                        pos={_talent.image}
-                      ></StyledResultListItemImage>
+                      <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
                     </li>
                     <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                     <li className={'progress'}>
@@ -589,10 +586,7 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage
-                            url={'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_information.png?ddeae8a302370a3984911b8515c7ffea'}
-                            pos={_talent.image}
-                          ></StyledResultListItemImage>
+                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
@@ -628,10 +622,7 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage
-                            url={'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_information.png?ddeae8a302370a3984911b8515c7ffea'}
-                            pos={_talent.image}
-                          ></StyledResultListItemImage>
+                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
@@ -666,10 +657,7 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage
-                            url={'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/pc/sprite/sprite_information.png?ddeae8a302370a3984911b8515c7ffea'}
-                            pos={_talent.image}
-                          ></StyledResultListItemImage>
+                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
