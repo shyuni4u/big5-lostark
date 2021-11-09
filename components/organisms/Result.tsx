@@ -319,7 +319,6 @@ export const Result: React.FC = () => {
   useEffect(() => {
     if (window && ml5 === null && resultML.length > 0 && testInfo.get.inputValues.length > 0) {
       ml5 = require('ml5');
-
       // Step 2: set your neural network options
       const options = {
         task: 'classification',
@@ -330,8 +329,8 @@ export const Result: React.FC = () => {
 
       // Step 6: train your neural network
       const trainingOptions = {
-        epochs: 10,
-        batchSize: 10
+        epochs: window.innerWidth <= 1080 ? 2 : 10,
+        batchSize: window.innerWidth <= 1080 ? 100 : 50
       };
       // Step 7: use the trained model
       const finishedTraining = () => {
