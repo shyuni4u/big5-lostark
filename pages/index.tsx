@@ -119,11 +119,11 @@ export const Index: React.FC = () => {
           </StyledGoDetail>
         </div>
       </Panel>
-      <Panel>
+      {/* <Panel>
         <div className={'panel-text'}>
           <span className={'panel-sub-title'}>{t('home.comment')}</span>
         </div>
-      </Panel>
+      </Panel> */}
       <Panel>
         <div className={'panel-text'}>
           <h3 className={'panel-sub-title'}>{t('home.checkNewbie')}</h3>

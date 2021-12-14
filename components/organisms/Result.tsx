@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Router from 'next/router';
-import styled, { css } from 'styled-components';
-import { useTranslation } from 'react-i18next';
-import ReactEcharts from 'echarts-for-react';
-import { BsBarChart, BsCloud, BsFileText } from 'react-icons/bs';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import Router from 'next/router'
+import styled, { css } from 'styled-components'
+import { useTranslation } from 'react-i18next'
+import ReactEcharts from 'echarts-for-react'
+import { BsBarChart, BsCloud, BsFileText } from 'react-icons/bs'
 
-import Theme from '../../styles/theme';
-import GameClassInfo from '../../lib/GameClassInfo';
-import API from '../../lib/info.json';
+import Theme from '../../styles/theme'
+import GameClassInfo from '../../lib/GameClassInfo'
+import API from '../../lib/info.json'
 
-import Button from '../atoms/Button';
-import Loader from '../atoms/Loader';
+import Button from '../atoms/Button'
+import Loader from '../atoms/Loader'
 
-import reducerTest from '../../reducers/reducerTest';
+import reducerTest from '../../reducers/reducerTest'
 
 const StyledLoadingWrapper = styled.div`
   width: 100vw;
@@ -23,7 +23,7 @@ const StyledLoadingWrapper = styled.div`
   justify-content: center;
   text-align: center;
   align-items: center;
-`;
+`
 
 const StyledResult = styled.div`
   ${({ theme }) => {
@@ -36,9 +36,9 @@ const StyledResult = styled.div`
       margin-bottom: 10px;
       padding-bottom: 25px;
       border-bottom: 1px solid ${theme.colors.info};
-    `;
+    `
   }}
-`;
+`
 const StyledResultTitle = styled.div`
   ${({ theme }) => {
     return css`
@@ -53,9 +53,9 @@ const StyledResultTitle = styled.div`
         margin-right: 4px;
         margin-bottom: -2px;
       }
-    `;
+    `
   }}
-`;
+`
 const StyledResultCount = styled.div`
   ${({ theme }) => {
     return css`
@@ -67,9 +67,9 @@ const StyledResultCount = styled.div`
         font-weight: 600;
         font-size: 2.4em;
       }
-    `;
+    `
   }}
-`;
+`
 const StyledResultList = styled.ul`
   width: 100%;
   flex: 0 0 100%;
@@ -79,13 +79,13 @@ const StyledResultList = styled.ul`
     padding: 4px 0;
     justify-content: center;
   }
-`;
+`
 
 type hasUrlProps = {
-  url?: string;
-  color?: string;
-  pos?: string;
-};
+  url?: string
+  color?: string
+  pos?: string
+}
 const StyledResultListItems = styled.ul`
   ${({ theme }) => {
     return css`
@@ -135,12 +135,12 @@ const StyledResultListItems = styled.ul`
         flex: 0 0 40px;
         text-align: right;
       }
-    `;
+    `
   }}
-`;
+`
 const StyledResultListItemImage = styled.div<hasUrlProps>`
   ${({ theme, url, color, pos }) => {
-    const _pos = pos.split(' ');
+    const _pos = pos.split(' ')
     return css`
       flex: 0 0 67px;
       display: block;
@@ -184,91 +184,97 @@ const StyledResultListItemImage = styled.div<hasUrlProps>`
         top: 0;
         opacity: 1;
       }
-    `;
+    `
   }}
-`;
+`
 
 const StyledYouLi = styled.li`
   padding: 4px 0;
   & > span {
     font-weight: 600;
   }
-`;
+`
 
-const TOKEN = '!?!';
+const TOKEN = '!?!'
 
 type testResult = {
-  sClass: string;
-  sTalent: string;
-  nCount?: number;
-  nSum?: number;
-};
+  sClass: string
+  sTalent: string
+  nCount?: number
+  nSum?: number
+}
 type mlProp = {
-  sC: string; //  class
-  sT: string; //  talent
-  sI?: string; //  input
-  sR?: string; //  result
-};
+  sC: string //  class
+  sT: string //  talent
+  sI?: string //  input
+  sR?: string //  result
+}
 type resultNNProp = {
-  label: string;
-  confidence: number;
-};
+  label: string
+  confidence: number
+}
+
+const FOR_TRAINING = false
+
 export const Result: React.FC = () => {
-  const { t, i18n } = useTranslation();
-  const { testInfo } = reducerTest();
-  const [result, setResult] = useState<testResult[]>([]);
-  const [resultRatio, setResultRatio] = useState<testResult[]>([]);
-  const [resultTotal, setResultTotal] = useState<testResult[]>([]);
-  const [resultML, setResultML] = useState<mlProp[]>([]);
-  const [resultNN, setResultNN] = useState<resultNNProp[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { t, i18n } = useTranslation()
+  const { testInfo } = reducerTest()
+  const [result, setResult] = useState<testResult[]>([])
+  const [resultRatio, setResultRatio] = useState<testResult[]>([])
+  const [resultTotal, setResultTotal] = useState<testResult[]>([])
+  const [resultML, setResultML] = useState<mlProp[]>([])
+  const [resultNN, setResultNN] = useState<resultNNProp[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
-  const [agree, setAgree] = useState<number>(1);
-  const [consc, setConsc] = useState<number>(1);
-  const [extra, setExtra] = useState<number>(1);
-  const [openn, setOpenn] = useState<number>(1);
-  const [neuro, setNeuro] = useState<number>(1);
+  const [agree, setAgree] = useState<number>(1)
+  const [consc, setConsc] = useState<number>(1)
+  const [extra, setExtra] = useState<number>(1)
+  const [openn, setOpenn] = useState<number>(1)
+  const [neuro, setNeuro] = useState<number>(1)
 
-  const [total, setTotal] = useState<number>(0);
-  const [sum, setSum] = useState<number>(0);
-  const [max, setMax] = useState<number>(1);
-  const [maxRatio, setMaxRatio] = useState<number>(100);
-  const [maxTotal, setMaxTotal] = useState<number>(1);
-  const [showStat, setShowStat] = useState<boolean>(false);
-  const [more, setMore] = useState<boolean>(false);
-  const [moreRatio, setMoreRatio] = useState<boolean>(false);
-  const [moreTotal, setMoreTotal] = useState<boolean>(false);
+  const [total, setTotal] = useState<number>(0)
+  const [sum, setSum] = useState<number>(0)
+  const [max, setMax] = useState<number>(1)
+  const [maxRatio, setMaxRatio] = useState<number>(100)
+  const [maxTotal, setMaxTotal] = useState<number>(1)
+  const [showStat, setShowStat] = useState<boolean>(false)
+  const [more, setMore] = useState<boolean>(false)
+  const [moreRatio, setMoreRatio] = useState<boolean>(false)
+  const [moreTotal, setMoreTotal] = useState<boolean>(false)
 
-  let ml5: any = null;
+  const [nn, setNN] = useState<any>(undefined)
+
+  let ml5: any = null
 
   const numberWithCommas = (x: number) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
 
   const parseRange = (val: number) => {
-    if (val >= 1 && val < 3) return 1;
-    if (val == 3) return 3;
-    if (val > 3 && val <= 5) return 5;
-    return 0;
-  };
+    if (val >= 1 && val < 3) return 1
+    if (val == 3) return 3
+    if (val > 3 && val <= 5) return 5
+    return 0
+  }
 
   useEffect(() => {
-    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en');
-  }, []);
+    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en')
+  }, [])
 
   useEffect(() => {
-    let unmount = false;
+    let unmount = false
 
     const onLoadApi = async () => {
-      const _agree = parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount);
-      const _consc = parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount);
-      const _extra = parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount);
-      const _openn = parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount);
-      const _neuro = parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount);
+      const _agree = parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount)
+      const _consc = parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount)
+      const _extra = parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount)
+      const _openn = parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount)
+      const _neuro = parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount)
 
       await axios
         .post(API.path, null, {
           params: {
+            bTraining: FOR_TRAINING ? 'true' : undefined,
             sFirstClass: testInfo.get.firstClass,
             sFirstTalent: testInfo.get.firstTalent,
             sSecondClass: testInfo.get.secondClass,
@@ -284,60 +290,56 @@ export const Result: React.FC = () => {
           }
         })
         .then((response) => {
-          if (unmount) return;
+          if (unmount) return
           if (response.status === 200) {
-            setTotal(response.data.count[0].nCnt);
-            setResult(response.data.list);
-            setResultRatio(response.data.ratio);
-            setResultTotal(response.data.total);
-            setResultML(response.data.ml);
+            setTotal(response.data.count[0].nCnt)
+            setResult(response.data.list)
+            setResultRatio(response.data.ratio)
+            setResultTotal(response.data.total)
+            if (FOR_TRAINING) setResultML(response.data.ml)
           } else {
-            setResult(undefined);
+            setResult(undefined)
           }
         })
         .catch((error) => {
-          if (unmount) return;
-          console.error(error);
+          if (unmount) return
+          console.error(error)
         })
         .finally(() => {
-          setLoading(false);
-          setAgree(_agree);
-          setConsc(_consc);
-          setExtra(_extra);
-          setOpenn(_openn);
-          setNeuro(_neuro);
-        });
-    };
+          setLoading(false)
+          setAgree(_agree)
+          setConsc(_consc)
+          setExtra(_extra)
+          setOpenn(_openn)
+          setNeuro(_neuro)
+        })
+    }
 
-    onLoadApi();
+    // onLoadApi()
+    setTimeout(() => onLoadApi(), 4 * 1000)
 
     return () => {
-      unmount = true;
-    };
-  }, []);
+      unmount = true
+    }
+  }, [])
 
   useEffect(() => {
     if (window && ml5 === null && resultML.length > 0 && testInfo.get.inputValues.length > 0) {
-      ml5 = require('ml5');
-      // Step 2: set your neural network options
+      ml5 = require('ml5')
       const options = {
         task: 'classification',
-        debug: false
-      };
-      // Step 3: initialize your neural network
-      const nn = ml5.neuralNetwork(options);
+        debug: FOR_TRAINING
+      }
+      const _nn = ml5.neuralNetwork(options)
 
-      // Step 6: train your neural network
       const trainingOptions = {
-        epochs: window.innerWidth <= 1080 ? 2 : 10,
-        batchSize: window.innerWidth <= 1080 ? 100 : 50
-      };
-      // Step 7: use the trained model
+        epochs: 100,
+        batchSize: 50
+      }
       const finishedTraining = () => {
-        classify();
-      };
+        classify()
+      }
 
-      // Step 8: make a classification
       const classify = () => {
         const input = {
           v00: parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount) * 20,
@@ -345,61 +347,92 @@ export const Result: React.FC = () => {
           v02: parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount) * 20,
           v03: parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount) * 20,
           v04: parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount) * 20
-        };
-        nn.classify(input, handleResults);
-      };
+        }
+        _nn.classify(input, handleResults)
+      }
 
-      // Step 9: define a function to handle the results of your classification
       const handleResults = (error, result) => {
         if (error) {
-          console.error(error);
-          return;
+          console.error(error)
+          return
         }
-        setResultNN(result);
-      };
+        setResultNN(result)
+      }
 
-      // Step 4: add data to the neural network
       resultML.forEach((el: mlProp) => {
-        const _val = el.sR.split('');
+        const _val = el.sR.split('')
         const inputs = {
           v00: parseInt(_val[0], 10) * 20,
           v01: parseInt(_val[1], 10) * 20,
           v02: parseInt(_val[2], 10) * 20,
           v03: parseInt(_val[3], 10) * 20,
           v04: parseInt(_val[4], 10) * 20
-        };
+        }
         const output = {
           sClass: `${el.sC}${TOKEN}${el.sT}`
-        };
+        }
 
-        nn.addData(inputs, output);
-      });
+        _nn.addData(inputs, output)
+      })
 
-      // Step 5: normalize your data;
-      nn.normalizeData();
-      nn.train(trainingOptions, finishedTraining);
+      _nn.normalizeData()
+      _nn.train(trainingOptions, finishedTraining)
+      setNN(_nn)
+    } else if (window && ml5 === null) {
+      ml5 = require('ml5')
+      const options = {
+        task: 'classification',
+        debug: false
+      }
+      let _nn = ml5.neuralNetwork(options)
+      const modelDetails = {
+        model: '/model/model.json',
+        metadata: '/model/model_meta.json',
+        weights: '/model/model.weights.bin'
+      }
+      const modelReady = () => {
+        classfy()
+      }
+      _nn.load(modelDetails, modelReady)
+      const classfy = () => {
+        const input = {
+          v00: parseRange(testInfo.get.agreeablenessScore / testInfo.get.agreeablenessCount) * 20,
+          v01: parseRange(testInfo.get.conscientiousnessScore / testInfo.get.conscientiousnessCount) * 20,
+          v02: parseRange(testInfo.get.extraversionScore / testInfo.get.extraversionCount) * 20,
+          v03: parseRange(testInfo.get.opennessToExperienceScore / testInfo.get.opennessToExperienceCount) * 20,
+          v04: parseRange(testInfo.get.neuroticismScore / testInfo.get.neuroticismCount) * 20
+        }
+        _nn.classify(input, handleResults)
+      }
+      const handleResults = (error, result) => {
+        if (error) {
+          console.error(error)
+          return
+        }
+        setResultNN(result)
+      }
     }
-  }, [resultML]);
+  }, [resultML])
 
   useEffect(() => {
-    let _sum = 0;
-    result.forEach((el) => (_sum += el.nCount));
+    let _sum = 0
+    result.forEach((el) => (_sum += el.nCount))
 
-    if (result.length > 0) setMax(result[0].nCount);
-    else setMax(1);
+    if (result.length > 0) setMax(result[0].nCount)
+    else setMax(1)
 
-    setSum(_sum);
-  }, [result]);
-
-  useEffect(() => {
-    if (resultRatio.length > 0) setMaxRatio(resultRatio[0].nSum);
-    else setMaxRatio(100);
-  }, [resultRatio]);
+    setSum(_sum)
+  }, [result])
 
   useEffect(() => {
-    if (resultTotal.length > 0) setMaxTotal(resultTotal[0].nSum);
-    else setMaxTotal(1);
-  }, [resultTotal]);
+    if (resultRatio.length > 0) setMaxRatio(resultRatio[0].nSum)
+    else setMaxRatio(100)
+  }, [resultRatio])
+
+  useEffect(() => {
+    if (resultTotal.length > 0) setMaxTotal(resultTotal[0].nSum)
+    else setMaxTotal(1)
+  }, [resultTotal])
 
   const getOption = () => {
     return {
@@ -463,8 +496,8 @@ export const Result: React.FC = () => {
           ]
         }
       ]
-    };
-  };
+    }
+  }
 
   return (
     <>
@@ -529,10 +562,10 @@ export const Result: React.FC = () => {
               </>
             )}
             {resultNN.map((el: resultNNProp, elIdx: number) => {
-              if (elIdx > 4) return undefined;
-              const _el = el.label.split(TOKEN);
-              const _class = GameClassInfo.find((v) => v.name == _el[0]);
-              const _talent = _class.talents.find((v) => v.name == _el[1]);
+              if (elIdx > 4) return undefined
+              const _el = el.label.split(TOKEN)
+              const _class = GameClassInfo.find((v) => v.name == _el[0])
+              const _talent = _class.talents.find((v) => v.name == _el[1])
 
               return (
                 <li key={elIdx}>
@@ -548,7 +581,7 @@ export const Result: React.FC = () => {
                     </li>
                   </StyledResultListItems>
                 </li>
-              );
+              )
             })}
           </StyledResultList>
         </StyledResult>
@@ -576,10 +609,10 @@ export const Result: React.FC = () => {
               </StyledResultTitle>
               <StyledResultList>
                 {resultRatio.map((el: testResult, elIdx: number) => {
-                  if (!moreRatio && elIdx > 4) return undefined;
+                  if (!moreRatio && elIdx > 4) return undefined
 
-                  const _class = GameClassInfo.find((v) => v.name == el.sClass);
-                  const _talent = _class.talents.find((v) => v.name == el.sTalent);
+                  const _class = GameClassInfo.find((v) => v.name == el.sClass)
+                  const _talent = _class.talents.find((v) => v.name == el.sTalent)
 
                   return (
                     <li key={elIdx}>
@@ -595,7 +628,7 @@ export const Result: React.FC = () => {
                         </li>
                       </StyledResultListItems>
                     </li>
-                  );
+                  )
                 })}
                 {resultRatio.length > 5 && !moreRatio && (
                   <li>
@@ -612,10 +645,10 @@ export const Result: React.FC = () => {
               <StyledResultList>
                 {result.length === 0 && <span>{t('result.sorry')}</span>}
                 {result.map((el: testResult, elIdx: number) => {
-                  if (!more && elIdx > 4) return undefined;
+                  if (!more && elIdx > 4) return undefined
 
-                  const _class = GameClassInfo.find((v) => v.name == el.sClass);
-                  const _talent = _class.talents.find((v) => v.name == el.sTalent);
+                  const _class = GameClassInfo.find((v) => v.name == el.sClass)
+                  const _talent = _class.talents.find((v) => v.name == el.sTalent)
 
                   return (
                     <li key={elIdx}>
@@ -631,7 +664,7 @@ export const Result: React.FC = () => {
                         </li>
                       </StyledResultListItems>
                     </li>
-                  );
+                  )
                 })}
                 {result.length > 5 && !more && (
                   <li>
@@ -647,10 +680,10 @@ export const Result: React.FC = () => {
               </StyledResultTitle>
               <StyledResultList>
                 {resultTotal.map((el: testResult, elIdx: number) => {
-                  if (!moreTotal && elIdx > 4) return undefined;
+                  if (!moreTotal && elIdx > 4) return undefined
 
-                  const _class = GameClassInfo.find((v) => v.name == el.sClass);
-                  const _talent = _class.talents.find((v) => v.name == el.sTalent);
+                  const _class = GameClassInfo.find((v) => v.name == el.sClass)
+                  const _talent = _class.talents.find((v) => v.name == el.sTalent)
 
                   return (
                     <li key={elIdx}>
@@ -666,7 +699,7 @@ export const Result: React.FC = () => {
                         </li>
                       </StyledResultListItems>
                     </li>
-                  );
+                  )
                 })}
                 {resultTotal.length > 5 && !moreTotal && (
                   <li>
@@ -686,9 +719,16 @@ export const Result: React.FC = () => {
         <Button primary onClick={() => Router.push('/')}>
           {t('result.retry')}
         </Button>
+        {FOR_TRAINING ? (
+          <Button primary onClick={() => nn.save()}>
+            SAVE
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Result;
+export default Result
