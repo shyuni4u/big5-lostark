@@ -3,7 +3,11 @@ import axios from 'axios'
 import Router from 'next/router'
 import styled, { css } from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import ReactEcharts from 'echarts-for-react'
+import ReactEChartsCore from 'echarts-for-react/lib/core'
+import echarts from 'echarts/lib/echarts'
+import 'echarts/lib/chart/radar'
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/grid'
 import { BsBarChart, BsCloud, BsFileText } from 'react-icons/bs'
 
 import Theme from '../../styles/theme'
@@ -512,7 +516,8 @@ export const Result: React.FC = () => {
             <BsBarChart />
             {t('result.you')}
           </StyledResultTitle>
-          <ReactEcharts
+          <ReactEChartsCore
+            echarts={echarts}
             option={getOption()}
             notMerge={true}
             lazyUpdate={true}
