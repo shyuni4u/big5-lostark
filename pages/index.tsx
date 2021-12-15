@@ -1,14 +1,14 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import Router from 'next/router';
-import { useTranslation } from 'react-i18next';
-import styled, { keyframes } from 'styled-components';
+import React, { Fragment, useState, useEffect } from 'react'
+import Router from 'next/router'
+import { useTranslation } from 'react-i18next'
+import styled, { keyframes } from 'styled-components'
 
-import Panel from '../components/atoms/Panel';
-import Button from '../components/atoms/Button';
-import Wrapper from '../components/organisms/Wrapper';
-import Adfit from '../components/molecules/Adfit';
+import Panel from '../components/atoms/Panel'
+import Button from '../components/atoms/Button'
+import Wrapper from '../components/organisms/Wrapper'
+import Adfit from '../components/molecules/Adfit'
 
-import reducerTest from '../reducers/reducerTest';
+import reducerTest from '../reducers/reducerTest'
 
 const StyledGoDetail = styled.a`
   font-size: 0.6em;
@@ -17,7 +17,7 @@ const StyledGoDetail = styled.a`
   padding: 2px 5px;
   user-select: none;
   cursor: pointer;
-`;
+`
 
 const ring = keyframes`
   0% {
@@ -30,7 +30,7 @@ const ring = keyframes`
     height: 100px;
     opacity: 0;
   }
-`;
+`
 
 const StyledLanguage = styled.button`
   color: #fff;
@@ -51,39 +51,39 @@ const StyledLanguage = styled.button`
     transform: translate(-50%, -50%);
     animation: ${ring} 1.5s infinite;
   }
-`;
+`
 
-const DEFAULT_LANGUAGE = 'kr';
+const DEFAULT_LANGUAGE = 'kr'
 
 export const Index: React.FC = () => {
-  const { t, i18n } = useTranslation();
-  const { testInfo } = reducerTest();
-  const [lang, setLang] = useState<string>(DEFAULT_LANGUAGE);
+  const { t, i18n } = useTranslation()
+  const { testInfo } = reducerTest()
+  const [lang, setLang] = useState<string>(DEFAULT_LANGUAGE)
 
   useEffect(() => {
     if (window) {
-      setLang(window.localStorage.getItem('lang') || DEFAULT_LANGUAGE);
+      setLang(window.localStorage.getItem('lang') || DEFAULT_LANGUAGE)
     } else {
-      setLang(DEFAULT_LANGUAGE);
+      setLang(DEFAULT_LANGUAGE)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    i18n.changeLanguage(lang);
-    if (window) window.localStorage.setItem('lang', lang);
-  }, [lang]);
+    i18n.changeLanguage(lang)
+    if (window) window.localStorage.setItem('lang', lang)
+  }, [lang])
 
   const changeLanguage = (ln: string = DEFAULT_LANGUAGE) => {
-    setLang(ln);
-    if (window) window.localStorage.setItem('lang', ln);
-  };
+    setLang(ln)
+    if (window) window.localStorage.setItem('lang', ln)
+  }
 
   const goGameClass = (newbie: boolean) => {
-    const temp = testInfo.get;
-    temp.newbie = newbie;
-    testInfo.set(temp);
-    Router.push('./test');
-  };
+    const temp = testInfo.get
+    temp.newbie = newbie
+    testInfo.set(temp)
+    Router.push('./test')
+  }
 
   return (
     <Wrapper>
@@ -136,7 +136,7 @@ export const Index: React.FC = () => {
       </Panel>
       <Adfit />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
