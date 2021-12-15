@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import Router from 'next/router';
-import styled, { css } from 'styled-components';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react'
+import Router from 'next/router'
+import styled, { css } from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
-import Panel from '../atoms/Panel';
-import Button from '../atoms/Button';
-import Modal from '../atoms/Modal';
+import Panel from '../atoms/Panel'
+import Button from '../atoms/Button'
+import Modal from '../atoms/Modal'
 
-import reducerTest from '../../reducers/reducerTest';
+import reducerTest from '../../reducers/reducerTest'
 
-import GameClassList, { GameClassItemInfo, ParamGameClassInfo } from '../../lib/GameClassInfo';
+import GameClassList, { GameClassItemInfo, ParamGameClassInfo } from '../../lib/GameClassInfo'
 
 type hasUrlProps = {
-  url?: string;
-  color?: string;
-  pos?: string;
-};
+  url?: string
+  color?: string
+  pos?: string
+}
 const StyledGameClassItemWrapper = styled.div`
   flex: 0 1 100%;
   border-bottom: 1px solid white;
   &:last-child {
     border-bottom: 0;
   }
-`;
+`
 const StyledGameClassItem = styled.div<hasUrlProps>`
   ${({ theme, url, color }) => {
     return css`
@@ -47,9 +47,9 @@ const StyledGameClassItem = styled.div<hasUrlProps>`
         font-size: ${({ theme }) => theme.fontSizes.h3};
         font-weight: 600;
       }
-    `;
+    `
   }}
-`;
+`
 const StyledGameClassItemBackground = styled.div<hasUrlProps>`
   ${({ theme, url, color }) => {
     return css`
@@ -62,9 +62,9 @@ const StyledGameClassItemBackground = styled.div<hasUrlProps>`
       background-position: 0px -70px;
       background-size: cover;
       z-index: -1;
-    `;
+    `
   }}
-`;
+`
 const StyledGameClassTalents = styled.ul`
   ${({ theme }) => {
     return css`
@@ -80,12 +80,12 @@ const StyledGameClassTalents = styled.ul`
       &:hover {
         background-color: #9e661c;
       }
-    `;
+    `
   }}
-`;
+`
 const StyledGameClassTalentImage = styled.li<hasUrlProps>`
   ${({ theme, url, color, pos }) => {
-    const _pos = pos.split(' ');
+    const _pos = pos.split(' ')
     return css`
       flex: 0 0 67px;
       display: block;
@@ -129,12 +129,12 @@ const StyledGameClassTalentImage = styled.li<hasUrlProps>`
         top: 0;
         opacity: 1;
       }
-    `;
+    `
   }}
-`;
+`
 const StyledGameClassTalentContent = styled.li`
   ${({ theme }) => {
-    const { colors } = theme;
+    const { colors } = theme
     return css`
       padding-left: 10px;
       & > .name {
@@ -142,9 +142,9 @@ const StyledGameClassTalentContent = styled.li`
       }
       & > .desc {
       }
-    `;
+    `
   }}
-`;
+`
 
 const StyledGameClassTalentsSelected = styled.ul`
   ${({ theme }) => {
@@ -155,12 +155,12 @@ const StyledGameClassTalentsSelected = styled.ul`
       height: 100px;
       user-select: none;
       cursor: pointer;
-    `;
+    `
   }}
-`;
+`
 const StyledGameClassTalentImageSelected = styled.li<hasUrlProps>`
   ${({ theme, url, color, pos }) => {
-    const _pos = pos.split(' ');
+    const _pos = pos.split(' ')
     return css`
       flex: 0 0 67px;
       display: block;
@@ -217,47 +217,47 @@ const StyledGameClassTalentImageSelected = styled.li<hasUrlProps>`
         top: 0;
         opacity: 1;
       }
-    `;
+    `
   }}
-`;
+`
 const StyledGameClassTalentContentSelected = styled.li`
   ${({ theme }) => {
-    const { colors } = theme;
+    const { colors } = theme
     return css`
       & > .name {
         color: ${colors.hover};
       }
-    `;
+    `
   }}
-`;
+`
 
 const StyledSelectedGameClassList = styled.div`
   display: flex;
   flex-wrap: wrap;
   text-align: center;
   justify-content: space-around;
-`;
+`
 const StyledSelectedGameClassListEmpty = styled.span`
   color: ${({ theme }) => theme.colors.danger};
   height: 40px;
   line-height: 40px;
   overflow: hidden;
-`;
+`
 
-const MAX_SELECT = 3;
+const MAX_SELECT = 3
 
 export const GameClass: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation()
 
-  const { testInfo } = reducerTest();
+  const { testInfo } = reducerTest()
 
-  const [itemInfo, setItemInfo] = useState<GameClassItemInfo>(undefined);
-  const [selectedGameClass, setSelectedGameClass] = useState<ParamGameClassInfo[]>([]);
-  const [showTalent, setShowTalent] = useState<boolean>(false);
+  const [itemInfo, setItemInfo] = useState<GameClassItemInfo>(undefined)
+  const [selectedGameClass, setSelectedGameClass] = useState<ParamGameClassInfo[]>([])
+  const [showTalent, setShowTalent] = useState<boolean>(false)
 
   useEffect(() => {
-    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en');
-  }, []);
+    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en')
+  }, [])
 
   const selectGameClass = (gameClass: any, talent: any) => {
     if (selectedGameClass.some((el) => el.name === gameClass.name && el.talentName === talent.name)) {
@@ -271,7 +271,7 @@ export const GameClass: React.FC = () => {
         pauseOnHover: false,
         draggable: true,
         progress: undefined
-      });
+      })
     } else {
       const temp: ParamGameClassInfo = {
         name: gameClass.name,
@@ -280,33 +280,33 @@ export const GameClass: React.FC = () => {
         talentPosition: talent.position,
         talentImage: talent.image,
         talentDesc: talent.desc
-      };
-      setSelectedGameClass((old) => [...old, temp]);
+      }
+      setSelectedGameClass((old) => [...old, temp])
     }
-    setShowTalent(false);
-  };
+    setShowTalent(false)
+  }
 
   const unselectGameClass = (item: ParamGameClassInfo) => {
-    setSelectedGameClass(selectedGameClass.filter((el) => !(el.name === item.name && el.talentName === item.talentName)));
-  };
+    setSelectedGameClass(selectedGameClass.filter((el) => !(el.name === item.name && el.talentName === item.talentName)))
+  }
 
   const goTest = () => {
-    const temp = testInfo.get;
+    const temp = testInfo.get
     if (selectedGameClass.length > 2) {
-      temp.thirdClass = selectedGameClass[2].name;
-      temp.thirdTalent = selectedGameClass[2].talentName;
+      temp.thirdClass = selectedGameClass[2].name
+      temp.thirdTalent = selectedGameClass[2].talentName
     }
     if (selectedGameClass.length > 1) {
-      temp.secondClass = selectedGameClass[1].name;
-      temp.secondTalent = selectedGameClass[1].talentName;
+      temp.secondClass = selectedGameClass[1].name
+      temp.secondTalent = selectedGameClass[1].talentName
     }
     if (selectedGameClass.length > 0) {
-      temp.firstClass = selectedGameClass[0].name;
-      temp.firstTalent = selectedGameClass[0].talentName;
+      temp.firstClass = selectedGameClass[0].name
+      temp.firstTalent = selectedGameClass[0].talentName
     }
-    testInfo.set(temp);
-    Router.push('./result');
-  };
+    testInfo.set(temp)
+    Router.push('./result')
+  }
 
   return (
     <>
@@ -319,13 +319,13 @@ export const GameClass: React.FC = () => {
             <StyledGameClassItemWrapper key={index}>
               <StyledGameClassItem
                 color={item.color}
-                url={`/class/${item.image}`}
+                url={item.image}
                 onClick={() => {
-                  setItemInfo(item);
-                  setShowTalent(true);
+                  setItemInfo(item)
+                  setShowTalent(true)
                 }}
               >
-                <StyledGameClassItemBackground url={`/class/${item.background}`}></StyledGameClassItemBackground>
+                <StyledGameClassItemBackground url={item.background}></StyledGameClassItemBackground>
                 <span>{t(`gameclass.${item.name}`)}</span>
               </StyledGameClassItem>
             </StyledGameClassItemWrapper>
@@ -339,7 +339,7 @@ export const GameClass: React.FC = () => {
           ) : (
             selectedGameClass.map((item, index) => (
               <StyledGameClassTalentsSelected key={index} style={{ color: item.color }} onClick={() => unselectGameClass(item)}>
-                <StyledGameClassTalentImageSelected url={'/sprite_information.png'} pos={item.talentImage}>
+                <StyledGameClassTalentImageSelected url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={item.talentImage}>
                   <div className={'close'}>X</div>
                 </StyledGameClassTalentImageSelected>
                 <StyledGameClassTalentContentSelected>
@@ -354,7 +354,7 @@ export const GameClass: React.FC = () => {
         <Button
           onClick={() => {
             if (selectedGameClass.length > 0) {
-              goTest();
+              goTest()
             }
           }}
         >
@@ -365,7 +365,7 @@ export const GameClass: React.FC = () => {
         {itemInfo &&
           itemInfo.talents.map((item, index) => (
             <StyledGameClassTalents key={index} onClick={() => selectGameClass({ name: itemInfo.name, color: itemInfo.color }, item)}>
-              <StyledGameClassTalentImage url={'/sprite_information.png'} pos={item.image}></StyledGameClassTalentImage>
+              <StyledGameClassTalentImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={item.image}></StyledGameClassTalentImage>
               <StyledGameClassTalentContent>
                 <div className={'name'}>{t(`gameclass.${item.name}`)}</div>
                 <div className={'desc'}>{t(`gameclass.${item.desc}`)}</div>
@@ -377,7 +377,7 @@ export const GameClass: React.FC = () => {
         </div>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default GameClass;
+export default GameClass

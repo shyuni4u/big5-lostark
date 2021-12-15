@@ -1,8 +1,8 @@
 export const GameClassList = [
   {
     name: 'warrior',
-    image: 'img_index_warrior.png',
-    background: 'bg_index_warrior.jpg',
+    image: 'https://i.ibb.co/8DsHx1N/img-index-warrior.png', // 'img_index_warrior.png',
+    background: 'https://i.ibb.co/gyFJq8Q/bg-index-warrior.jpg', // 'bg_index_warrior.jpg',
     color: '#c79c6e',
     talents: [
       {
@@ -33,8 +33,8 @@ export const GameClassList = [
   },
   {
     name: 'fighter',
-    image: 'img_index_fighter.png',
-    background: 'bg_index_fighter.jpg',
+    image: 'https://i.ibb.co/mB8RShF/img-index-fighter.png', // 'img_index_fighter.png',
+    background: 'https://i.ibb.co/xDF2jg8/bg-index-fighter.jpg', // 'bg_index_fighter.jpg',
     color: '#00ff96',
     talents: [
       {
@@ -71,8 +71,8 @@ export const GameClassList = [
   },
   {
     name: 'hunter',
-    image: 'img_index_hunter.png',
-    background: 'bg_index_hunter.jpg',
+    image: 'https://i.ibb.co/qntY3NW/img-index-hunter.png', // 'img_index_hunter.png',
+    background: 'https://i.ibb.co/hHMz3nH/bg-index-hunter.jpg', // 'bg_index_hunter.jpg',
     color: '#abd473',
     talents: [
       {
@@ -109,8 +109,8 @@ export const GameClassList = [
   },
   {
     name: 'magician',
-    image: 'img_index_magician.png',
-    background: 'bg_index_magician.jpg',
+    image: 'https://i.ibb.co/0QFdZ7B/img-index-magician.png', // 'img_index_magician.png',
+    background: 'https://i.ibb.co/zXQzXmW/bg-index-magician.jpg', // 'bg_index_magician.jpg',
     color: '#69ccf0',
     talents: [
       {
@@ -135,8 +135,8 @@ export const GameClassList = [
   },
   {
     name: 'assassin',
-    image: 'img_index_assassin.png',
-    background: 'bg_index_assassin.jpg',
+    image: 'https://i.ibb.co/5jvQfr2/img-index-assassin.png', // 'img_index_assassin.png',
+    background: 'https://i.ibb.co/yRBjR7P/bg-index-assassin.jpg', // 'bg_index_assassin.jpg',
     color: '#fff569',
     talents: [
       {
@@ -159,19 +159,19 @@ export const GameClassList = [
       }
     ]
   }
-];
+]
 
-export type GameClassInfo = typeof GameClassList;
-export type GameClassItemInfo = typeof GameClassList[0];
+export type GameClassInfo = typeof GameClassList
+export type GameClassItemInfo = typeof GameClassList[0]
 export type ParamGameClassInfo = {
-  name: string;
-  image?: string;
-  background?: string;
-  color: string;
-  talentName?: string;
-  talentPosition?: string;
-  talentImage?: string;
-  talentDesc?: string;
-};
+  name: string
+  image?: string
+  background?: string
+  color: string
+  talentName?: string
+  talentPosition?: string
+  talentImage?: string
+  talentDesc?: string
+}
 
-export default GameClassList;
+export default GameClassList
