@@ -576,7 +576,7 @@ export const Result: React.FC = () => {
                 <li key={elIdx}>
                   <StyledResultListItems>
                     <li className={'image'}>
-                      <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                      <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
                     </li>
                     <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                     <li className={'progress'}>
@@ -623,7 +623,7 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                          <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
@@ -659,7 +659,7 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                          <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
@@ -694,7 +694,7 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage url={'/sprite_information.png'} pos={_talent.image}></StyledResultListItemImage>
+                          <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
