@@ -17,6 +17,8 @@ type hasUrlProps = {
   url?: string
   color?: string
   pos?: string
+  image?: string
+  imageHover?: string
 }
 const StyledGameClassItemWrapper = styled.div`
   flex: 0 1 100%;
@@ -84,7 +86,7 @@ const StyledGameClassTalents = styled.ul`
   }}
 `
 const StyledGameClassTalentImage = styled.li<hasUrlProps>`
-  ${({ theme, url, color, pos }) => {
+  ${({ theme, url, color, pos, image, imageHover }) => {
     const _pos = pos.split(' ')
     return css`
       flex: 0 0 67px;
@@ -103,9 +105,15 @@ const StyledGameClassTalentImage = styled.li<hasUrlProps>`
         width: 67px;
         height: 75px;
         display: inline-block;
-        background: url(${url}) no-repeat 0 0;
-        background-position: ${_pos[0]} ${_pos[1]};
-        background-size: 1584px 1497px;
+        ${pos === ''
+          ? css`
+              background: url(${image}) no-repeat 0 0;
+            `
+          : css`
+              background: url(${url}) no-repeat 0 0;
+              background-position: ${_pos[0]} ${_pos[1]};
+              background-size: 1584px 1497px;
+            `}
         font-size: 0;
         transition: 0.5s;
         content: '';
@@ -118,9 +126,15 @@ const StyledGameClassTalentImage = styled.li<hasUrlProps>`
         width: 67px;
         height: 75px;
         display: inline-block;
-        background: url(${url}) no-repeat 0 0;
-        background-position: ${_pos[2]} ${_pos[3]};
-        background-size: 1584px 1497px;
+        ${pos === ''
+          ? css`
+              background: url(${imageHover}) no-repeat 0 0;
+            `
+          : css`
+              background: url(${url}) no-repeat 0 0;
+              background-position: ${_pos[2]} ${_pos[3]};
+              background-size: 1584px 1497px;
+            `}
         font-size: 0;
         transition: 0.5s;
         content: '';
@@ -159,7 +173,7 @@ const StyledGameClassTalentsSelected = styled.ul`
   }}
 `
 const StyledGameClassTalentImageSelected = styled.li<hasUrlProps>`
-  ${({ theme, url, color, pos }) => {
+  ${({ theme, url, color, pos, image, imageHover }) => {
     const _pos = pos.split(' ')
     return css`
       flex: 0 0 67px;
@@ -191,9 +205,15 @@ const StyledGameClassTalentImageSelected = styled.li<hasUrlProps>`
         width: 67px;
         height: 75px;
         display: inline-block;
-        background: url(${url}) no-repeat 0 0;
-        background-position: ${_pos[0]} ${_pos[1]};
-        background-size: 1584px 1497px;
+        ${pos === ''
+          ? css`
+              background: url(${image}) no-repeat 0 0;
+            `
+          : css`
+              background: url(${url}) no-repeat 0 0;
+              background-position: ${_pos[0]} ${_pos[1]};
+              background-size: 1584px 1497px;
+            `}
         font-size: 0;
         transition: 0.5s;
         content: '';
@@ -206,9 +226,15 @@ const StyledGameClassTalentImageSelected = styled.li<hasUrlProps>`
         width: 67px;
         height: 75px;
         display: inline-block;
-        background: url(${url}) no-repeat 0 0;
-        background-position: ${_pos[2]} ${_pos[3]};
-        background-size: 1584px 1497px;
+        ${pos === ''
+          ? css`
+              background: url(${imageHover}) no-repeat 0 0;
+            `
+          : css`
+              background: url(${url}) no-repeat 0 0;
+              background-position: ${_pos[2]} ${_pos[3]};
+              background-size: 1584px 1497px;
+            `}
         font-size: 0;
         transition: 0.5s;
         content: '';
@@ -279,7 +305,9 @@ export const GameClass: React.FC = () => {
         talentName: talent.name,
         talentPosition: talent.position,
         talentImage: talent.image,
-        talentDesc: talent.desc
+        talentDesc: talent.desc,
+        prevImage: talent.prevImage,
+        prevImageHover: talent.prevImageHover
       }
       setSelectedGameClass((old) => [...old, temp])
     }
@@ -339,7 +367,12 @@ export const GameClass: React.FC = () => {
           ) : (
             selectedGameClass.map((item, index) => (
               <StyledGameClassTalentsSelected key={index} style={{ color: item.color }} onClick={() => unselectGameClass(item)}>
-                <StyledGameClassTalentImageSelected url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={item.talentImage}>
+                <StyledGameClassTalentImageSelected
+                  url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
+                  pos={item.talentImage}
+                  image={item.prevImage}
+                  imageHover={item.prevImageHover}
+                >
                   <div className={'close'}>X</div>
                 </StyledGameClassTalentImageSelected>
                 <StyledGameClassTalentContentSelected>
@@ -365,7 +398,12 @@ export const GameClass: React.FC = () => {
         {itemInfo &&
           itemInfo.talents.map((item, index) => (
             <StyledGameClassTalents key={index} onClick={() => selectGameClass({ name: itemInfo.name, color: itemInfo.color }, item)}>
-              <StyledGameClassTalentImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={item.image}></StyledGameClassTalentImage>
+              <StyledGameClassTalentImage
+                url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
+                pos={item.image}
+                image={item.prevImage}
+                imageHover={item.prevImageHover}
+              ></StyledGameClassTalentImage>
               <StyledGameClassTalentContent>
                 <div className={'name'}>{t(`gameclass.${item.name}`)}</div>
                 <div className={'desc'}>{t(`gameclass.${item.desc}`)}</div>

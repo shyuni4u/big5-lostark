@@ -89,6 +89,8 @@ type hasUrlProps = {
   url?: string
   color?: string
   pos?: string
+  image?: string
+  imageHover?: string
 }
 const StyledResultListItems = styled.ul`
   ${({ theme }) => {
@@ -143,7 +145,7 @@ const StyledResultListItems = styled.ul`
   }}
 `
 const StyledResultListItemImage = styled.div<hasUrlProps>`
-  ${({ theme, url, color, pos }) => {
+  ${({ theme, url, color, pos, image, imageHover }) => {
     const _pos = pos.split(' ')
     return css`
       flex: 0 0 67px;
@@ -162,9 +164,15 @@ const StyledResultListItemImage = styled.div<hasUrlProps>`
         width: 67px;
         height: 75px;
         display: inline-block;
-        background: url(${url}) no-repeat 0 0;
-        background-position: ${_pos[0]} ${_pos[1]};
-        background-size: 1584px 1497px;
+        ${pos === ''
+          ? css`
+              background: url(${image}) no-repeat 0 0;
+            `
+          : css`
+              background: url(${url}) no-repeat 0 0;
+              background-position: ${_pos[0]} ${_pos[1]};
+              background-size: 1584px 1497px;
+            `}
         font-size: 0;
         transition: 0.5s;
         content: '';
@@ -177,9 +185,15 @@ const StyledResultListItemImage = styled.div<hasUrlProps>`
         width: 67px;
         height: 75px;
         display: inline-block;
-        background: url(${url}) no-repeat 0 0;
-        background-position: ${_pos[2]} ${_pos[3]};
-        background-size: 1584px 1497px;
+        ${pos === ''
+          ? css`
+              background: url(${imageHover}) no-repeat 0 0;
+            `
+          : css`
+              background: url(${url}) no-repeat 0 0;
+              background-position: ${_pos[2]} ${_pos[3]};
+              background-size: 1584px 1497px;
+            `}
         font-size: 0;
         transition: 0.5s;
         content: '';
@@ -576,7 +590,12 @@ export const Result: React.FC = () => {
                 <li key={elIdx}>
                   <StyledResultListItems>
                     <li className={'image'}>
-                      <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
+                      <StyledResultListItemImage
+                        url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
+                        pos={_talent.image}
+                        image={_talent.prevImage}
+                        imageHover={_talent.prevImageHover}
+                      ></StyledResultListItemImage>
                     </li>
                     <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                     <li className={'progress'}>
@@ -623,7 +642,12 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
+                          <StyledResultListItemImage
+                            url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
+                            pos={_talent.image}
+                            image={_talent.prevImage}
+                            imageHover={_talent.prevImageHover}
+                          ></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
@@ -659,7 +683,12 @@ export const Result: React.FC = () => {
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
+                          <StyledResultListItemImage
+                            url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
+                            pos={_talent.image}
+                            image={_talent.prevImage}
+                            imageHover={_talent.prevImageHover}
+                          ></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>
@@ -688,13 +717,19 @@ export const Result: React.FC = () => {
                   if (!moreTotal && elIdx > 4) return undefined
 
                   const _class = GameClassInfo.find((v) => v.name == el.sClass)
+                  if (_class === undefined) return undefined
                   const _talent = _class.talents.find((v) => v.name == el.sTalent)
 
                   return (
                     <li key={elIdx}>
                       <StyledResultListItems>
                         <li className={'image'}>
-                          <StyledResultListItemImage url={'https://i.ibb.co/8NHpM1C/sprite-information.png'} pos={_talent.image}></StyledResultListItemImage>
+                          <StyledResultListItemImage
+                            url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
+                            pos={_talent.image}
+                            image={_talent.prevImage}
+                            imageHover={_talent.prevImageHover}
+                          ></StyledResultListItemImage>
                         </li>
                         <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
                         <li className={'progress'}>

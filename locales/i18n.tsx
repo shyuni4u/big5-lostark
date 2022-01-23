@@ -1,5 +1,5 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import i18n from 'i18next'
+import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
@@ -98,7 +98,11 @@ const resources = {
         reaper: 'Reaper',
         bladeDesc: 'Deathblade is an assassin class that uses a total of three swords that they wield alongside the power of chaos to swiftly slash their foes.',
         demonicDesc: 'Shadowhunters prefer to beat the demons at their own game—they can shapeshift into powerful demonic forms to unleash chaotic power.',
-        reaperDesc: 'Not yet.'
+        reaperDesc: 'Not yet.',
+
+        specialist: 'Specialist',
+        painter: 'Painter',
+        painterDesc: 'A painter is a supporter-type class that can strategically operate with the power of illusion coming from the brush.'
       },
       result: {
         title: 'Personality test',
@@ -226,7 +230,11 @@ const resources = {
         reaper: '리퍼',
         bladeDesc: '블레이드는 쌍검과 장검, 총 세개의 검을 사용하는 암살자입니다.',
         demonicDesc: '데모닉은 거대한 무기 ‘데모닉 웨폰’을 사용하여 적들을 무참히 베는데 특화된 암살자입니다.',
-        reaperDesc: '리퍼는 단검과 그림자 스킬을 사용하는 암살자 클래스입니다.'
+        reaperDesc: '리퍼는 단검과 그림자 스킬을 사용하는 암살자 클래스입니다.',
+
+        specialist: '스폐셜리스트',
+        painter: '도화가',
+        painterDesc: '도화가는 붓에서 나오는 환영의 힘으로 전략적 운용이 가능한 서포터형 클래스입니다.'
       },
       result: {
         title: '성향 테스트',
@@ -258,9 +266,9 @@ const resources = {
       }
     }
   }
-};
+}
 i18n.use(initReactI18next).init({
   resources,
   lng: 'ko'
-});
-export default i18n;
+})
+export default i18n
