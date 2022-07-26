@@ -212,6 +212,14 @@ export const GameClassList = [
         prevImageHover: '/class/mark-artist-border-hover.png',
         image: '',
         desc: 'painterDesc'
+      },
+      {
+        name: 'aeromancer',
+        position: 'dealer',
+        prevImage: '/class/mark-aeromancer-border.png',
+        prevImageHover: '/class/mark-aeromancer-border-hover.png',
+        image: '',
+        desc: 'aeromancerDesc'
       }
     ]
   }

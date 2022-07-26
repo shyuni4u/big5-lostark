@@ -351,7 +351,7 @@ export const Result: React.FC = () => {
       const _nn = ml5.neuralNetwork(options)
 
       const trainingOptions = {
-        epochs: 100,
+        epochs: 500,
         batchSize: 50
       }
       const finishedTraining = () => {

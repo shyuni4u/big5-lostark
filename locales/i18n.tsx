@@ -102,7 +102,9 @@ const resources = {
 
         specialist: 'Specialist',
         painter: 'Painter',
-        painterDesc: 'A painter is a supporter-type class that can strategically operate with the power of illusion coming from the brush.'
+        aeromancer: 'Aeromancer',
+        painterDesc: 'A painter is a supporter-type class that can strategically operate with the power of illusion coming from the brush.',
+        aeromancerDesc: 'Not yet'
       },
       result: {
         title: 'Personality test',
@@ -234,7 +236,9 @@ const resources = {
 
         specialist: '스폐셜리스트',
         painter: '도화가',
-        painterDesc: '도화가는 붓에서 나오는 환영의 힘으로 전략적 운용이 가능한 서포터형 클래스입니다.'
+        aeromancer: '기상술사',
+        painterDesc: '도화가는 붓에서 나오는 환영의 힘으로 전략적 운용이 가능한 서포터형 클래스입니다.',
+        aeromancerDesc: '기상술사는 신비로운 환영의 힘으로 기상을 다루고 우산을 활용하여 적을 제압하는 클래스입니다.'
       },
       result: {
         title: '성향 테스트',
