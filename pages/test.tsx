@@ -1,8 +1,9 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import styled from 'styled-components'
 
-import Wrapper from '../components/organisms/Wrapper';
-import TestForm from '../components/organisms/Test';
+import Wrapper from '../components/organisms/Wrapper'
+import TestForm from '../components/organisms/Test'
+import Adfit from '../components/molecules/Adfit'
 
 const StyledTest = styled.section`
   display: flex;
@@ -17,11 +18,11 @@ const StyledTest = styled.section`
     flex-direction: column;
     padding-top: 0px;
   `}
-`;
+`
 const StyleTestWrapper = styled.section`
   background-color: ${({ theme }) => theme.colors.white};
   flex: 0 0 100%;
-`;
+`
 
 export const Test: React.FC = () => {
   return (
@@ -31,8 +32,9 @@ export const Test: React.FC = () => {
           <TestForm />
         </StyleTestWrapper>
       </StyledTest>
+      <Adfit />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test

@@ -1,10 +1,12 @@
 import App from 'next/app';
 import Head from 'next/head';
 import React from 'react';
-import { createWrapper } from 'next-redux-wrapper';
-import { createStore } from 'redux';
+import { createStore } from 'redux'
+import { persistStore } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
 
-import reducerModule from '../modules/index.tsx';
+import { wrapper } from 'store'
+import { persistedReducer } from 'modules'
 
 const styles = {
   layout: {
@@ -29,22 +31,15 @@ const styles = {
     // bottom: '0',
     fontSize: '12px'
   }
-};
-
-const configureStore = () => {
-  const store = createStore(reducerModule);
-  return store;
-};
-
-const wrapper = createWrapper(configureStore, {
-  debug: process.env.NODE_ENV === 'development,'
-});
-
+}
 export class RootApp extends App {
   render() {
     const { Component, other } = this.props;
+    const store = createStore(persistedReducer)
+    const persistor = persistStore(store)
     return (
-      <>
+      <PersistGate persistor={persistor} loading={<div>loading...</div>}>
+        <React.Fragment>
         <Head>
           <title>LOSTARK - Class recommendation by Machine learning</title>
           <link rel="shortcut icon" href="/favicon.ico" />
@@ -63,7 +58,8 @@ export class RootApp extends App {
           </main>
           <footer style={styles.footer}>Copyright 2021 <a href='mailto:shyuniz1111@gmail.com' style={{ textDecoration: 'underline' }}>shyuniz</a> Authors.</footer>
         </div>
-      </>
+        </React.Fragment>
+      </PersistGate>
     );
   }
 }

@@ -1,12 +1,20 @@
-import { combineReducers } from 'redux';
-import countModule from './count';
-import testModule from './test';
+import { combineReducers } from 'redux'
+import { persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
-const rootReducer = combineReducers({
+import countModule from './count'
+import testModule from './test'
+
+const persistConfig = {
+  key: 'root',
+  storage
+  // whitelist: ['user']
+}
+
+export const rootReducer = combineReducers({
   countModule,
   testModule
-});
-
-export type RootState = ReturnType<typeof rootReducer>;
-
-export default rootReducer;
+})
+export const persistedReducer = persistReducer(persistConfig, rootReducer)
+export type RootState = ReturnType<typeof rootReducer>
+export default persistedReducer
