@@ -232,7 +232,7 @@ type resultNNProp = {
   confidence: number
 }
 
-const FOR_TRAINING = false
+const FOR_TRAINING = true
 
 export const Result: React.FC = () => {
   const { t, i18n } = useTranslation()
@@ -351,7 +351,7 @@ export const Result: React.FC = () => {
       const _nn = ml5.neuralNetwork(options)
 
       const trainingOptions = {
-        epochs: 500,
+        epochs: 1000,
         batchSize: 50
       }
       const finishedTraining = () => {

@@ -1,13 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
-import '../../locales/i18n';
+import React from 'react'
+import styled from 'styled-components'
+import '../../locales/i18n'
 
-import GlobalStyle from '../../styles/global-styles';
-import theme from '../../styles/theme';
-import { ThemeProvider } from '../../styles/themed-components';
+import GlobalStyle from '../../styles/global-styles'
+import theme from '../../styles/theme'
+import { ThemeProvider } from '../../styles/themed-components'
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const StyledToastContainer = styled(ToastContainer).attrs({
   className: 'toast-container',
@@ -36,7 +36,7 @@ const StyledToastContainer = styled(ToastContainer).attrs({
   /* .progress is passed to progressClassName */
   .progress {
   }
-`;
+`
 
 const StyledWrapper = styled.div`
   max-width: 460px;
@@ -50,7 +50,7 @@ const StyledWrapper = styled.div`
   ${({ theme }) => theme.media.mobile`
     width: 100%;
   `}
-`;
+`
 
 export const Wrapper: React.FC = ({ children }) => {
   return (
@@ -59,9 +59,10 @@ export const Wrapper: React.FC = ({ children }) => {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <StyledWrapper>{children}</StyledWrapper>
+        <div className={'adfit'}></div>
       </ThemeProvider>
     </>
-  );
-};
+  )
+}
 
-export default Wrapper;
+export default Wrapper

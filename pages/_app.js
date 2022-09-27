@@ -51,6 +51,7 @@ export class RootApp extends App {
           <meta property="og:title" content="Big 5 test." />
           <meta property="og:description" content="재미로 보는 머신러닝을 통한 로스트 아크 직업 추천 / 뉴비를 위한 유저들의 데이터. Big 5 test for selecting lostark class. Lostarc class recommendation through machine learning for fun / by Korean user datas." />
           <meta property="og:url" content="http://lostark.enzo.kr/" />
+          <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
         </Head>
         <div style={styles.layout}>
           <main style={styles.main}>
