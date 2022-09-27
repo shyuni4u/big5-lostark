@@ -232,7 +232,7 @@ type resultNNProp = {
   confidence: number
 }
 
-const FOR_TRAINING = true
+const FOR_TRAINING = false
 
 export const Result: React.FC = () => {
   const { t, i18n } = useTranslation()

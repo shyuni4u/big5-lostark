@@ -34,7 +34,7 @@ const styles = {
 }
 export class RootApp extends App {
   render() {
-    const { Component, other } = this.props;
+    const { Component, other } = this.props
     const store = createStore(persistedReducer)
     const persistor = persistStore(store)
     return (
