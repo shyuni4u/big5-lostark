@@ -8,7 +8,7 @@ import echarts from 'echarts/lib/echarts'
 import 'echarts/lib/chart/radar'
 import 'echarts/lib/component/title'
 import 'echarts/lib/component/grid'
-import { BsBarChart, BsCloud, BsFileText } from 'react-icons/bs'
+import { BsBarChart, BsCloud } from 'react-icons/bs'
 
 import Theme from '../../styles/theme'
 import GameClassInfo from '../../lib/GameClassInfo'
@@ -56,20 +56,6 @@ const StyledResultTitle = styled.div`
       & > svg {
         margin-right: 4px;
         margin-bottom: -2px;
-      }
-    `
-  }}
-`
-const StyledResultCount = styled.div`
-  ${({ theme }) => {
-    return css`
-      & > span.total {
-        color: ${theme.colors.white};
-        font-size: 1.2em;
-      }
-      & > span.sum {
-        font-weight: 600;
-        font-size: 2.4em;
       }
     `
   }}
@@ -237,9 +223,6 @@ const FOR_TRAINING = false
 export const Result: React.FC = () => {
   const { t, i18n } = useTranslation()
   const { testInfo } = reducerTest()
-  const [result, setResult] = useState<testResult[]>([])
-  const [resultRatio, setResultRatio] = useState<testResult[]>([])
-  const [resultTotal, setResultTotal] = useState<testResult[]>([])
   const [resultML, setResultML] = useState<mlProp[]>([])
   const [resultNN, setResultNN] = useState<resultNNProp[]>([])
   const [loading, setLoading] = useState<boolean>(true)
@@ -249,16 +232,6 @@ export const Result: React.FC = () => {
   const [extra, setExtra] = useState<number>(1)
   const [openn, setOpenn] = useState<number>(1)
   const [neuro, setNeuro] = useState<number>(1)
-
-  const [total, setTotal] = useState<number>(0)
-  const [sum, setSum] = useState<number>(0)
-  const [max, setMax] = useState<number>(1)
-  const [maxRatio, setMaxRatio] = useState<number>(100)
-  const [maxTotal, setMaxTotal] = useState<number>(1)
-  const [showStat, setShowStat] = useState<boolean>(false)
-  const [more, setMore] = useState<boolean>(false)
-  const [moreRatio, setMoreRatio] = useState<boolean>(false)
-  const [moreTotal, setMoreTotal] = useState<boolean>(false)
 
   const [nn, setNN] = useState<any>(undefined)
 
@@ -310,13 +283,7 @@ export const Result: React.FC = () => {
         .then((response) => {
           if (unmount) return
           if (response.status === 200) {
-            setTotal(response.data.count[0].nCnt)
-            setResult(response.data.list)
-            setResultRatio(response.data.ratio)
-            setResultTotal(response.data.total)
             if (FOR_TRAINING) setResultML(response.data.ml)
-          } else {
-            setResult(undefined)
           }
         })
         .catch((error) => {
@@ -333,8 +300,7 @@ export const Result: React.FC = () => {
         })
     }
 
-    // onLoadApi()
-    setTimeout(() => onLoadApi(), 2 * 1000)
+    onLoadApi()
 
     return () => {
       unmount = true
@@ -431,26 +397,6 @@ export const Result: React.FC = () => {
       }
     }
   }, [resultML])
-
-  useEffect(() => {
-    let _sum = 0
-    result.forEach((el) => (_sum += el.nCount))
-
-    if (result.length > 0) setMax(result[0].nCount)
-    else setMax(1)
-
-    setSum(_sum)
-  }, [result])
-
-  useEffect(() => {
-    if (resultRatio.length > 0) setMaxRatio(resultRatio[0].nSum)
-    else setMaxRatio(100)
-  }, [resultRatio])
-
-  useEffect(() => {
-    if (resultTotal.length > 0) setMaxTotal(resultTotal[0].nSum)
-    else setMaxTotal(1)
-  }, [resultTotal])
 
   const getOption = () => {
     return {
@@ -610,146 +556,6 @@ export const Result: React.FC = () => {
           </StyledResultList>
         </StyledResult>
 
-        {!showStat && <Button onClick={() => setShowStat(true)}>{t('result.stat')}</Button>}
-
-        {showStat && (
-          <>
-            <StyledResult>
-              <StyledResultTitle>
-                <BsFileText />
-                {t('result.testcount')}
-              </StyledResultTitle>
-              <StyledResultCount>
-                <span className={'sum'} style={{ color: sum < 10 ? '#F99ED4' : sum < 100 ? '#ffe96b' : '#ABE3A2' }}>
-                  {numberWithCommas(sum)}
-                </span>{' '}
-                <span className={'total'}>/ {numberWithCommas(total)}</span>
-              </StyledResultCount>
-            </StyledResult>
-            <StyledResult>
-              <StyledResultTitle>
-                <BsFileText />
-                {t('result.likeyouratio')}
-              </StyledResultTitle>
-              <StyledResultList>
-                {resultRatio.map((el: testResult, elIdx: number) => {
-                  if (!moreRatio && elIdx > 4) return undefined
-
-                  const _class = GameClassInfo.find((v) => v.name == el.sClass)
-                  const _talent = _class.talents.find((v) => v.name == el.sTalent)
-
-                  return (
-                    <li key={elIdx}>
-                      <StyledResultListItems>
-                        <li className={'image'}>
-                          <StyledResultListItemImage
-                            url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
-                            pos={_talent.image}
-                            image={_talent.prevImage}
-                            imageHover={_talent.prevImageHover}
-                          ></StyledResultListItemImage>
-                        </li>
-                        <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
-                        <li className={'progress'}>
-                          <div className={'progressBar'} style={{ width: Math.round((el.nSum / maxRatio) * 10000) / 100 + '%', backgroundColor: _class.color }}>
-                            <div className={'progressValue'}>{Math.round(el.nSum * 100) / 100}%</div>
-                          </div>
-                        </li>
-                      </StyledResultListItems>
-                    </li>
-                  )
-                })}
-                {resultRatio.length > 5 && !moreRatio && (
-                  <li>
-                    <Button onClick={() => setMoreRatio(true)}>{t('result.more')}</Button>
-                  </li>
-                )}
-              </StyledResultList>
-            </StyledResult>
-            <StyledResult>
-              <StyledResultTitle>
-                <BsFileText />
-                {t('result.likeyoucount')}
-              </StyledResultTitle>
-              <StyledResultList>
-                {result.length === 0 && <span>{t('result.sorry')}</span>}
-                {result.map((el: testResult, elIdx: number) => {
-                  if (!more && elIdx > 4) return undefined
-
-                  const _class = GameClassInfo.find((v) => v.name == el.sClass)
-                  const _talent = _class.talents.find((v) => v.name == el.sTalent)
-
-                  return (
-                    <li key={elIdx}>
-                      <StyledResultListItems>
-                        <li className={'image'}>
-                          <StyledResultListItemImage
-                            url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
-                            pos={_talent.image}
-                            image={_talent.prevImage}
-                            imageHover={_talent.prevImageHover}
-                          ></StyledResultListItemImage>
-                        </li>
-                        <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
-                        <li className={'progress'}>
-                          <div className={'progressBar'} style={{ width: Math.round((el.nCount / max) * 10000) / 100 + '%', backgroundColor: _class.color }}>
-                            <div className={'progressValue'}>{el.nCount}</div>
-                          </div>
-                        </li>
-                      </StyledResultListItems>
-                    </li>
-                  )
-                })}
-                {result.length > 5 && !more && (
-                  <li>
-                    <Button onClick={() => setMore(true)}>{t('result.more')}</Button>
-                  </li>
-                )}
-              </StyledResultList>
-            </StyledResult>
-            <StyledResult>
-              <StyledResultTitle>
-                <BsFileText />
-                {t('result.totalcount')}
-              </StyledResultTitle>
-              <StyledResultList>
-                {resultTotal.map((el: testResult, elIdx: number) => {
-                  if (!moreTotal && elIdx > 4) return undefined
-
-                  const _class = GameClassInfo.find((v) => v.name == el.sClass)
-                  if (_class === undefined) return undefined
-                  const _talent = _class.talents.find((v) => v.name == el.sTalent)
-
-                  return (
-                    <li key={elIdx}>
-                      <StyledResultListItems>
-                        <li className={'image'}>
-                          <StyledResultListItemImage
-                            url={'https://i.ibb.co/8NHpM1C/sprite-information.png'}
-                            pos={_talent.image}
-                            image={_talent.prevImage}
-                            imageHover={_talent.prevImageHover}
-                          ></StyledResultListItemImage>
-                        </li>
-                        <li className={'name'}>{t(`gameclass.${_talent.name}`)}</li>
-                        <li className={'progress'}>
-                          <div className={'progressBar'} style={{ width: Math.round((el.nSum / maxTotal) * 10000) / 100 + '%', backgroundColor: _class.color }}>
-                            <div className={'progressValue'}>{el.nSum}</div>
-                          </div>
-                        </li>
-                      </StyledResultListItems>
-                    </li>
-                  )
-                })}
-                {resultTotal.length > 5 && !moreTotal && (
-                  <li>
-                    <Button onClick={() => setMoreTotal(true)}>{t('result.more')}</Button>
-                  </li>
-                )}
-              </StyledResultList>
-            </StyledResult>
-          </>
-        )}
         <div style={{ margin: '10px 0' }}>
           {t('result.warning')}
           <br />
