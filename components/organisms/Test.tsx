@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Router from 'next/router';
-import styled, { css } from 'styled-components';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from 'react'
+import Router from 'next/router'
+import styled, { css } from 'styled-components'
+import { useTranslation } from 'react-i18next'
 
-import reducerTest from '../../reducers/reducerTest';
+import { useDispatch, useSelector } from 'react-redux'
+import { set, selectTest } from 'redux-slice/test'
 
 const StyledWrapper = styled.article`
   position: relative;
@@ -17,10 +18,10 @@ const StyledWrapper = styled.article`
   ${({ theme }) => theme.media.mobile`
     padding: 15px;
   `}
-`;
+`
 type StyledProgressProp = {
-  progress: string;
-};
+  progress: string
+}
 const StyledProgress = styled.div<StyledProgressProp>`
   position: absolute;
   background-color: orange;
@@ -30,7 +31,7 @@ const StyledProgress = styled.div<StyledProgressProp>`
   height: 5px;
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
-`;
+`
 const StyledTitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.h2};
   margin: 20px 0;
@@ -40,13 +41,13 @@ const StyledTitle = styled.h2`
   ${({ theme }) => theme.media.mobile`
     margin: 20px 0 10px;
   `}
-`;
+`
 const StyledQuestionWrapper = styled.div`
   /* font-size: ${({ theme }) => theme.fontSizes.body14}; */
   display: block;
   margin: 16px 0;
   background-color: ${({ theme }) => theme.colors.background};
-`;
+`
 const StyledQuestion = styled.div`
   font-weight: bold;
   font-size: ${({ theme }) => theme.fontSizes.body14};
@@ -56,10 +57,10 @@ const StyledQuestion = styled.div`
   border-bottom: 0;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-`;
+`
 type StyledExampleProp = {
-  selected?: boolean;
-};
+  selected?: boolean
+}
 const StyledExample = styled.div<StyledExampleProp>`
   position: relative;
   font-size: ${({ theme }) => theme.fontSizes.body14};
@@ -96,7 +97,7 @@ const StyledExample = styled.div<StyledExampleProp>`
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
   }
-`;
+`
 /**
  * 1-6번, 10-12번의 경우 전혀 아니다를 1로 시작해서 매우 그렇다를 5로 두고,
  * 7-9번은 전혀 아니다 5로 시작해서 매우 그렇다를 1로 두고 계산합니다.
@@ -159,60 +160,57 @@ const testList = [
     question: 'q12',
     type: 'agreeableness'
   }
-];
+]
 
-const strValues = ['a01', 'a02', 'a03', 'a04', 'a05'];
+const strValues = ['a01', 'a02', 'a03', 'a04', 'a05']
 
 // type TestItem = typeof testList
 
 export const Test: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation()
 
-  const { testInfo } = reducerTest();
+  const dispatch = useDispatch()
+  const test = useSelector(selectTest)
 
-  const [processIndex, setProcessIndex] = useState<number>(0);
-  const [valueList, setValueList] = useState<number[]>(testList.map(() => -1));
-  const MAX_SCORE = 5;
-
-  useEffect(() => {
-    const temp = testInfo.get;
-
-    valueList.forEach((_, index) => {
-      temp[`${testList[index].type}Score`] = 0;
-      temp[`${testList[index].type}Count`] = 0;
-    });
-    temp.inputValues = [];
-
-    testInfo.set(temp);
-  }, []);
+  const [processIndex, setProcessIndex] = useState<number>(0)
+  const [valueList, setValueList] = useState<number[]>(testList.map(() => -1))
+  const MAX_SCORE = 5
 
   useEffect(() => {
-    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en');
-  }, []);
+    i18n.changeLanguage(window.localStorage.getItem('lang') || 'en')
+  }, [])
 
   useEffect(() => {
     if (valueList[processIndex] !== -1) {
-      processIndex + 1 === testList.length ? goResult() : setProcessIndex((prev) => prev + 1);
+      processIndex + 1 === testList.length ? goResult() : setProcessIndex((prev) => prev + 1)
     }
-  }, [valueList]);
+  }, [valueList])
 
   const goResult = () => {
-    const temp = testInfo.get;
-
-    valueList.forEach((item, index) => {
-      temp[`${testList[index].type}Score`] += item;
-      temp[`${testList[index].type}Count`] += 1;
-    });
-
-    temp.inputValues = valueList;
-
-    testInfo.set(temp);
-    if (testInfo.get.newbie) {
-      Router.push('./result');
-    } else {
-      Router.push('./gameclass');
+    const _result = {
+      extraversionScore: 0,
+      opennessToExperienceScore: 0,
+      agreeablenessScore: 0,
+      neuroticismScore: 0,
+      conscientiousnessScore: 0,
+      extraversionCount: 0,
+      opennessToExperienceCount: 0,
+      agreeablenessCount: 0,
+      neuroticismCount: 0,
+      conscientiousnessCount: 0
     }
-  };
+    valueList.forEach((item, index) => {
+      _result[`${testList[index].type}Score`] += item
+      _result[`${testList[index].type}Count`] += 1
+    })
+    dispatch(set({ ...test, ..._result, inputValues: valueList }))
+
+    if (test.newbie) {
+      Router.push('./result')
+    } else {
+      Router.push('./gameclass')
+    }
+  }
 
   return (
     <>
@@ -229,9 +227,9 @@ export const Test: React.FC = () => {
                 key={subIndex}
                 selected={valueList[index] === (item.reverse ? MAX_SCORE - subIndex : subIndex + 1)}
                 onClick={() => {
-                  const tmp = [...valueList];
-                  tmp[index] = item.reverse ? MAX_SCORE - subIndex : subIndex + 1;
-                  setValueList(tmp);
+                  const tmp = [...valueList]
+                  tmp[index] = item.reverse ? MAX_SCORE - subIndex : subIndex + 1
+                  setValueList(tmp)
                 }}
               >
                 {t(`test.${subItem}`)}
@@ -241,7 +239,7 @@ export const Test: React.FC = () => {
         ))}
       </StyledWrapper>
     </>
-  );
-};
+  )
+}
 
-export default Test;
+export default Test

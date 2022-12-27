@@ -8,7 +8,8 @@ import Button from '../components/atoms/Button'
 import Wrapper from '../components/organisms/Wrapper'
 import Adfit from '../components/molecules/Adfit'
 
-import reducerTest from '../reducers/reducerTest'
+import { useDispatch } from 'react-redux'
+import { set } from 'redux-slice/test'
 
 const StyledGoDetail = styled.a`
   font-size: 0.6em;
@@ -57,7 +58,8 @@ const DEFAULT_LANGUAGE = 'kr'
 
 export const Index: React.FC = () => {
   const { t, i18n } = useTranslation()
-  const { testInfo } = reducerTest()
+  const dispatch = useDispatch()
+
   const [lang, setLang] = useState<string>(DEFAULT_LANGUAGE)
 
   useEffect(() => {
@@ -79,9 +81,15 @@ export const Index: React.FC = () => {
   }
 
   const goGameClass = (newbie: boolean) => {
-    const temp = testInfo.get
-    temp.newbie = newbie
-    testInfo.set(temp)
+    const temp = {
+      firstClass: '',
+      firstTalent: '',
+      secondClass: '',
+      secondTalent: '',
+      thirdClass: '',
+      thirdTalent: ''
+    }
+    dispatch(set({ ...temp, newbie: newbie }))
     Router.push('./test')
   }
 

@@ -5,13 +5,14 @@ import { useTranslation } from 'react-i18next'
 
 import { toast } from 'react-toastify'
 
-import Panel from '../atoms/Panel'
-import Button from '../atoms/Button'
-import Modal from '../atoms/Modal'
+import Panel from '@components/atoms/Panel'
+import Button from '@components/atoms/Button'
+import Modal from '@components/atoms/Modal'
 
-import reducerTest from '../../reducers/reducerTest'
+import { useDispatch, useSelector } from 'react-redux'
+import { set, selectTest } from 'redux-slice/test'
 
-import GameClassList, { GameClassItemInfo, ParamGameClassInfo } from '../../lib/GameClassInfo'
+import GameClassList, { GameClassItemInfo, ParamGameClassInfo } from '@lib/GameClassInfo'
 
 type hasUrlProps = {
   url?: string
@@ -275,7 +276,8 @@ const MAX_SELECT = 3
 export const GameClass: React.FC = () => {
   const { t, i18n } = useTranslation()
 
-  const { testInfo } = reducerTest()
+  const dispatch = useDispatch()
+  const test = useSelector(selectTest)
 
   const [itemInfo, setItemInfo] = useState<GameClassItemInfo>(undefined)
   const [selectedGameClass, setSelectedGameClass] = useState<ParamGameClassInfo[]>([])
@@ -319,7 +321,14 @@ export const GameClass: React.FC = () => {
   }
 
   const goTest = () => {
-    const temp = testInfo.get
+    const temp = {
+      firstClass: '',
+      firstTalent: '',
+      secondClass: '',
+      secondTalent: '',
+      thirdClass: '',
+      thirdTalent: ''
+    }
     if (selectedGameClass.length > 2) {
       temp.thirdClass = selectedGameClass[2].name
       temp.thirdTalent = selectedGameClass[2].talentName
@@ -332,7 +341,7 @@ export const GameClass: React.FC = () => {
       temp.firstClass = selectedGameClass[0].name
       temp.firstTalent = selectedGameClass[0].talentName
     }
-    testInfo.set(temp)
+    dispatch(set({ ...test, ...temp }))
     Router.push('./result')
   }
 

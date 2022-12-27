@@ -1,12 +1,10 @@
-import App from 'next/app';
-import Head from 'next/head';
-import React from 'react';
-import { createStore } from 'redux'
+import App from 'next/app'
+import Head from 'next/head'
+import React from 'react'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import { wrapper } from 'store'
-import { persistedReducer } from 'modules'
+import store, { wrapper } from 'redux-slice'
 
 const styles = {
   layout: {
@@ -35,10 +33,9 @@ const styles = {
 export class RootApp extends App {
   render() {
     const { Component, other } = this.props
-    const store = createStore(persistedReducer)
     const persistor = persistStore(store)
     return (
-      <PersistGate persistor={persistor} loading={<div>loading...</div>}>
+      <PersistGate persistor={persistor} loading={null}>
         <React.Fragment>
         <Head>
           <title>LOSTARK - Class recommendation by Machine learning</title>
@@ -61,8 +58,8 @@ export class RootApp extends App {
         </div>
         </React.Fragment>
       </PersistGate>
-    );
+    )
   }
 }
 
-export default wrapper.withRedux(RootApp);
+export default wrapper.withRedux(RootApp)
