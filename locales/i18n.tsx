@@ -49,7 +49,7 @@ const resources = {
         goResult: 'Result',
         close: 'Close',
 
-        warrior: 'Warrior',
+        warrior: 'Warrior(male)',
         destroyer: 'Destroyer',
         warlord: 'Gunlancer',
         berserker: 'Berserker',
@@ -59,6 +59,9 @@ const resources = {
           'As the first line of defense, gunlancers take the brunt of enemy attacks with their defensive stance and battlefield shield to keep the rest of their party safe.',
         berserkerDesc: `Berserkers are always powerful warriors, with their high-damage greatsword attacks and potent defense, but when they enter their burst mode, they're all but unstoppable.`,
         holyknightDesc: 'Paladins have a direct line to the powers of the gods, channeling their ancient might into potent offensive and defensive moves alike ...',
+
+        slayer: 'Warrior(female)',
+        slayerDesc: 'The warrior class is a class with a good balance of offense and defense with hot destructive power and stable defense.',
 
         fighter: 'Martial artist',
         battlemaster: 'Wardancer',
@@ -184,7 +187,7 @@ const resources = {
         goResult: '결과보기',
         close: '닫기',
 
-        warrior: '전사',
+        warrior: '전사(남)',
         destroyer: '디스트로이어',
         warlord: '워로드',
         berserker: '버서커',
@@ -193,6 +196,9 @@ const resources = {
         warlordDesc: '워로드는 높은 방어력과 생명력을 기반으로 전장의 선봉에서 아군을 지휘하고 보호하는 근접 클래스입니다.',
         berserkerDesc: '거대한 양손대검을 들고 전장을 휘젓는 전형적인 근접 전사입니다.',
         holyknightDesc: '홀리나이트는 신념의 검과 신앙의 힘을 사용하는 서포트형 클래스입니다.',
+
+        slayer: '전사(여)',
+        slayerDesc: '전사 계열은 화끈한 파괴력과 안정적인 방어력을 가진 공수밸런스가 좋은 클래스 입니다.',
 
         fighter: '무도가',
         battlemaster: '배틀마스터',

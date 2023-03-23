@@ -40,6 +40,22 @@ export const GameClassList = [
     ]
   },
   {
+    name: 'warrior-female',
+    image: 'https://ibb.co/BwFV9gV', // 'img_index_warrior_female.png',
+    background: 'https://ibb.co/c3VyLss', // 'bg_index_warrior_female.jpg',
+    color: '#c79c6e',
+    talents: [
+      {
+        name: 'slayer',
+        position: 'dealer',
+        prevImage: '/class/mark-slayer-border.png',
+        prevImageHover: '/class/mark-slayer-border-hover.png',
+        image: '-1161px -426px -1510px -1419px',
+        desc: 'slayerDesc'
+      }
+    ]
+  },
+  {
     name: 'fighter',
     image: 'https://i.ibb.co/mB8RShF/img-index-fighter.png', // 'img_index_fighter.png',
     background: 'https://i.ibb.co/xDF2jg8/bg-index-fighter.jpg', // 'bg_index_fighter.jpg',
